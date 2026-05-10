@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pickleball Pro Coach Rick</title>
+    <title>Pickleball Coach Rick</title>
     <style>
         body { 
             font-family: 'Segoe UI', sans-serif; 
@@ -13,9 +13,10 @@
         }
         .app-card { background: rgba(30, 30, 30, 0.95); padding: 30px; border-radius: 25px; max-width: 600px; margin: 20px auto; box-shadow: 0 20px 50px rgba(0,0,0,0.6); border: 2px solid #2ecc71; }
         h1 { color: #2ecc71; text-transform: uppercase; margin-bottom: 5px; font-size: 24px; }
-        input { width: 90%; padding: 15px; border-radius: 30px; border: 2px solid #2ecc71; background: #333; color: white; font-size: 16px; outline: none; margin-bottom: 15px; text-align: center; }
+        input { width: 90%; padding: 15px; border-radius: 30px; border: 2px solid #2ecc71; background: #333; color: white; font-size: 16px; outline: none; margin-bottom: 15px; text-align: center; box-sizing: border-box; }
         .btn-coach { background: #2ecc71; color: white; border: none; padding: 15px 40px; border-radius: 30px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; width: 100%; margin-bottom: 10px; }
-        .btn-youtube { background: #ff0000; color: white; border: none; padding: 12px 30px; border-radius: 30px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; width: 100%; text-decoration: none; display: inline-block; box-sizing: border-box; }
+        .btn-reset { background: #555; color: white; border: none; padding: 10px 20px; border-radius: 30px; cursor: pointer; font-size: 14px; margin-top: 15px; transition: 0.3s; }
+        .btn-youtube { background: #ff0000; color: white; border: none; padding: 12px 30px; border-radius: 30px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; width: 100%; text-decoration: none; display: inline-block; box-sizing: border-box; text-align: center; }
         .btn-coach:hover, .btn-youtube:hover { opacity: 0.8; transform: scale(1.02); }
         #coach-antwoord { margin-top: 30px; background: white; color: #333; padding: 25px; border-radius: 20px; text-align: left; display: none; }
         .tag { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
@@ -25,44 +26,60 @@
 
     <div class="app-card">
         <h1>🎾 Coach Rick Online</h1>
-        <p>Wat gaan we vandaag perfectioneren?</p>
+        <p>Klaar voor de volgende stap?</p>
         
-        <input type="text" id="coach-vraag" placeholder="bijv. dinken, lob, smash...">
+        <input type="text" id="coach-vraag" placeholder="Wat wil je trainen?">
         <br>
         <button class="btn-coach" onclick="vraagCoach()">Vraag Advies</button>
 
         <div id="coach-antwoord"></div>
+        <button id="reset-button" class="btn-reset" style="display:none;" onclick="resetApp()">Wissen & Nieuwe Vraag</button>
     </div>
 
     <script>
         function vraagCoach() {
-            const input = document.getElementById('coach-vraag').value;
+            const inputField = document.getElementById('coach-vraag');
+            const input = inputField.value;
             const output = document.getElementById('coach-antwoord');
+            const resetBtn = document.getElementById('reset-button');
+            
             if(!input) return alert("Typ eerst even wat je wilt leren!");
 
             output.style.display = "block";
+            resetBtn.style.display = "inline-block";
             
-            // Zoekterm voor YouTube maken
             const zoekTerm = "pickleball " + input + " tutorial";
             const ytLink = "https://www.youtube.com/results?search_query=" + encodeURIComponent(zoekTerm);
 
             let advies = "";
-            if (input.toLowerCase().includes("dink")) {
-                advies = "Focus op een zachte push vanuit de schouder. Blijf laag en houd je paddle voor je.";
-            } else if (input.toLowerCase().includes("opslag")) {
-                advies = "Sla de bal diep en probeer de backhand van de tegenstander te raken.";
+            let laagInput = input.toLowerCase();
+            
+            if (laagInput.includes("dink")) {
+                advies = "Houd je beweging kort. Gebruik je schouders als een pendule en blijf laag bij de keukenlijn.";
+            } else if (laagInput.includes("opslag") || laagInput.includes("serve")) {
+                advies = "Focus op diepte. Een diepe bal dwingt de tegenstander achterin te blijven.";
+            } else if (laagInput.includes("lob")) {
+                advies = "Gebruik de lob alleen als je tegenstander heel dicht op het net staat. Zorg voor voldoende hoogte!";
             } else {
-                advies = "Goede focus! Voor " + input + " is balans en voetenwerk het allerbelangrijkst.";
+                advies = "Voor " + input + " is een goede balans en vroege voorbereiding het halve werk.";
             }
 
             output.innerHTML = `
                 <span class="tag">TRAININGSTIP</span>
-                <h3>Advies voor ${input}</h3>
+                <h3>Advies voor: ${input}</h3>
                 <p>${advies}</p>
                 <hr>
-                <p>Bekijk de beste video-instructies voor <b>${input}</b> direct op YouTube:</p>
                 <a href="${ytLink}" target="_blank" class="btn-youtube">▶ Bekijk Video's op YouTube</a>
             `;
+            
+            // Maak het invoerveld leeg voor de volgende keer
+            inputField.value = "";
+        }
+
+        function resetApp() {
+            document.getElementById('coach-antwoord').style.display = "none";
+            document.getElementById('reset-button').style.display = "none";
+            document.getElementById('coach-vraag').value = "";
         }
     </script>
 </body>

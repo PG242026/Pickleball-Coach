@@ -15,6 +15,7 @@
         h1 { color: #2ecc71; text-transform: uppercase; margin-bottom: 5px; font-size: 24px; letter-spacing: 1px; }
         .subtitle { color: #bdc3c7; margin-bottom: 25px; font-size: 14px; }
         input { width: 90%; padding: 15px; border-radius: 30px; border: 2px solid #2ecc71; background: #333; color: white; font-size: 16px; outline: none; margin-bottom: 15px; text-align: center; box-sizing: border-box; }
+        input:focus { border-color: #27ae60; box-shadow: 0 0 10px rgba(46, 204, 113, 0.3); }
         .btn-coach { background: #2ecc71; color: white; border: none; padding: 15px 40px; border-radius: 30px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; width: 100%; margin-bottom: 10px; text-transform: uppercase; }
         .btn-reset { background: #555; color: white; border: none; padding: 10px 20px; border-radius: 30px; cursor: pointer; font-size: 14px; margin-top: 15px; transition: 0.3s; }
         .btn-youtube { background: #ff0000; color: white; border: none; padding: 12px 30px; border-radius: 30px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; width: 100%; text-decoration: none; display: inline-block; box-sizing: border-box; text-align: center; }
@@ -30,7 +31,8 @@
         <h1>Pickleball Coach Online</h1>
         <p class="subtitle">Verbeter je paddle skills en tactiek</p>
         
-        <input type="text" id="coach-vraag" placeholder="Welke slag wil je trainen?">
+        <!-- Onkeypress zorgt ervoor dat de Enter-toets werkt -->
+        <input type="text" id="coach-vraag" placeholder="Welke slag wil je trainen?" onkeypress="checkEnter(event)">
         <br>
         <button class="btn-coach" onclick="vraagCoach()">Vraag Advies</button>
 
@@ -39,6 +41,13 @@
     </div>
 
     <script>
+        // Functie die kijkt of er op Enter is gedrukt
+        function checkEnter(event) {
+            if (event.key === "Enter") {
+                vraagCoach();
+            }
+        }
+
         function vraagCoach() {
             const inputField = document.getElementById('coach-vraag');
             const input = inputField.value;
@@ -77,12 +86,14 @@
             `;
             
             inputField.value = "";
+            inputField.blur(); // Zorgt dat het toetsenbord op mobiel inklapt na het drukken op enter
         }
 
         function resetApp() {
             document.getElementById('coach-antwoord').style.display = "none";
             document.getElementById('reset-button').style.display = "none";
             document.getElementById('coach-vraag').value = "";
+            document.getElementById('coach-vraag').focus();
         }
     </script>
 </body>

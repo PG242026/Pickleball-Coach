@@ -3,27 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pickleball Trainer AI</title>
+    <title>Pickleball Pro Coach AI</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1a1a1a; color: white; text-align: center; padding: 20px; }
-        .app-card { background: #2c3e50; padding: 30px; border-radius: 20px; max-width: 600px; margin: 40px auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid #2ecc71; }
-        h1 { color: #2ecc71; margin-bottom: 10px; }
-        input { width: 80%; padding: 15px; border-radius: 10px; border: none; margin: 20px 0; font-size: 16px; }
-        button { background-color: #2ecc71; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; }
-        button:hover { background-color: #27ae60; transform: scale(1.05); }
-        #coach-antwoord { margin-top: 30px; background: #ecf0f1; color: #2c3e50; padding: 20px; border-radius: 15px; text-align: left; display: none; line-height: 1.6; }
-        .label { font-size: 0.9em; color: #bdc3c7; }
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&q=80&w=1000');
+            background-size: cover; background-attachment: fixed; color: white; text-align: center; padding: 20px; 
+        }
+        .app-card { background: rgba(44, 62, 80, 0.9); padding: 30px; border-radius: 20px; max-width: 700px; margin: 20px auto; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 3px solid #2ecc71; }
+        h1 { color: #2ecc71; text-transform: uppercase; letter-spacing: 2px; }
+        input { width: 85%; padding: 15px; border-radius: 30px; border: none; margin: 20px 0; font-size: 18px; outline: none; }
+        button { background: #2ecc71; color: white; border: none; padding: 15px 40px; border-radius: 30px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; }
+        button:hover { background: #27ae60; transform: translateY(-3px); }
+        #coach-antwoord { margin-top: 30px; background: white; color: #333; padding: 25px; border-radius: 15px; text-align: left; display: none; }
+        .video-container { margin-top: 15px; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .tip-box { border-left: 5px solid #2ecc71; padding-left: 15px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
 
     <div class="app-card">
-        <h1>🎾 Pickleball Trainer AI</h1>
-        <p class="label">Voer in wat je wilt trainen (bijv. dinken, smash, voetenwerk)</p>
+        <h1>🎾 Pickleball Pro Coach</h1>
+        <p>Stel een vraag aan de AI trainer voor tips en video-instructies.</p>
         
-        <input type="text" id="coach-vraag" placeholder="Wat gaan we vandaag oefenen?">
+        <input type="text" id="coach-vraag" placeholder="Waar wil je aan werken? (bijv. dinken, lob, backhand)">
         <br>
-        <button onclick="vraagCoach()">Vraag Training Advies</button>
+        <button onclick="vraagCoach()">Start Training</button>
 
         <div id="coach-antwoord"></div>
     </div>
@@ -34,21 +40,31 @@
             const output = document.getElementById('coach-antwoord');
             output.style.display = "block";
             
-            let advies = "";
+            let html = "";
+            let videoId = "";
 
-            if (input.includes("dink") || input.includes("keuken")) {
-                advies = "<strong>🔥 Focus: Dinking Mastery</strong><br>1. Houd je knieën laag en je gewicht voorop.<br>2. Gebruik je schouder, niet je pols.<br>3. Oefening: Sla 20 dinks recht en 20 dinks cross-court zonder fouten.";
-            } else if (input.includes("smash") || input.includes("hard")) {
-                advies = "<strong>🔥 Focus: De Power Smash</strong><br>1. Maak een korte achterzwaai (niet te groot!).<br>2. Richt op de voeten van je tegenstander.<br>3. Oefening: Laat een partner een hoge bal aangeven en focus op de plaatsing in plaats van alleen kracht.";
-            } else if (input.includes("voeten") || input.includes("bewegen")) {
-                advies = "<strong>🔥 Focus: Voetenwerk & Balans</strong><br>1. Gebruik kleine 'split-steps' voordat de tegenstander slaat.<br>2. Blijf op de bal van je voeten staan.<br>3. Oefening: Doe de 'schaduw-dink' waarbij je zijwaarts beweegt langs de non-volley zone.";
+            if (input.includes("dink")) {
+                html = "<div class='tip-box'><h3>Dinking Mastery</h3><p>Focus op een zachte 'push' vanuit de schouder. Blijf laag en raak de bal voor je lichaam.</p><ul><li>Houd de pols stil</li><li>Mik op de voeten van de tegenstander</li></ul></div>";
+                videoId = "8vX_490mH3A"; // YouTube ID voor dinking
+            } else if (input.includes("smash") || input.includes("overhead")) {
+                html = "<div class='tip-box'><h3>The Overhead Smash</h3><p>Wijs met je vrije hand naar de bal om de timing te bepalen. Sla de bal op het hoogste punt.</p></div>";
+                videoId = "q9_L7Z5U9k4";
             } else if (input.includes("opslag") || input.includes("serve")) {
-                advies = "<strong>🔥 Focus: Diepe Opslag</strong><br>1. Mik op de achterste 1 meter van het vak.<br>2. Houd je zwaai vloeiend onderhands.<br>3. Oefening: Probeer 10 keer achter elkaar de bal diep in de hoek te serveren.";
+                html = "<div class='tip-box'><h3>De Perfecte Opslag</h3><p>Zorg voor een diepe bal. De bedoeling is om de tegenstander achter de basislijn te houden.</p></div>";
+                videoId = "R7NAnv99U_A";
+            } else if (input.includes("lob")) {
+                html = "<div class='tip-box'><h3>De Strategische Lob</h3><p>Gebruik dit als je tegenstanders te dicht op het net staan. Maak een hoge boog.</p></div>";
+                videoId = "fS4-Y5R_Cto";
             } else {
-                advies = "<strong>Coach Tip:</strong> Voor '" + input + "' is de basis altijd: oog op de bal en een stabiele houding. Wil je specifieke boormaterialen voor dit onderdeel? Vraag naar dinken, smashen of voetenwerk!";
+                html = "<div class='tip-box'><h3>Algemeen Advies</h3><p>Voor " + input + " is voetenwerk cruciaal. Bekijk deze basisvideo om je spel te verbeteren.</p></div>";
+                videoId = "dUXwaXpID6U";
             }
 
-            output.innerHTML = advies;
+            if(videoId) {
+                html += "<div class='video-container'><iframe src='https://www.youtube.com/embed/" + videoId + "' frameborder='0' allowfullscreen></iframe></div>";
+            }
+
+            output.innerHTML = html;
         }
     </script>
 </body>

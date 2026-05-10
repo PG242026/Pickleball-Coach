@@ -17,34 +17,33 @@
         input { width: 90%; padding: 15px; border-radius: 30px; border: 2px solid #2ecc71; background: #333; color: white; font-size: 16px; outline: none; margin-bottom: 15px; text-align: center; box-sizing: border-box; }
         .btn-coach { background: #2ecc71; color: white; border: none; padding: 15px 40px; border-radius: 30px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; width: 100%; margin-bottom: 10px; text-transform: uppercase; }
         .btn-reset { background: #555; color: white; border: none; padding: 10px 20px; border-radius: 30px; cursor: pointer; font-size: 14px; margin-top: 15px; transition: 0.3s; }
-        .btn-youtube { background: #ff0000; color: white; border: none; padding: 12px 30px; border-radius: 30px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; width: 100%; text-decoration: none; display: inline-block; box-sizing: border-box; text-align: center; }
+        .btn-youtube { background: #ff0000; color: white; border: none; padding: 12px 30px; border-radius: 30px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; width: 100%; text-decoration: none; display: inline-block; box-sizing: border-box; text-align: center; margin-bottom: 10px; }
         .btn-coach:hover, .btn-youtube:hover { opacity: 0.8; transform: scale(1.02); }
+        
+        /* De antwoord-boxen */
         #coach-antwoord { margin-top: 30px; background: white; color: #333; padding: 25px; border-radius: 20px; text-align: left; display: none; border-bottom: 5px solid #2ecc71; }
-        .tag { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
-        .tip-box { background: #f0f7f0; border-left: 4px solid #2ecc71; padding: 10px; margin-top: 15px; font-size: 13px; color: #555; }
-        hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
+        .trainer-blok { background: #e3f2fd; border-left: 5px solid #2196f3; padding: 15px; margin-top: 20px; border-radius: 10px; color: #1565c0; }
+        .tag { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 5px 12px; border-radius: 15px; font-size: 11px; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
+        .tag-trainer { background: #bbdefb; color: #0d47a1; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 15px 0; }
     </style>
 </head>
 <body>
 
     <div class="app-card">
         <h1>Pickleball Coach Online</h1>
-        <p class="subtitle">Verbeter je paddle skills en tactiek</p>
+        <p class="subtitle">Tactiek voor spelers & Protocollen voor trainers</p>
         
-        <input type="text" id="coach-vraag" placeholder="Welke slag wil je trainen?" onkeypress="checkEnter(event)">
+        <input type="text" id="coach-vraag" placeholder="Welke slag gaan we trainen?" onkeypress="checkEnter(event)">
         <br>
-        <button class="btn-coach" onclick="vraagCoach()">Vraag Advies</button>
+        <button class="btn-coach" onclick="vraagCoach()">Genereer Lesplan</button>
 
         <div id="coach-antwoord"></div>
         <button id="reset-button" class="btn-reset" style="display:none;" onclick="resetApp()">Wissen</button>
     </div>
 
     <script>
-        function checkEnter(event) {
-            if (event.key === "Enter") {
-                vraagCoach();
-            }
-        }
+        function checkEnter(event) { if (event.key === "Enter") { vraagCoach(); } }
 
         function vraagCoach() {
             const inputField = document.getElementById('coach-vraag');
@@ -52,36 +51,43 @@
             const output = document.getElementById('coach-antwoord');
             const resetBtn = document.getElementById('reset-button');
             
-            if(!input) return alert("Typ eerst even welke paddle slag je wilt leren!");
+            if(!input) return alert("Typ een slag in (bijv. Dink of Serve)");
 
             output.style.display = "block";
             resetBtn.style.display = "inline-block";
             
-            // We voegen 'nederlands ondertiteld' toe aan de zoekopdracht
-            const zoekTerm = "pickleball " + input + " tutorial dutch subtitles";
+            const zoekTerm = "pickleball " + input + " drill for coaches";
             const ytLink = "https://www.youtube.com/results?search_query=" + encodeURIComponent(zoekTerm);
 
-            let advies = "";
+            let spelerTip = "";
+            let trainerPlan = "";
             let laagInput = input.toLowerCase();
             
             if (laagInput.includes("dink")) {
-                advies = "Houd je paddle stabiel en maak een korte opwaartse beweging vanuit je schouder.";
+                spelerTip = "Focus op een zachte 'push'. Houd je pols stijf en beweeg vanuit je schouder. Blijf laag en raak de bal voor je lichaam.";
+                trainerPlan = "<strong>Drill:</strong> Laat spelers recht tegenover elkaar staan bij de NVZ-lijn. Gebruik één bal. Focus: 20 dinks achter elkaar zonder fouten. Daarna verplaatsen naar diagonaal dinken.";
             } else if (laagInput.includes("opslag") || laagInput.includes("serve")) {
-                advies = "Sla de bal onderhands en mik diep in het vak.";
+                spelerTip = "Zorg voor een volledige doorzwaai. Mik op de achterste 1 meter van het vak om de tegenstander diep te houden.";
+                trainerPlan = "<strong>Drill:</strong> Plaats targets (pilonnen) in de achterhoeken. Laat spelers 10 serves doen. 1 punt per target-hit. Let op de onderhandse beweging!";
+            } else if (laagInput.includes("lob")) {
+                spelerTip = "De lob is een verdedigend wapen. Gebruik de breedte van je paddle om de bal een hoge boog te geven, over de tegenstander heen.";
+                trainerPlan = "<strong>Drill:</strong> Trainer staat aan het net, leerling achterin. Leerling moet de bal over de trainer heen lobben zodat deze binnen de baseline valt. Let op voetenwerk bij het achteruitlopen.";
             } else {
-                advies = "Focus voor " + input + " op je balans en houd je paddle altijd klaar voor je lichaam.";
+                spelerTip = "Voor " + input + " is een vroege voorbereiding cruciaal. Houd je paddle omhoog en je ogen op de bal.";
+                trainerPlan = "<strong>Drill:</strong> Start met een warming-up van 5 minuten specifiek voor " + input + ". Bouw de intensiteit op van statisch naar bewegend over de hele baan.";
             }
 
             output.innerHTML = `
-                <span class="tag">PADDLE TRAINING</span>
-                <h3>Advies voor: ${input}</h3>
-                <p>${advies}</p>
-                <hr>
-                <a href="${ytLink}" target="_blank" class="btn-youtube">▶ Bekijk Video's (NL Ondertiteld)</a>
-                <div class="tip-box">
-                    <strong>Tip voor vertaling:</strong><br>
-                    Klik in de video op het ⚙️ icoontje -> <em>Ondertiteling</em> -> <em>Automatisch vertalen</em> -> <em>Nederlands</em>.
+                <span class="tag">Speler Advies</span>
+                <p>${spelerTip}</p>
+                
+                <div class="trainer-blok">
+                    <span class="tag tag-trainer">Trainers Protocol</span><br>
+                    ${trainerPlan}
                 </div>
+                
+                <hr>
+                <a href="${ytLink}" target="_blank" class="btn-youtube">▶ Bekijk Trainers Video's</a>
             `;
             
             inputField.value = "";
@@ -91,7 +97,6 @@
         function resetApp() {
             document.getElementById('coach-antwoord').style.display = "none";
             document.getElementById('reset-button').style.display = "none";
-            document.getElementById('coach-vraag').value = "";
         }
     </script>
 </body>

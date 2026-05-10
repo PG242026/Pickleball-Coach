@@ -3,87 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pickleball Coach Online</title>
+    <title>Pickleball Video Analyse</title>
     <style>
         body { 
             font-family: 'Segoe UI', sans-serif; 
-            background: #1a1a1a; 
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&q=80&w=1000');
-            background-size: cover; background-attachment: fixed; color: white; text-align: center; padding: 20px; margin: 0;
+            background: #1a1a1a; color: white; text-align: center; padding: 20px; margin: 0;
         }
-        .app-card { background: rgba(30, 30, 30, 0.95); padding: 30px; border-radius: 25px; max-width: 600px; margin: 10px auto; box-shadow: 0 20px 50px rgba(0,0,0,0.6); border: 2px solid #2ecc71; }
-        h1 { color: #2ecc71; text-transform: uppercase; margin-bottom: 5px; font-size: 22px; }
-        input { width: 90%; padding: 15px; border-radius: 30px; border: 2px solid #2ecc71; background: #333; color: white; text-align: center; margin-bottom: 15px; box-sizing: border-box; }
-        .btn-coach { background: #2ecc71; color: white; border: none; padding: 15px; border-radius: 30px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; text-transform: uppercase; }
-        .btn-camera { background: #3498db; color: white; border: none; padding: 12px; border-radius: 30px; cursor: pointer; font-size: 14px; width: 100%; margin-top: 10px; font-weight: bold; }
-        #video-container { display: none; margin-top: 20px; border-radius: 15px; overflow: hidden; background: black; line-height: 0; border: 2px solid #3498db; }
-        video { width: 100%; height: auto; transform: scaleX(-1); /* Spiegelbeeld voor makkelijker coachen */ }
-        #coach-antwoord { margin-top: 20px; background: white; color: #333; padding: 20px; border-radius: 20px; text-align: left; display: none; }
-        .trainer-blok { background: #e3f2fd; border-left: 5px solid #2196f3; padding: 15px; margin-top: 15px; border-radius: 10px; font-size: 14px; }
-        .btn-youtube { background: #ff0000; color: white; border: none; padding: 12px; border-radius: 30px; text-decoration: none; display: block; text-align: center; margin-top: 10px; font-weight: bold; }
+        .app-card { background: rgba(30, 30, 30, 0.95); padding: 20px; border-radius: 25px; max-width: 600px; margin: 0 auto; border: 2px solid #2ecc71; }
+        h1 { color: #2ecc71; text-transform: uppercase; font-size: 20px; margin-bottom: 15px; }
+        
+        /* Video styling */
+        .video-wrapper { background: #000; border-radius: 15px; overflow: hidden; margin-bottom: 15px; border: 2px solid #555; line-height: 0; position: relative; }
+        video { width: 100%; height: auto; }
+        
+        /* Knoppen */
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        button { padding: 15px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 13px; }
+        .btn-rec { background: #e74c3c; color: white; }
+        .btn-stop { background: #f1c40f; color: black; display: none; }
+        .btn-play { background: #2ecc71; color: white; }
+        
+        .status-dot { height: 10px; width: 10px; background-color: #e74c3c; border-radius: 50%; display: inline-block; margin-right: 5px; animation: blink 1s infinite; }
+        @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0;} 100% {opacity: 1;} }
+
+        #recorded-video { display: none; width: 100%; }
+        .instruction { font-size: 12px; color: #bdc3c7; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div class="app-card">
-        <h1>Pickleball Coach Online</h1>
-        <input type="text" id="coach-vraag" placeholder="Welke slag trainen we?" onkeypress="checkEnter(event)">
-        <button class="btn-coach" onclick="vraagCoach()">Genereer Lesplan</button>
-        <button class="btn-camera" id="cam-btn" onclick="toggleCamera()">📷 Start Camera Analyse</button>
-
-        <div id="video-container">
-            <video id="webcam" autoplay playsinline></video>
+        <h1>Pickleball Video Analyse</h1>
+        
+        <div class="video-wrapper">
+            <!-- Live preview -->
+            <video id="preview" autoplay playsinline muted></video>
+            <!-- De opgenomen video (voor terugspoelen) -->
+            <video id="recorded-video" controls></video>
         </div>
 
-        <div id="coach-antwoord"></div>
+        <div id="recording-status" style="display:none; margin-bottom: 10px; color: #e74c3c; font-weight: bold;">
+            <span class="status-dot"></span> OPNAME LOOPT...
+        </div>
+
+        <div class="controls">
+            <button id="startBtn" class="btn-rec" onclick="startRecording()">🔴 Start Opname</button>
+            <button id="stopBtn" class="btn-stop" onclick="stopRecording()">⏹ Stop & Bekijk</button>
+            <button class="btn-play" onclick="resetCamera()">🔄 Live Camera</button>
+        </div>
+
+        <p class="instruction">
+            1. Druk op <strong>Start</strong> voor een slag.<br>
+            2. Druk op <strong>Stop</strong> om te analyseren.<br>
+            3. Gebruik de balk onder de video om <strong>terug te spoelen</strong>.
+        </p>
     </div>
 
     <script>
-        let stream = null;
+        let preview = document.getElementById("preview");
+        let recordedVideo = document.getElementById("recorded-video");
+        let startBtn = document.getElementById("startBtn");
+        let stopBtn = document.getElementById("stopBtn");
+        let recorder;
+        let chunks = [];
 
-        async function toggleCamera() {
-            const videoContainer = document.getElementById('video-container');
-            const video = document.getElementById('webcam');
-            const btn = document.getElementById('cam-btn');
-
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                stream = null;
-                videoContainer.style.display = 'none';
-                btn.innerText = '📷 Start Camera Analyse';
-                btn.style.background = '#3498db';
-            } else {
-                try {
-                    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false });
-                    video.srcObject = stream;
-                    videoContainer.style.display = 'block';
-                    btn.innerText = '🛑 Stop Camera';
-                    btn.style.background = '#e74c3c';
-                } catch (err) {
-                    alert("Camera niet beschikbaar. Geef toestemming in je browser.");
-                }
+        // Camera starten bij openen
+        async function setupCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: "environment" }, 
+                    audio: false 
+                });
+                preview.srcObject = stream;
+                window.localStream = stream;
+            } catch (err) {
+                alert("Camera toegang geweigerd of niet beschikbaar.");
             }
         }
 
-        function checkEnter(event) { if (event.key === "Enter") { vraagCoach(); } }
+        function startRecording() {
+            chunks = [];
+            recorder = new MediaRecorder(window.localStream);
+            recorder.ondataavailable = e => chunks.push(e.data);
+            recorder.onstop = e => {
+                let blob = new Blob(chunks, { type: 'video/mp4' });
+                let url = URL.createObjectURL(blob);
+                recordedVideo.src = url;
+                
+                // Switch schermen
+                preview.style.display = "none";
+                recordedVideo.style.display = "block";
+            };
 
-        function vraagCoach() {
-            const input = document.getElementById('coach-vraag').value;
-            const output = document.getElementById('coach-antwoord');
-            if(!input) return alert("Typ een slag in");
-
-            output.style.display = "block";
-            const ytLink = "https://www.youtube.com/results?search_query=pickleball+" + encodeURIComponent(input) + "+technique";
-
-            output.innerHTML = `
-                <div style="font-size: 14px;"><strong>Speler Tip:</strong> Focus op balans en raak de bal voor je.</div>
-                <div class="trainer-blok">
-                    <strong>Trainers Protocol:</strong><br>
-                    Gebruik de camera hierboven om de stand van de paddle te controleren tijdens de uitvoering.
-                </div>
-                <a href="${ytLink}" target="_blank" class="btn-youtube">▶ Open Voorbeeld op YouTube</a>
-            `;
+            recorder.start();
+            startBtn.style.display = "none";
+            stopBtn.style.display = "block";
+            document.getElementById("recording-status").style.display = "block";
         }
+
+        function stopRecording() {
+            recorder.stop();
+            startBtn.style.display = "block";
+            stopBtn.style.display = "none";
+            document.getElementById("recording-status").style.display = "none";
+        }
+
+        function resetCamera() {
+            recordedVideo.pause();
+            recordedVideo.style.display = "none";
+            preview.style.display = "block";
+        }
+
+        // Start direct de camera
+        setupCamera();
     </script>
 </body>
 </html>

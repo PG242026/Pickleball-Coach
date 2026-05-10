@@ -3,118 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pickleball Pro Coach & Analyse</title>
+    <title>Pickleball Pro Coach</title>
     <style>
         body { 
             font-family: 'Segoe UI', sans-serif; 
             background: #1a1a1a; 
-            background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&q=80&w=1000');
+            background: linear-gradient(rgba(0,0,0,0.95), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&q=80&w=1000');
             background-size: cover; background-attachment: fixed; color: white; text-align: center; padding: 15px; margin: 0;
         }
         .app-card { background: rgba(30, 30, 30, 0.95); padding: 20px; border-radius: 25px; max-width: 600px; margin: 0 auto 20px; border: 2px solid #2ecc71; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h1 { color: #2ecc71; text-transform: uppercase; font-size: 18px; margin-bottom: 15px; letter-spacing: 1px; }
+        h1 { color: #2ecc71; text-transform: uppercase; font-size: 18px; margin-bottom: 15px; }
         
-        /* Input sectie */
         input { width: 100%; padding: 15px; border-radius: 30px; border: 2px solid #2ecc71; background: #333; color: white; text-align: center; margin-bottom: 10px; box-sizing: border-box; font-size: 16px; }
-        .btn-coach { background: #2ecc71; color: white; border: none; padding: 15px; border-radius: 30px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; text-transform: uppercase; margin-bottom: 10px; }
+        .btn-coach { background: #2ecc71; color: white; border: none; padding: 15px; border-radius: 30px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; text-transform: uppercase; }
         
-        /* Resultaat sectie */
         #coach-antwoord { margin-top: 10px; background: white; color: #333; padding: 20px; border-radius: 20px; text-align: left; display: none; border-bottom: 5px solid #2ecc71; }
         .trainer-blok { background: #e3f2fd; border-left: 5px solid #2196f3; padding: 15px; margin-top: 15px; border-radius: 10px; font-size: 14px; color: #1565c0; }
-        .btn-youtube { background: #ff0000; color: white; border: none; padding: 12px; border-radius: 30px; text-decoration: none; display: block; text-align: center; margin-top: 15px; font-weight: bold; font-size: 14px; }
-
-        hr { border: 0; border-top: 1px solid #ddd; margin: 20px 0; }
+        .btn-youtube { background: #ff0000; color: white; border: none; padding: 12px; border-radius: 30px; text-decoration: none; display: block; text-align: center; margin-top: 15px; font-weight: bold; }
 
         /* Video Analyse sectie */
-        .video-wrapper { background: #000; border-radius: 15px; overflow: hidden; margin: 15px 0; border: 2px solid #555; position: relative; line-height: 0; }
-        video { width: 100%; height: auto; }
-        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn-rec { background: #e74c3c; color: white; border: none; padding: 15px; border-radius: 30px; font-weight: bold; cursor: pointer; }
+        .video-wrapper { background: #000; border-radius: 15px; overflow: hidden; margin: 15px 0; border: 2px solid #555; position: relative; min-height: 200px; display: flex; align-items: center; justify-content: center; }
+        video { width: 100%; height: auto; display: none; }
+        #placeholder-text { color: #555; font-size: 14px; padding: 20px; }
+        
+        .controls { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .btn-cam-toggle { background: #3498db; color: white; border: none; padding: 15px; border-radius: 30px; font-weight: bold; cursor: pointer; }
+        .btn-rec { background: #e74c3c; color: white; border: none; padding: 15px; border-radius: 30px; font-weight: bold; cursor: pointer; display: none; }
         .btn-stop { background: #f1c40f; color: black; border: none; padding: 15px; border-radius: 30px; font-weight: bold; cursor: pointer; display: none; }
-        .btn-live { background: #3498db; color: white; border: none; padding: 15px; border-radius: 30px; font-weight: bold; cursor: pointer; }
         
         #recording-status { color: #e74c3c; font-weight: bold; margin-bottom: 10px; display: none; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <!-- DEEL 1: COACH & TIPS -->
     <div class="app-card">
         <h1>Pickleball Coach Online</h1>
         <input type="text" id="coach-vraag" placeholder="Welke slag trainen we?" onkeypress="checkEnter(event)">
-        <button class="btn-coach" onclick="vraagCoach()">Vraag Advies & Lesplan</button>
-
+        <button class="btn-coach" onclick="vraagCoach()">Advies & Lesplan</button>
         <div id="coach-antwoord"></div>
     </div>
 
-    <!-- DEEL 2: VIDEO ANALYSE -->
     <div class="app-card">
         <h1>Video Analyse Tool</h1>
-        
         <div id="recording-status">🔴 OPNAME LOOPT...</div>
         
-        <div class="video-wrapper">
+        <div class="video-wrapper" id="wrapper">
+            <div id="placeholder-text">Camera staat uit</div>
             <video id="preview" autoplay playsinline muted></video>
             <video id="recorded-video" controls style="display:none;"></video>
         </div>
 
         <div class="controls">
+            <button id="camToggleBtn" class="btn-cam-toggle" onclick="toggleCamera()">📷 Camera Activeren</button>
             <button id="startBtn" class="btn-rec" onclick="startRecording()">🔴 Start Opname</button>
-            <button id="stopBtn" class="btn-stop" onclick="stopRecording()">⏹ Stop & Bekijk</button>
-            <button class="btn-live" onclick="resetCamera()">🔄 Live Camera</button>
+            <button id="stopBtn" class="btn-stop" onclick="stopRecording()">⏹ Stop & Analyseer</button>
         </div>
     </div>
 
     <script>
-        // --- LOGICA VOOR COACH ---
         function checkEnter(event) { if (event.key === "Enter") { vraagCoach(); } }
 
         function vraagCoach() {
             const input = document.getElementById('coach-vraag').value;
             const output = document.getElementById('coach-antwoord');
             if(!input) return alert("Typ een slag in");
-
             output.style.display = "block";
-            const ytLink = "https://www.youtube.com/results?search_query=pickleball+" + encodeURIComponent(input) + "+tutorial+dutch+subtitles";
-
-            output.innerHTML = `
-                <div style="font-size: 14px;"><strong>Speler Tip:</strong> Focus op balans en raak de bal voor je lichaam bij ${input}.</div>
-                <div class="trainer-blok">
-                    <strong>Trainers Protocol:</strong><br>
-                    Observeer de voeten en de paddle-stand. Gebruik de Video Tool hieronder voor directe feedback.
-                </div>
-                <a href="${ytLink}" target="_blank" class="btn-youtube">▶ Bekijk ${input} Video's op YouTube</a>
-            `;
-            document.getElementById('coach-vraag').blur();
+            const ytLink = "https://www.youtube.com/results?search_query=pickleball+" + encodeURIComponent(input) + "+tutorial";
+            output.innerHTML = `<div style="font-size:14px;"><strong>Tip:</strong> Werk aan je techniek voor ${input}.</div><div class="trainer-blok"><strong>Trainer:</strong> Check de video-analyse hieronder.</div><a href="${ytLink}" target="_blank" class="btn-youtube">▶ Video Voorbeelden</a>`;
         }
 
-        // --- LOGICA VOOR VIDEO ---
-        let preview = document.getElementById("preview");
-        let recordedVideo = document.getElementById("recorded-video");
-        let startBtn = document.getElementById("startBtn");
-        let stopBtn = document.getElementById("stopBtn");
+        let stream = null;
         let recorder;
         let chunks = [];
+        const preview = document.getElementById("preview");
+        const recordedVideo = document.getElementById("recorded-video");
+        const camBtn = document.getElementById("camToggleBtn");
+        const startBtn = document.getElementById("startBtn");
+        const stopBtn = document.getElementById("stopBtn");
+        const placeholder = document.getElementById("placeholder-text");
 
-        async function setupCamera() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: "environment" }, 
-                    audio: false 
-                });
-                preview.srcObject = stream;
-                window.localStream = stream;
-            } catch (err) {
-                console.log("Camera error: ", err);
+        async function toggleCamera() {
+            if (stream) {
+                // Camera uitzetten
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+                preview.style.display = "none";
+                recordedVideo.style.display = "none";
+                placeholder.style.display = "block";
+                camBtn.innerText = "📷 Camera Activeren";
+                camBtn.style.background = "#3498db";
+                startBtn.style.display = "none";
+            } else {
+                // Camera aanzetten
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false });
+                    preview.srcObject = stream;
+                    preview.style.display = "block";
+                    placeholder.style.display = "none";
+                    camBtn.innerText = "🔌 Camera Deactiveren";
+                    camBtn.style.background = "#555";
+                    startBtn.style.display = "block";
+                } catch (err) {
+                    alert("Geen toegang tot camera.");
+                }
             }
         }
 
         function startRecording() {
             chunks = [];
-            recorder = new MediaRecorder(window.localStream);
+            recorder = new MediaRecorder(stream);
             recorder.ondataavailable = e => chunks.push(e.data);
-            recorder.onstop = e => {
-                let blob = new Blob(chunks, { type: 'video/mp4' });
+            recorder.onstop = () => {
+                const blob = new Blob(chunks, { type: 'video/mp4' });
                 recordedVideo.src = URL.createObjectURL(blob);
                 preview.style.display = "none";
                 recordedVideo.style.display = "block";
@@ -131,14 +131,6 @@
             stopBtn.style.display = "none";
             document.getElementById("recording-status").style.display = "none";
         }
-
-        function resetCamera() {
-            recordedVideo.pause();
-            recordedVideo.style.display = "none";
-            preview.style.display = "block";
-        }
-
-        setupCamera();
     </script>
 </body>
 </html>

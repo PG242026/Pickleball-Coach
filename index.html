@@ -1,276 +1,362 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pickleball Pro Coach</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pickleball Coach Online</title>
 
-    <style>
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background: #1a1a1a; 
-            background: linear-gradient(rgba(0,0,0,0.95), rgba(0,0,0,0.95)),
-            url('https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&q=80&w=1000');
-            background-size: cover;
-            background-attachment: fixed;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            margin: 0;
-        }
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#111;
+    color:white;
+    margin:0;
+    padding:15px;
+    text-align:center;
+}
 
-        .app-card {
-            background: rgba(30, 30, 30, 0.95);
-            padding: 20px;
-            border-radius: 25px;
-            max-width: 650px;
-            margin: 0 auto 20px;
-            border: 2px solid #2ecc71;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
+.app-card{
+    background:#222;
+    max-width:650px;
+    margin:auto;
+    margin-bottom:20px;
+    padding:20px;
+    border-radius:20px;
+    border:2px solid #2ecc71;
+}
 
-        h1 {
-            color: #2ecc71;
-            text-transform: uppercase;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
+h1{
+    color:#2ecc71;
+}
 
-        select, input {
-            width: 100%;
-            padding: 15px;
-            border-radius: 30px;
-            border: 2px solid #2ecc71;
-            background: #333;
-            color: white;
-            text-align: center;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
+select,button{
+    width:100%;
+    padding:15px;
+    margin-top:10px;
+    border-radius:30px;
+    border:none;
+    font-size:16px;
+}
 
-        .btn-coach {
-            background: #2ecc71;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            width: 100%;
-            text-transform: uppercase;
-        }
+select{
+    background:#333;
+    color:white;
+    border:2px solid #2ecc71;
+}
 
-        #coach-antwoord {
-            margin-top: 15px;
-            background: white;
-            color: #333;
-            padding: 20px;
-            border-radius: 20px;
-            text-align: left;
-            display: none;
-            border-bottom: 5px solid #2ecc71;
-        }
+button{
+    cursor:pointer;
+    font-weight:bold;
+}
 
-        .trainer-blok {
-            background: #e3f2fd;
-            border-left: 5px solid #2196f3;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 10px;
-            font-size: 14px;
-            color: #1565c0;
-        }
+.btn-coach{
+    background:#2ecc71;
+    color:white;
+}
 
-        .niveau-label {
-            display: inline-block;
-            padding: 7px 14px;
-            border-radius: 20px;
-            background: #2ecc71;
-            color: white;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+#coach-antwoord{
+    display:none;
+    margin-top:15px;
+    background:white;
+    color:black;
+    padding:20px;
+    border-radius:20px;
+    text-align:left;
+}
 
-        .btn-youtube {
-            background: #ff0000;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 30px;
-            text-decoration: none;
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            font-weight: bold;
-        }
+.niveau{
+    background:#2ecc71;
+    color:white;
+    padding:6px 14px;
+    border-radius:20px;
+    display:inline-block;
+    margin-bottom:10px;
+    font-weight:bold;
+}
 
-        .video-wrapper {
-            background: #000;
-            border-radius: 15px;
-            overflow: hidden;
-            margin: 15px 0;
-            border: 2px solid #555;
-            position: relative;
-            min-height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+.trainer-blok{
+    background:#e3f2fd;
+    color:#1565c0;
+    border-left:5px solid #2196f3;
+    padding:15px;
+    border-radius:10px;
+    margin-top:15px;
+}
 
-        video {
-            width: 100%;
-            height: auto;
-            display: none;
-        }
+.youtube-box{
+    background:#111;
+    color:white;
+    padding:15px;
+    border-radius:15px;
+    margin-top:20px;
+    text-align:center;
+}
 
-        #placeholder-text {
-            color: #777;
-            font-size: 14px;
-            padding: 20px;
-        }
+.youtube-box iframe{
+    width:100%;
+    height:260px;
+    border:none;
+    border-radius:15px;
+    background:#000;
+}
 
-        .controls {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
+.btn-youtube{
+    display:block;
+    background:red;
+    color:white;
+    padding:15px;
+    border-radius:30px;
+    text-decoration:none;
+    margin-top:15px;
+    font-weight:bold;
+}
 
-        .btn-cam-toggle {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.video-wrapper{
+    background:black;
+    border-radius:15px;
+    overflow:hidden;
+    min-height:220px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:15px;
+}
 
-        .btn-rec {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            display: none;
-        }
+video{
+    width:100%;
+    display:none;
+}
 
-        .btn-stop {
-            background: #f1c40f;
-            color: black;
-            border: none;
-            padding: 15px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            display: none;
-        }
+#placeholder{
+    color:#777;
+}
 
-        #recording-status {
-            color: #e74c3c;
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: none;
-            font-size: 14px;
-        }
-    </style>
+.btn-camera{
+    background:#3498db;
+    color:white;
+}
+
+.btn-record{
+    background:#e74c3c;
+    color:white;
+    display:none;
+}
+
+.btn-stop{
+    background:#f1c40f;
+    color:black;
+    display:none;
+}
+</style>
 </head>
 
 <body>
 
-    <div class="app-card">
-        <h1>Pickleball Coach Online</h1>
+<div class="app-card">
+<h1>Pickleball Coach Online</h1>
 
-        <select id="niveau-filter" onchange="vulOefeningen()">
-            <option value="Alles">Alle niveaus</option>
-            <option value="Beginner">Beginner</option>
-            <option value="Gemiddeld">Gemiddeld</option>
-            <option value="Gevorderd">Gevorderd</option>
-        </select>
+<select id="niveauFilter" onchange="vulDropdown()">
+    <option value="Alles">Alle niveaus</option>
+    <option value="Beginner">Beginner</option>
+    <option value="Gemiddeld">Gemiddeld</option>
+    <option value="Gevorderd">Gevorderd</option>
+</select>
 
-        <select id="coach-vraag">
-            <option value="">Kies eerst een oefening</option>
-        </select>
+<select id="coach-vraag">
+    <option value="">Kies eerst een oefening</option>
+</select>
 
-        <button class="btn-coach" onclick="vraagCoach()">Advies & Lesplan</button>
+<button class="btn-coach" onclick="vraagCoach()">Advies & Lesplan</button>
 
-        <div id="coach-antwoord"></div>
-    </div>
+<div id="coach-antwoord"></div>
+</div>
 
-    <div class="app-card">
-        <h1>Video Analyse Tool</h1>
+<div class="app-card">
+<h1>Video Analyse Tool</h1>
 
-        <div id="recording-status">🔴 OPNAME LOOPT...</div>
+<div class="video-wrapper">
+    <div id="placeholder">Camera staat uit</div>
+    <video id="preview" autoplay playsinline muted></video>
+    <video id="recordedVideo" controls></video>
+</div>
 
-        <div class="video-wrapper">
-            <div id="placeholder-text">Camera staat uit</div>
-            <video id="preview" autoplay playsinline muted></video>
-            <video id="recorded-video" controls></video>
-        </div>
-
-        <div class="controls">
-            <button id="camToggleBtn" class="btn-cam-toggle" onclick="toggleCamera()">📷 Camera Activeren</button>
-            <button id="startBtn" class="btn-rec" onclick="startRecording()">🔴 Start Opname</button>
-            <button id="stopBtn" class="btn-stop" onclick="stopRecording()">⏹ Stop & Analyseer</button>
-        </div>
-    </div>
+<button id="camBtn" class="btn-camera" onclick="toggleCamera()">📷 Camera Activeren</button>
+<button id="startBtn" class="btn-record" onclick="startRecording()">🔴 Start Opname</button>
+<button id="stopBtn" class="btn-stop" onclick="stopRecording()">⏹ Stop Opname</button>
+</div>
 
 <script>
 const oefeningen = [
-    { naam: "Bal ontvangen (Controle)", uitleg: "Balcontrole en rustig ontvangen.", techniek: "Juiste moment slaan.", doel: "Stabiliteit en richting.", fysiek: "Reactie.", niveau: "Beginner", categorie: "Controle" },
-    { naam: "Communicatie", uitleg: "Duidelijke termen gebruiken tijdens dubbelspel.", techniek: "Roepen wie de bal neemt.", doel: "Misverstanden voorkomen.", fysiek: "Teamcommunicatie.", niveau: "Beginner", categorie: "Dubbelspel" },
-    { naam: "Deep return", uitleg: "De bal diep terugslaan.", techniek: "Rustige slag met lengte.", doel: "Tegenstander achterin houden.", fysiek: "Controle.", niveau: "Beginner", categorie: "Return" },
-    { naam: "Dink forehand", uitleg: "Zachte forehand dink aan het net.", techniek: "Touch, paddlepositie en controle.", doel: "Rustige rally opbouwen.", fysiek: "Stabiliteit en coördinatie.", niveau: "Beginner", categorie: "Dink" },
-    { naam: "Dink backhand", uitleg: "Backhand dink uitvoeren.", techniek: "Backhandcontrole.", doel: "Low-risk spel spelen.", fysiek: "Coördinatie.", niveau: "Beginner", categorie: "Dink" },
-    { naam: "Forehand drive", uitleg: "Forehand grondslag oefenen.", techniek: "Goede voorbereiding en doorzwaai.", doel: "Initiatief nemen.", fysiek: "Voetenwerk.", niveau: "Beginner", categorie: "Drive" },
-    { naam: "Gripdruk uitleg", uitleg: "Leren hoe hard je de paddle vasthoudt.", techniek: "Ontspannen grip.", doel: "Meer balgevoel.", fysiek: "Controle.", niveau: "Beginner", categorie: "Techniek" },
-    { naam: "Serve consistentie", uitleg: "Betrouwbare service oefenen.", techniek: "Herhaalbare servicebeweging.", doel: "Rally goed starten.", fysiek: "Stabiliteit.", niveau: "Beginner", categorie: "Serve" },
-    { naam: "Shadow footwork", uitleg: "Voetenwerk zonder bal.", techniek: "Patronen herhalen.", doel: "Positiespel automatiseren.", fysiek: "Uithouding.", niveau: "Beginner", categorie: "Voetenwerk" },
-    { naam: "Split step timing", uitleg: "Op het juiste moment klaarstaan.", techniek: "Kleine sprong voor reactie.", doel: "Sneller starten naar de bal.", fysiek: "Explosiviteit.", niveau: "Beginner", categorie: "Voetenwerk" },
-    { naam: "Sweet Spot", uitleg: "De bal goed in het midden van de paddle raken.", techniek: "Rustig mikken en goed kijken.", doel: "Meer controle en plaatsing.", fysiek: "Training.", niveau: "Beginner", categorie: "Techniek" },
-    { naam: "Volley forehand", uitleg: "Forehand volley aan het net.", techniek: "Snelle paddlepositie.", doel: "Netdominantie opbouwen.", fysiek: "Reactiesnelheid.", niveau: "Beginner", categorie: "Volley" },
-    { naam: "Volley backhand", uitleg: "Backhand volley slaan.", techniek: "Timing en stabiliteit.", doel: "Middengebied controleren.", fysiek: "Reactie.", niveau: "Beginner", categorie: "Volley" },
-    { naam: "Volley block", uitleg: "Harde bal blokkeren.", techniek: "Compacte beweging.", doel: "Power-hitters vertragen.", fysiek: "Reactie.", niveau: "Beginner", categorie: "Volley" },
-
-    { naam: "Backhand drive", uitleg: "Krachtige backhand met eventueel slice.", techniek: "Backhand power.", doel: "Diepe drukballen slaan.", fysiek: "Kracht en balans.", niveau: "Gemiddeld", categorie: "Drive" },
-    { naam: "Cross spelen", uitleg: "Cross-court spelen.", techniek: "Bal plaatsen.", doel: "Return moeilijker maken.", fysiek: "Controle.", niveau: "Gemiddeld", categorie: "Plaatsing" },
-    { naam: "Cross-court return", uitleg: "Return schuin over de baan.", techniek: "Balplacement.", doel: "Voordeel maximaliseren.", fysiek: "Uithouding.", niveau: "Gemiddeld", categorie: "Return" },
-    { naam: "Dink & Netspel", uitleg: "Dinkcontrole verbeteren.", techniek: "Zachte touch aan het net.", doel: "Rust bewaren aan het net.", fysiek: "Balans op één been.", niveau: "Gemiddeld", categorie: "Dink" },
-    { naam: "Dink cross-court", uitleg: "Cross-court dink spelen.", techniek: "Precisie en spincontrole.", doel: "Tegenstander uit positie dwingen.", fysiek: "Voetenwerk.", niveau: "Gemiddeld", categorie: "Dink" },
-    { naam: "Dink–dink–attack", uitleg: "Twee rustige dinks gevolgd door aanval.", techniek: "Variatie in tempo.", doel: "Aanvalskansen creëren.", fysiek: "Snelheid.", niveau: "Gemiddeld", categorie: "Aanval" },
-    { naam: "Door het midden spelen", uitleg: "Bal tussen twee spelers plaatsen.", techniek: "Gerichte balplaatsing.", doel: "Twijfel veroorzaken.", fysiek: "Kijken naar positie tegenstander.", niveau: "Gemiddeld", categorie: "Tactiek" },
-    { naam: "Hard Hitters verslaan", uitleg: "Harde ballen controleren.", techniek: "Pareren en vertragen.", doel: "Tegenstander uit ritme halen.", fysiek: "Coördinatie.", niveau: "Gemiddeld", categorie: "Verdediging" },
-    { naam: "King of the Court oefening", uitleg: "Competitieve oefening.", techniek: "Constante druk.", doel: "Wedstrijdsituaties trainen.", fysiek: "Uithouding.", niveau: "Gemiddeld", categorie: "Wedstrijd" },
-    { naam: "Poaching oefenen", uitleg: "Aan het net een bal overnemen.", techniek: "Eerst bewegen, dan slaan.", doel: "Zwakke volley afstraffen.", fysiek: "Wendbaarheid.", niveau: "Gemiddeld", categorie: "Dubbelspel" },
-    { naam: "Serve power", uitleg: "Krachtige service slaan.", techniek: "Diepe krachtige slag.", doel: "Druk zetten op returner.", fysiek: "Core en schouder.", niveau: "Gemiddeld", categorie: "Serve" },
-    { naam: "Third shot", uitleg: "Derde bal na service oefenen.", techniek: "Drop of drive kiezen.", doel: "Rally goed opbouwen.", fysiek: "Korte sprintjes.", niveau: "Gemiddeld", categorie: "Third shot" },
-    { naam: "Third shot drive", uitleg: "Harde derde bal spelen.", techniek: "Krachtige diepe slag.", doel: "Pressie op returner.", fysiek: "Coördinatie.", niveau: "Gemiddeld", categorie: "Third shot" },
-    { naam: "Third shot drop forehand", uitleg: "Forehand derde bal drop.", techniek: "Touch en lifttechniek.", doel: "Veilig naar het net komen.", fysiek: "Voetenwerk.", niveau: "Gemiddeld", categorie: "Third shot" },
-    { naam: "Transition reset", uitleg: "Zacht terugspelen vanuit overgangszone.", techniek: "Compacte beweging.", doel: "Aanval neutraliseren.", fysiek: "Stabiliteit.", niveau: "Gemiddeld", categorie: "Reset" },
-    { naam: "Verdedigen van de harde bal", uitleg: "Harde bal controleren.", techniek: "Kort en laag terugspelen.", doel: "Bal vertragen.", fysiek: "Controle.", niveau: "Gemiddeld", categorie: "Verdediging" },
-    { naam: "Wall (Muur) strategie", uitleg: "Samen sterk verdedigen.", techniek: "Ondoordringbare verdediging.", doel: "Als team bewegen.", fysiek: "Samenwerking.", niveau: "Gemiddeld", categorie: "Strategie" },
-
-    { naam: "Bevels Toepassen", uitleg: "Bevels en commando’s toepassen.", techniek: "Juiste paddle stand.", doel: "Effectiever spelen.", fysiek: "Controle.", niveau: "Gevorderd", categorie: "Tactiek" },
-    { naam: "Lob krijgen", uitleg: "Omgaan met een lob van de tegenstander.", techniek: "Achteruit bewegen en communiceren.", doel: "Bepalen wie de bal neemt.", fysiek: "Communicatie.", niveau: "Gevorderd", categorie: "Lob" },
-    { naam: "Smash overhead", uitleg: "Overhead smash afmaken.", techniek: "Overheadtechniek.", doel: "Punten afmaken.", fysiek: "Explosieve kracht.", niveau: "Gevorderd", categorie: "Aanval" },
-    { naam: "Stacking service", uitleg: "Positiespel bij stacking.", techniek: "Snel naar eigen plek lopen.", doel: "Beste verdeling op de baan.", fysiek: "Snelheid.", niveau: "Gevorderd", categorie: "Strategie" },
-    { naam: "Stacking drills", uitleg: "Stacking oefenen in dubbelspel.", techniek: "Footwork en rotatie.", doel: "Sterktes maximaliseren.", fysiek: "Conditie.", niveau: "Gevorderd", categorie: "Strategie" },
-    { naam: "Third shot Drop (Drip)", uitleg: "Topspin in de derde bal drop.", techniek: "Effect in drop.", doel: "Gecontroleerd druk zetten.", fysiek: "Minder polsbeweging.", niveau: "Gevorderd", categorie: "Third shot" },
-    { naam: "Topspins slaan", uitleg: "Topspin gebruiken bij aanvallende slagen.", techniek: "Van laag naar hoog door de bal.", doel: "Bal met druk en marge spelen.", fysiek: "Timing en controle.", niveau: "Gevorderd", categorie: "Spin" },
-    { naam: "Volley Punch-volley", uitleg: "Korte krachtige volley.", techniek: "Compacte punchbeweging.", doel: "Hoge ballen afstraffen.", fysiek: "Explosiviteit.", niveau: "Gevorderd", categorie: "Volley" }
+{
+naam:"Serve consistentie",
+niveau:"Beginner",
+uitleg:"Betrouwbare service oefenen.",
+techniek:"Rustige servicebeweging.",
+doel:"Sterke start van de rally.",
+fysiek:"Stabiliteit"
+},
+{
+naam:"Dink forehand",
+niveau:"Beginner",
+uitleg:"Forehand dink aan het net.",
+techniek:"Touch en controle.",
+doel:"Rustig rallyspel opbouwen.",
+fysiek:"Balans"
+},
+{
+naam:"Dink backhand",
+niveau:"Beginner",
+uitleg:"Backhand dink oefenen.",
+techniek:"Rustige paddle en controle.",
+doel:"Veilig aan het net spelen.",
+fysiek:"Coördinatie"
+},
+{
+naam:"Volley forehand",
+niveau:"Beginner",
+uitleg:"Forehand volley oefenen.",
+techniek:"Snelle paddlepositie.",
+doel:"Netdominantie opbouwen.",
+fysiek:"Reactiesnelheid"
+},
+{
+naam:"Volley backhand",
+niveau:"Beginner",
+uitleg:"Backhand volley oefenen.",
+techniek:"Compacte beweging.",
+doel:"Controle aan het net.",
+fysiek:"Reactie"
+},
+{
+naam:"Bal ontvangen Controle",
+niveau:"Beginner",
+uitleg:"Bal rustig ontvangen en controleren.",
+techniek:"Juiste moment slaan.",
+doel:"Stabiliteit en richting.",
+fysiek:"Reactie"
+},
+{
+naam:"Sweet Spot",
+niveau:"Beginner",
+uitleg:"De bal goed in het midden van de paddle raken.",
+techniek:"Rustig kijken naar de bal.",
+doel:"Meer controle.",
+fysiek:"Oog-handcoördinatie"
+},
+{
+naam:"Shadow footwork",
+niveau:"Beginner",
+uitleg:"Voetenwerk oefenen zonder bal.",
+techniek:"Herhalen van bewegingspatronen.",
+doel:"Beter positie kiezen.",
+fysiek:"Uithouding"
+},
+{
+naam:"Backhand drive",
+niveau:"Gemiddeld",
+uitleg:"Krachtige backhand spelen.",
+techniek:"Backhand power.",
+doel:"Diepe drukballen slaan.",
+fysiek:"Kracht en balans"
+},
+{
+naam:"Cross-court return",
+niveau:"Gemiddeld",
+uitleg:"Return schuin over de baan.",
+techniek:"Balplaatsing.",
+doel:"Tegenstander onder druk zetten.",
+fysiek:"Uithouding"
+},
+{
+naam:"Dink cross-court",
+niveau:"Gemiddeld",
+uitleg:"Cross-court dink spelen.",
+techniek:"Precisie en spincontrole.",
+doel:"Tegenstander uit positie dwingen.",
+fysiek:"Voetenwerk"
+},
+{
+naam:"Third shot drive",
+niveau:"Gemiddeld",
+uitleg:"Harde derde bal spelen.",
+techniek:"Krachtige diepe slag.",
+doel:"Druk zetten na de service.",
+fysiek:"Coördinatie"
+},
+{
+naam:"Third shot drop forehand",
+niveau:"Gemiddeld",
+uitleg:"Forehand derde bal drop.",
+techniek:"Touch en lifttechniek.",
+doel:"Veilig naar het net komen.",
+fysiek:"Voetenwerk"
+},
+{
+naam:"Poaching oefenen",
+niveau:"Gemiddeld",
+uitleg:"Aan het net een bal overnemen.",
+techniek:"Eerst bewegen, dan slaan.",
+doel:"Zwakke volley afstraffen.",
+fysiek:"Wendbaarheid"
+},
+{
+naam:"Transition reset",
+niveau:"Gemiddeld",
+uitleg:"Zacht terugspelen vanuit de overgangszone.",
+techniek:"Compacte beweging.",
+doel:"Aanval neutraliseren.",
+fysiek:"Stabiliteit"
+},
+{
+naam:"Verdedigen van de harde bal",
+niveau:"Gemiddeld",
+uitleg:"Harde ballen controleren.",
+techniek:"Kort en laag terugspelen.",
+doel:"Bal vertragen.",
+fysiek:"Controle"
+},
+{
+naam:"Smash overhead",
+niveau:"Gevorderd",
+uitleg:"Overhead smash afmaken.",
+techniek:"Explosieve slag.",
+doel:"Punten afmaken.",
+fysiek:"Explosiviteit"
+},
+{
+naam:"Topspins slaan",
+niveau:"Gevorderd",
+uitleg:"Topspin gebruiken bij aanvallende slagen.",
+techniek:"Van laag naar hoog slaan.",
+doel:"Meer druk geven.",
+fysiek:"Timing"
+},
+{
+naam:"Stacking drills",
+niveau:"Gevorderd",
+uitleg:"Stacking oefenen in dubbelspel.",
+techniek:"Footwork en rotatie.",
+doel:"Sterktes maximaal gebruiken.",
+fysiek:"Conditie"
+},
+{
+naam:"Third shot Drop Drip",
+niveau:"Gevorderd",
+uitleg:"Topspin gebruiken in de derde bal drop.",
+techniek:"Effect in de drop.",
+doel:"Gecontroleerd druk zetten.",
+fysiek:"Timing en controle"
+}
 ];
 
-function vulOefeningen() {
-    const niveau = document.getElementById("niveau-filter").value;
+function vulDropdown(){
+    const niveau = document.getElementById("niveauFilter").value;
     const select = document.getElementById("coach-vraag");
 
     select.innerHTML = '<option value="">Kies eerst een oefening</option>';
 
-    oefeningen.forEach((oefening, index) => {
-        if (niveau === "Alles" || oefening.niveau === niveau) {
+    oefeningen.forEach((oefening,index)=>{
+        if(niveau === "Alles" || oefening.niveau === niveau){
             const option = document.createElement("option");
             option.value = index;
             option.textContent = oefening.naam + " - " + oefening.niveau;
@@ -279,67 +365,78 @@ function vulOefeningen() {
     });
 }
 
-function vraagCoach() {
-    const gekozenIndex = document.getElementById("coach-vraag").value;
-    const output = document.getElementById("coach-antwoord");
+function vraagCoach(){
+    const index = document.getElementById("coach-vraag").value;
 
-    if (gekozenIndex === "") {
-        return alert("Kies eerst een oefening");
+    if(index === ""){
+        alert("Kies eerst een oefening");
+        return;
     }
 
-    const oefening = oefeningen[gekozenIndex];
+    const oefening = oefeningen[index];
+    const output = document.getElementById("coach-antwoord");
 
-    const ytLink = "https://www.youtube.com/results?search_query=pickleball+" 
-        + encodeURIComponent(oefening.naam) 
-        + "+tutorial";
+    const zoekterm = "pickleball " + oefening.naam + " tutorial";
+    const yt = "https://www.youtube.com/results?search_query=" + encodeURIComponent(zoekterm);
 
     output.style.display = "block";
 
     output.innerHTML = `
-        <span class="niveau-label">${oefening.niveau}</span>
+        <div class="niveau">${oefening.niveau}</div>
+
         <h2>${oefening.naam}</h2>
 
-        <p><strong>Categorie:</strong> ${oefening.categorie}</p>
         <p><strong>Uitleg:</strong> ${oefening.uitleg}</p>
         <p><strong>Techniek:</strong> ${oefening.techniek}</p>
         <p><strong>Doel:</strong> ${oefening.doel}</p>
-        <p><strong>Fysieke focus:</strong> ${oefening.fysiek}</p>
+        <p><strong>Fysiek:</strong> ${oefening.fysiek}</p>
 
         <div class="trainer-blok">
             <strong>Trainerstip:</strong><br>
-            Begin rustig. Let op houding, balans, voetenwerk en paddlepositie.
-            Film de speler daarna met de video-analyse en bespreek samen wat beter kan.
+            Begin rustig. Let op houding, voetenwerk, balans en paddlepositie.
+            Verhoog daarna langzaam het tempo.
         </div>
 
         <div class="trainer-blok">
             <strong>Lesopbouw:</strong><br>
             1. 5 minuten uitleg<br>
             2. 10 minuten rustig oefenen<br>
-            3. 10 minuten met rally of wedstrijdvorm<br>
+            3. 10 minuten rallyvorm<br>
             4. 5 minuten video terugkijken
         </div>
 
-        <a href="${ytLink}" target="_blank" class="btn-youtube">
-            ▶ Video voorbeelden bekijken
-        </a>
+        <div class="youtube-box">
+            <h3>🎥 YouTube voorbeelden</h3>
+            <p>Bekijk voorbeeldvideo's voor:</p>
+            <strong>${oefening.naam}</strong>
+
+            <iframe
+                src="https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(zoekterm)}"
+                allowfullscreen>
+            </iframe>
+
+            <a href="${yt}" target="_blank" class="btn-youtube">
+                ▶ Open meer voorbeelden op YouTube
+            </a>
+        </div>
     `;
 }
 
-vulOefeningen();
+vulDropdown();
 
 let stream = null;
 let recorder;
 let chunks = [];
 
 const preview = document.getElementById("preview");
-const recordedVideo = document.getElementById("recorded-video");
-const camBtn = document.getElementById("camToggleBtn");
+const recordedVideo = document.getElementById("recordedVideo");
+const camBtn = document.getElementById("camBtn");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
-const placeholder = document.getElementById("placeholder-text");
+const placeholder = document.getElementById("placeholder");
 
-async function toggleCamera() {
-    if (stream) {
+async function toggleCamera(){
+    if(stream){
         stream.getTracks().forEach(track => track.stop());
         stream = null;
 
@@ -348,14 +445,13 @@ async function toggleCamera() {
         placeholder.style.display = "block";
 
         camBtn.innerText = "📷 Camera Activeren";
-        camBtn.style.background = "#3498db";
         startBtn.style.display = "none";
         stopBtn.style.display = "none";
     } else {
         try {
             stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: "environment" },
-                audio: false
+                video:true,
+                audio:false
             });
 
             preview.srcObject = stream;
@@ -364,30 +460,39 @@ async function toggleCamera() {
             placeholder.style.display = "none";
 
             camBtn.innerText = "🔌 Camera Deactiveren";
-            camBtn.style.background = "#555";
             startBtn.style.display = "block";
-        } catch (err) {
-            alert("Geen toegang tot camera. Controleer je browserrechten.");
+        } catch(err){
+            alert("Camera toegang geweigerd. Controleer je browserrechten.");
         }
     }
 }
 
-function startRecording() {
-    if (!stream) {
-        return alert("Zet eerst de camera aan.");
+function startRecording(){
+    if(!stream){
+        alert("Zet eerst de camera aan.");
+        return;
     }
 
     chunks = [];
-    recorder = new MediaRecorder(stream);
+    let options = {};
+
+    if(MediaRecorder.isTypeSupported("video/webm")){
+        options = {mimeType:"video/webm"};
+    }
+
+    recorder = new MediaRecorder(stream, options);
 
     recorder.ondataavailable = e => {
-        if (e.data.size > 0) {
+        if(e.data.size > 0){
             chunks.push(e.data);
         }
     };
 
     recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'video/webm' });
+        const blob = new Blob(chunks, {
+            type: recorder.mimeType || "video/webm"
+        });
+
         recordedVideo.src = URL.createObjectURL(blob);
 
         preview.style.display = "none";
@@ -398,17 +503,15 @@ function startRecording() {
 
     startBtn.style.display = "none";
     stopBtn.style.display = "block";
-    document.getElementById("recording-status").style.display = "block";
 }
 
-function stopRecording() {
-    if (recorder && recorder.state !== "inactive") {
+function stopRecording(){
+    if(recorder && recorder.state !== "inactive"){
         recorder.stop();
     }
 
     startBtn.style.display = "block";
     stopBtn.style.display = "none";
-    document.getElementById("recording-status").style.display = "none";
 }
 </script>
 

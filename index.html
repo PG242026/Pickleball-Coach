@@ -1,222 +1,299 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pickleball Pro Coach</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pickleball Pro Coach</title>
 
-    <style>
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background: #1a1a1a; 
-            background: linear-gradient(rgba(0,0,0,0.95), rgba(0,0,0,0.95)),
-            url('https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&q=80&w=1000');
-            background-size: cover;
-            background-attachment: fixed;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            margin: 0;
-        }
+<style>
+body { 
+    font-family: 'Segoe UI', sans-serif; 
+    background: linear-gradient(rgba(0,0,0,0.95), rgba(0,0,0,0.95)),
+    url('https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&q=80&w=1000');
+    background-size: cover;
+    background-attachment: fixed;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin: 0;
+}
 
-        .app-card {
-            background: rgba(30, 30, 30, 0.95);
-            padding: 20px;
-            border-radius: 25px;
-            max-width: 650px;
-            margin: 0 auto 20px;
-            border: 2px solid #2ecc71;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
+.app-card {
+    background: rgba(30, 30, 30, 0.95);
+    padding: 20px;
+    border-radius: 25px;
+    max-width: 850px;
+    margin: 0 auto 20px;
+    border: 2px solid #2ecc71;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
 
-        h1 {
-            color: #2ecc71;
-            text-transform: uppercase;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
+h1 {
+    color: #2ecc71;
+    text-transform: uppercase;
+    font-size: 22px;
+}
 
-        select, input {
-            width: 100%;
-            padding: 15px;
-            border-radius: 30px;
-            border: 2px solid #2ecc71;
-            background: #333;
-            color: white;
-            text-align: center;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
+h2, h3 {
+    color: #2ecc71;
+}
 
-        .btn-coach {
-            background: #2ecc71;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            width: 100%;
-            text-transform: uppercase;
-        }
+select, input, textarea {
+    width: 100%;
+    padding: 15px;
+    border-radius: 30px;
+    border: 2px solid #2ecc71;
+    background: #333;
+    color: white;
+    text-align: center;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
 
-        #coach-antwoord {
-            margin-top: 15px;
-            background: white;
-            color: #333;
-            padding: 20px;
-            border-radius: 20px;
-            text-align: left;
-            display: none;
-            border-bottom: 5px solid #2ecc71;
-        }
+textarea {
+    min-height: 120px;
+    border-radius: 20px;
+    text-align: left;
+}
 
-        .trainer-blok {
-            background: #e3f2fd;
-            border-left: 5px solid #2196f3;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 10px;
-            font-size: 14px;
-            color: #1565c0;
-        }
+button {
+    width: 100%;
+    padding: 15px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
 
-        .niveau-label {
-            display: inline-block;
-            padding: 7px 14px;
-            border-radius: 20px;
-            background: #2ecc71;
-            color: white;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+.btn-coach {
+    background: #2ecc71;
+    color: white;
+}
 
-        .btn-youtube {
-            background: #ff0000;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 30px;
-            text-decoration: none;
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            font-weight: bold;
-        }
+.btn-blue {
+    background: #3498db;
+    color: white;
+}
 
-        .video-wrapper {
-            background: #000;
-            border-radius: 15px;
-            overflow: hidden;
-            margin: 15px 0;
-            border: 2px solid #555;
-            position: relative;
-            min-height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+.btn-red {
+    background: #e74c3c;
+    color: white;
+}
 
-        video {
-            width: 100%;
-            height: auto;
-            display: none;
-        }
+.btn-yellow {
+    background: #f1c40f;
+    color: black;
+}
 
-        #placeholder-text {
-            color: #777;
-            font-size: 14px;
-            padding: 20px;
-        }
+.btn-grey {
+    background: #555;
+    color: white;
+}
 
-        .controls {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
+#coach-antwoord {
+    margin-top: 15px;
+    background: white;
+    color: #333;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: left;
+    display: none;
+    border-bottom: 5px solid #2ecc71;
+}
 
-        .btn-cam-toggle {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.trainer-blok {
+    background: #e3f2fd;
+    border-left: 5px solid #2196f3;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #1565c0;
+}
 
-        .btn-rec {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            display: none;
-        }
+.niveau-label {
+    display: inline-block;
+    padding: 7px 14px;
+    border-radius: 20px;
+    background: #2ecc71;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
-        .btn-stop {
-            background: #f1c40f;
-            color: black;
-            border: none;
-            padding: 15px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            display: none;
-        }
+.btn-youtube {
+    background: #ff0000;
+    color: white;
+    padding: 12px;
+    border-radius: 30px;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+}
 
-        #recording-status {
-            color: #e74c3c;
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: none;
-            font-size: 14px;
-        }
-    </style>
+.video-wrapper {
+    background: #000;
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 15px 0;
+    border: 2px solid #555;
+    min-height: 230px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+video, iframe {
+    width: 100%;
+    border-radius: 15px;
+    background: #000;
+}
+
+#preview, #recorded-video {
+    display: none;
+}
+
+#placeholder-text {
+    color: #777;
+    font-size: 14px;
+    padding: 20px;
+}
+
+#recording-status {
+    color: #e74c3c;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.compare-box {
+    background: #111;
+    border-radius: 15px;
+    padding: 15px;
+    border: 1px solid #2ecc71;
+}
+
+.compare-box video,
+.compare-box iframe {
+    height: 260px;
+}
+
+#analyse-resultaat {
+    background: #111;
+    border: 1px solid #2ecc71;
+    color: white;
+    border-radius: 15px;
+    padding: 15px;
+    margin-top: 15px;
+    text-align: left;
+    display: none;
+}
+
+.pinpoint-item {
+    background: #1f1f1f;
+    border-left: 5px solid #2ecc71;
+    padding: 12px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+@media (max-width: 800px) {
+    .compare-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .compare-box video,
+    .compare-box iframe {
+        height: 220px;
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <div class="app-card">
-        <h1>Pickleball Coach Online</h1>
+<div class="app-card">
+    <h1>Pickleball Coach Online</h1>
 
-        <select id="niveau-filter" onchange="vulOefeningen()">
-            <option value="Alles">Alle niveaus</option>
-            <option value="Beginner">Beginner</option>
-            <option value="Gemiddeld">Gemiddeld</option>
-            <option value="Gevorderd">Gevorderd</option>
-        </select>
+    <select id="niveau-filter" onchange="vulOefeningen()">
+        <option value="Alles">Alle niveaus</option>
+        <option value="Beginner">Beginner</option>
+        <option value="Gemiddeld">Gemiddeld</option>
+        <option value="Gevorderd">Gevorderd</option>
+    </select>
 
-        <select id="coach-vraag">
-            <option value="">Kies eerst een oefening</option>
-        </select>
+    <select id="coach-vraag">
+        <option value="">Kies eerst een oefening</option>
+    </select>
 
-        <button class="btn-coach" onclick="vraagCoach()">Advies & Lesplan</button>
+    <button class="btn-coach" onclick="vraagCoach()">Advies & Lesplan</button>
 
-        <div id="coach-antwoord"></div>
+    <div id="coach-antwoord"></div>
+</div>
+
+<div class="app-card">
+    <h1>Video Opname Leerling</h1>
+
+    <div id="recording-status">🔴 OPNAME LOOPT...</div>
+
+    <div class="video-wrapper">
+        <div id="placeholder-text">Camera staat uit</div>
+        <video id="preview" autoplay playsinline muted></video>
+        <video id="recorded-video" controls></video>
     </div>
 
-    <div class="app-card">
-        <h1>Video Analyse Tool</h1>
+    <button id="camToggleBtn" class="btn-blue" onclick="toggleCamera()">📷 Camera Activeren</button>
+    <button id="startBtn" class="btn-red" onclick="startRecording()" style="display:none;">🔴 Start Opname</button>
+    <button id="stopBtn" class="btn-yellow" onclick="stopRecording()" style="display:none;">⏹ Stop & Zet in Analyse</button>
+</div>
 
-        <div id="recording-status">🔴 OPNAME LOOPT...</div>
+<div class="app-card">
+    <h1>Video Vergelijken</h1>
 
-        <div class="video-wrapper">
-            <div id="placeholder-text">Camera staat uit</div>
-            <video id="preview" autoplay playsinline muted></video>
-            <video id="recorded-video" controls></video>
+    <input type="text" id="youtube-link" placeholder="Plak hier een YouTube link">
+    <button class="btn-red" onclick="laadYoutubeVideo()">▶ YouTube Video Laden</button>
+
+    <div class="compare-grid">
+        <div class="compare-box">
+            <h3>Leerling</h3>
+            <video id="student-compare" controls></video>
         </div>
 
-        <div class="controls">
-            <button id="camToggleBtn" class="btn-cam-toggle" onclick="toggleCamera()">📷 Camera Activeren</button>
-            <button id="startBtn" class="btn-rec" onclick="startRecording()">🔴 Start Opname</button>
-            <button id="stopBtn" class="btn-stop" onclick="stopRecording()">⏹ Stop & Analyseer</button>
+        <div class="compare-box">
+            <h3>Voorbeeld YouTube</h3>
+            <iframe id="youtube-player" allowfullscreen></iframe>
         </div>
     </div>
+
+    <h3>Pinpoint / Verbeterpunt</h3>
+
+    <select id="pinpoint-niveau">
+        <option value="Beginner">Beginner</option>
+        <option value="Gemiddeld">Gemiddeld</option>
+        <option value="Gevorderd">Gevorderd</option>
+    </select>
+
+    <input type="text" id="pinpoint-tijd" placeholder="Tijdstip, bijvoorbeeld 00:12">
+    <input type="text" id="pinpoint-techniek" placeholder="Techniek, bijvoorbeeld serve, dink, volley">
+
+    <textarea id="coach-notities" placeholder="Schrijf hier je analyse. Bijvoorbeeld: paddle staat te laag, voetenwerk te laat, balcontact te ver naast het lichaam..."></textarea>
+
+    <button class="btn-coach" onclick="opslaanAnalyse()">💾 Pinpoint Toevoegen</button>
+    <button class="btn-grey" onclick="wisAlles()">🧹 Alles Wissen / Leegmaken</button>
+
+    <div id="analyse-resultaat"></div>
+</div>
 
 <script>
 const oefeningen = [
@@ -284,7 +361,8 @@ function vraagCoach() {
     const output = document.getElementById("coach-antwoord");
 
     if (gekozenIndex === "") {
-        return alert("Kies eerst een oefening");
+        alert("Kies eerst een oefening");
+        return;
     }
 
     const oefening = oefeningen[gekozenIndex];
@@ -307,20 +385,20 @@ function vraagCoach() {
 
         <div class="trainer-blok">
             <strong>Trainerstip:</strong><br>
-            Begin rustig. Let op houding, balans, voetenwerk en paddlepositie.
-            Film de speler daarna met de video-analyse en bespreek samen wat beter kan.
+            Let op houding, balans, voetenwerk, balcontact en paddlepositie.
+            Film de speler daarna en vergelijk met een voorbeeldvideo.
         </div>
 
         <div class="trainer-blok">
             <strong>Lesopbouw:</strong><br>
             1. 5 minuten uitleg<br>
             2. 10 minuten rustig oefenen<br>
-            3. 10 minuten met rally of wedstrijdvorm<br>
-            4. 5 minuten video terugkijken
+            3. 10 minuten rally of wedstrijdvorm<br>
+            4. 5 minuten videoanalyse
         </div>
 
         <a href="${ytLink}" target="_blank" class="btn-youtube">
-            ▶ Video voorbeelden bekijken
+            ▶ Video voorbeelden zoeken
         </a>
     `;
 }
@@ -333,6 +411,7 @@ let chunks = [];
 
 const preview = document.getElementById("preview");
 const recordedVideo = document.getElementById("recorded-video");
+const studentCompare = document.getElementById("student-compare");
 const camBtn = document.getElementById("camToggleBtn");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
@@ -348,7 +427,8 @@ async function toggleCamera() {
         placeholder.style.display = "block";
 
         camBtn.innerText = "📷 Camera Activeren";
-        camBtn.style.background = "#3498db";
+        camBtn.className = "btn-blue";
+
         startBtn.style.display = "none";
         stopBtn.style.display = "none";
     } else {
@@ -364,7 +444,8 @@ async function toggleCamera() {
             placeholder.style.display = "none";
 
             camBtn.innerText = "🔌 Camera Deactiveren";
-            camBtn.style.background = "#555";
+            camBtn.className = "btn-grey";
+
             startBtn.style.display = "block";
         } catch (err) {
             alert("Geen toegang tot camera. Controleer je browserrechten.");
@@ -374,7 +455,8 @@ async function toggleCamera() {
 
 function startRecording() {
     if (!stream) {
-        return alert("Zet eerst de camera aan.");
+        alert("Zet eerst de camera aan.");
+        return;
     }
 
     chunks = [];
@@ -387,8 +469,11 @@ function startRecording() {
     };
 
     recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'video/webm' });
-        recordedVideo.src = URL.createObjectURL(blob);
+        const blob = new Blob(chunks, { type: "video/webm" });
+        const videoUrl = URL.createObjectURL(blob);
+
+        recordedVideo.src = videoUrl;
+        studentCompare.src = videoUrl;
 
         preview.style.display = "none";
         recordedVideo.style.display = "block";
@@ -407,6 +492,96 @@ function stopRecording() {
     }
 
     startBtn.style.display = "block";
+    stopBtn.style.display = "none";
+    document.getElementById("recording-status").style.display = "none";
+}
+
+function laadYoutubeVideo() {
+    const url = document.getElementById("youtube-link").value.trim();
+    const iframe = document.getElementById("youtube-player");
+
+    let videoId = "";
+
+    if (url.includes("watch?v=")) {
+        videoId = url.split("watch?v=")[1].split("&")[0];
+    } else if (url.includes("youtu.be/")) {
+        videoId = url.split("youtu.be/")[1].split("?")[0];
+    } else if (url.includes("/shorts/")) {
+        videoId = url.split("/shorts/")[1].split("?")[0];
+    }
+
+    if (videoId) {
+        iframe.src = "https://www.youtube.com/embed/" + videoId;
+    } else {
+        alert("Plak een geldige YouTube-link.");
+    }
+}
+
+function opslaanAnalyse() {
+    const niveau = document.getElementById("pinpoint-niveau").value;
+    const tijd = document.getElementById("pinpoint-tijd").value;
+    const techniek = document.getElementById("pinpoint-techniek").value;
+    const notitie = document.getElementById("coach-notities").value;
+    const resultaat = document.getElementById("analyse-resultaat");
+
+    if (!notitie.trim()) {
+        alert("Schrijf eerst een analyse of verbeterpunt.");
+        return;
+    }
+
+    resultaat.style.display = "block";
+
+    const item = document.createElement("div");
+    item.className = "pinpoint-item";
+    item.innerHTML = `
+        <strong>📌 Pinpoint</strong><br>
+        <strong>Niveau:</strong> ${niveau}<br>
+        <strong>Tijdstip:</strong> ${tijd || "Niet ingevuld"}<br>
+        <strong>Techniek:</strong> ${techniek || "Algemeen"}<br>
+        <strong>Analyse:</strong><br>
+        ${notitie}
+    `;
+
+    resultaat.appendChild(item);
+
+    document.getElementById("pinpoint-tijd").value = "";
+    document.getElementById("pinpoint-techniek").value = "";
+    document.getElementById("coach-notities").value = "";
+}
+
+function wisAlles() {
+    if (!confirm("Weet je zeker dat je alles wilt wissen?")) {
+        return;
+    }
+
+    document.getElementById("youtube-link").value = "";
+    document.getElementById("youtube-player").src = "";
+
+    document.getElementById("pinpoint-tijd").value = "";
+    document.getElementById("pinpoint-techniek").value = "";
+    document.getElementById("coach-notities").value = "";
+
+    document.getElementById("analyse-resultaat").innerHTML = "";
+    document.getElementById("analyse-resultaat").style.display = "none";
+
+    studentCompare.removeAttribute("src");
+    studentCompare.load();
+
+    recordedVideo.removeAttribute("src");
+    recordedVideo.load();
+    recordedVideo.style.display = "none";
+
+    preview.style.display = "none";
+    placeholder.style.display = "block";
+
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+    }
+
+    camBtn.innerText = "📷 Camera Activeren";
+    camBtn.className = "btn-blue";
+    startBtn.style.display = "none";
     stopBtn.style.display = "none";
     document.getElementById("recording-status").style.display = "none";
 }

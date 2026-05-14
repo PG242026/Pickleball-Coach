@@ -11,7 +11,7 @@ body{
     font-family: Arial, sans-serif;
     background:#1f5f3b;
     margin:0;
-    padding:25px;
+    padding:20px;
     color:white;
 }
 
@@ -28,7 +28,7 @@ h1{
 .card{
     background:white;
     color:#333;
-    padding:25px;
+    padding:20px;
     border-radius:20px;
     margin-bottom:25px;
     box-shadow:0 4px 12px rgba(0,0,0,0.2);
@@ -40,9 +40,9 @@ h2{
 
 input, select, textarea{
     width:100%;
-    padding:14px;
-    margin-top:10px;
-    margin-bottom:20px;
+    padding:12px;
+    margin-top:8px;
+    margin-bottom:15px;
     border-radius:10px;
     border:1px solid #ccc;
     font-size:16px;
@@ -53,11 +53,11 @@ button{
     background:#1f5f3b;
     color:white;
     border:none;
-    padding:14px 20px;
+    padding:12px 18px;
     border-radius:10px;
-    font-size:16px;
+    font-size:15px;
     cursor:pointer;
-    margin:5px;
+    margin:4px;
 }
 
 button:hover{
@@ -97,24 +97,20 @@ video, #youtubePlayer{
     margin-bottom:15px;
 }
 
-.tijd-row{
+.moment-row{
     display:flex;
     gap:10px;
     align-items:center;
     flex-wrap:wrap;
 }
 
-.tijd-row select{
-    width:auto;
-    min-width:120px;
+.moment-row select{
+    width:110px;
 }
 
-.pinpoint{
-    background:#eef7f1;
-    border-left:6px solid #1f5f3b;
-    padding:15px;
-    border-radius:12px;
-    margin-top:15px;
+.opmerking{
+    flex:1;
+    min-width:250px;
 }
 
 .pinpoint-knop{
@@ -122,9 +118,7 @@ video, #youtubePlayer{
     color:white;
     padding:10px 14px;
     border-radius:10px;
-    display:inline-block;
     cursor:pointer;
-    margin:5px;
     font-weight:bold;
 }
 
@@ -145,7 +139,6 @@ video, #youtubePlayer{
 }
 
 </style>
-
 </head>
 
 <body>
@@ -268,23 +261,29 @@ video, #youtubePlayer{
 
 <h3>🎯 Moment 1</h3>
 
-<div class="tijd-row">
+<div class="moment-row">
 
 <select id="min1"></select>
 
 <select id="sec1"></select>
 
 <button onclick="gebruikHuidigeTijd(1)">
-⏱ Gebruik huidige tijd
+⏱ Tijd
 </button>
 
-<span
+<div
 class="pinpoint-knop"
 onclick="springNaarMoment(1)">
 
-▶ Spring naar Moment 1
+▶ Spring
 
-</span>
+</div>
+
+<input
+type="text"
+id="opmerking1"
+class="opmerking"
+placeholder="Opmerking moment 1">
 
 </div>
 
@@ -296,23 +295,29 @@ onclick="springNaarMoment(1)">
 
 <h3>🎯 Moment 2</h3>
 
-<div class="tijd-row">
+<div class="moment-row">
 
 <select id="min2"></select>
 
 <select id="sec2"></select>
 
 <button onclick="gebruikHuidigeTijd(2)">
-⏱ Gebruik huidige tijd
+⏱ Tijd
 </button>
 
-<span
+<div
 class="pinpoint-knop"
 onclick="springNaarMoment(2)">
 
-▶ Spring naar Moment 2
+▶ Spring
 
-</span>
+</div>
+
+<input
+type="text"
+id="opmerking2"
+class="opmerking"
+placeholder="Opmerking moment 2">
 
 </div>
 
@@ -324,23 +329,29 @@ onclick="springNaarMoment(2)">
 
 <h3>🎯 Moment 3</h3>
 
-<div class="tijd-row">
+<div class="moment-row">
 
 <select id="min3"></select>
 
 <select id="sec3"></select>
 
 <button onclick="gebruikHuidigeTijd(3)">
-⏱ Gebruik huidige tijd
+⏱ Tijd
 </button>
 
-<span
+<div
 class="pinpoint-knop"
 onclick="springNaarMoment(3)">
 
-▶ Spring naar Moment 3
+▶ Spring
 
-</span>
+</div>
+
+<input
+type="text"
+id="opmerking3"
+class="opmerking"
+placeholder="Opmerking moment 3">
 
 </div>
 
@@ -352,39 +363,33 @@ onclick="springNaarMoment(3)">
 
 <h3>🎯 Moment 4</h3>
 
-<div class="tijd-row">
+<div class="moment-row">
 
 <select id="min4"></select>
 
 <select id="sec4"></select>
 
 <button onclick="gebruikHuidigeTijd(4)">
-⏱ Gebruik huidige tijd
+⏱ Tijd
 </button>
 
-<span
+<div
 class="pinpoint-knop"
 onclick="springNaarMoment(4)">
 
-▶ Spring naar Moment 4
+▶ Spring
 
-</span>
+</div>
+
+<input
+type="text"
+id="opmerking4"
+class="opmerking"
+placeholder="Opmerking moment 4">
 
 </div>
 
 </div>
-
-<label>1️⃣ Wat gaat goed?</label>
-<textarea id="goed" rows="3"></textarea>
-
-<label>2️⃣ Wat kan beter?</label>
-<textarea id="beter" rows="3"></textarea>
-
-<label>3️⃣ Technische uitleg</label>
-<textarea id="techniekUitleg" rows="3"></textarea>
-
-<label>4️⃣ Oefening / aandachtspunt</label>
-<textarea id="oefening" rows="3"></textarea>
 
 <button onclick="wisAlles()">
 🗑 Wis Alles
@@ -396,6 +401,35 @@ onclick="springNaarMoment(4)">
 
 <script>
 
+let youtubePlayer;
+let youtubeKlaar = false;
+
+function onYouTubeIframeAPIReady(){
+
+    youtubePlayer =
+        new YT.Player("youtubePlayer", {
+
+            height:"350",
+            width:"100%",
+            videoId:"",
+
+            playerVars:{
+                playsinline:1,
+                controls:1
+            },
+
+            events:{
+                onReady:function(){
+
+                    youtubeKlaar = true;
+
+                }
+            }
+
+        });
+
+}
+
 function vulTijden(){
 
     for(let x=1; x<=4; x++){
@@ -405,9 +439,6 @@ function vulTijden(){
 
         const secSelect =
             document.getElementById("sec"+x);
-
-        minSelect.innerHTML = "";
-        secSelect.innerHTML = "";
 
         for(let i=0; i<=20; i++){
 
@@ -459,6 +490,94 @@ function toonMelding(tekst){
         melding.style.display = "none";
 
     },2000);
+
+}
+
+function gebruikHuidigeTijd(nummer){
+
+    const leerlingVideo =
+        document.getElementById("leerlingVideo");
+
+    const totaal =
+        Math.floor(leerlingVideo.currentTime || 0);
+
+    const min =
+        Math.floor(totaal / 60);
+
+    const sec =
+        totaal % 60;
+
+    document.getElementById("min"+nummer).value = min;
+
+    document.getElementById("sec"+nummer).value = sec;
+
+    toonMelding(
+        "⏱ Tijd opgeslagen"
+    );
+
+}
+
+function springNaarMoment(nummer){
+
+    const min =
+        parseInt(
+            document.getElementById("min"+nummer).value
+        );
+
+    const sec =
+        parseInt(
+            document.getElementById("sec"+nummer).value
+        );
+
+    const totaal =
+        (min * 60) + sec;
+
+    const leerlingVideo =
+        document.getElementById("leerlingVideo");
+
+    leerlingVideo.currentTime = totaal;
+
+    leerlingVideo.play();
+
+    if(youtubeKlaar){
+
+        youtubePlayer.seekTo(totaal, true);
+
+    }
+
+}
+
+function wisAlles(){
+
+    document.getElementById("spelerNaam").value = "";
+
+    document.getElementById("niveau").value = "";
+
+    document.getElementById("techniek").value = "";
+
+    for(let x=1; x<=4; x++){
+
+        document.getElementById("min"+x).value = 0;
+
+        document.getElementById("sec"+x).value = 0;
+
+        document.getElementById("opmerking"+x).value = "";
+
+    }
+
+    document
+    .getElementById("leerlingVideo")
+    .removeAttribute("src");
+
+    if(youtubeKlaar){
+
+        youtubePlayer.stopVideo();
+
+    }
+
+    toonMelding(
+        "✅ Alles is gewist"
+    );
 
 }
 

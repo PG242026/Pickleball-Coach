@@ -6,6 +6,7 @@
 <title>Pickleball Coach</title>
 
 <style>
+
 body{
     font-family: Arial, sans-serif;
     background:#1f5f3b;
@@ -81,18 +82,6 @@ video, iframe{
     border-radius:15px;
 }
 
-.tijd-kiezer{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    align-items:center;
-}
-
-.tijd-kiezer select{
-    width:auto;
-    min-width:120px;
-}
-
 .pinpoint{
     background:#eef7f1;
     border-left:6px solid #1f5f3b;
@@ -101,14 +90,14 @@ video, iframe{
     margin-top:15px;
 }
 
-.pinpoint-tijd{
+.pinpoint-knop{
     background:#1f5f3b;
     color:white;
-    padding:8px 12px;
-    border-radius:8px;
+    padding:10px 14px;
+    border-radius:10px;
     display:inline-block;
     cursor:pointer;
-    margin-bottom:8px;
+    margin:5px;
     font-weight:bold;
 }
 
@@ -127,7 +116,16 @@ video, iframe{
     display:none;
     z-index:9999;
 }
+
+.moment-blok{
+    background:#f4f4f4;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
 </style>
+
 </head>
 
 <body>
@@ -143,11 +141,10 @@ video, iframe{
 <h2>Pickleball Pro Coach</h2>
 
 <label>Naam speler</label>
-<input type="text" id="spelerNaam" placeholder="Naam speler">
+<input type="text" id="spelerNaam">
 
 <label>Niveau</label>
 <select id="niveau">
-    <option value="">Kies niveau</option>
     <option>Beginner</option>
     <option>Gemiddeld</option>
     <option>Gevorderd</option>
@@ -155,7 +152,6 @@ video, iframe{
 
 <label>Techniek</label>
 <select id="techniek">
-    <option value="">Kies techniek</option>
     <option>Footwork</option>
     <option>Serve</option>
     <option>Forehand</option>
@@ -180,8 +176,13 @@ video, iframe{
 
 <br><br>
 
-<button onclick="startOpname()">🎥 Start Opname</button>
-<button onclick="stopOpname()">⏹ Stop Opname</button>
+<button onclick="startOpname()">
+🎥 Start Opname
+</button>
+
+<button onclick="stopOpname()">
+⏹ Stop Opname
+</button>
 
 </div>
 
@@ -211,45 +212,101 @@ video, iframe{
 
 <h2>📌 Pinpoint Analyse</h2>
 
-<label>Moment in leerlingvideo</label>
+<!-- MOMENT 1 -->
 
-<div class="tijd-kiezer">
+<div class="moment-blok">
 
-<select id="minuten"></select>
+<h3>🎯 Moment 1</h3>
 
-<select id="seconden"></select>
+<select id="min1"></select>
+<select id="sec1"></select>
 
-<button onclick="gebruikHuidigeTijd()">
+<button onclick="gebruikHuidigeTijd(1)">
 ⏱ Gebruik huidige tijd
 </button>
 
+<div
+class="pinpoint-knop"
+onclick="springNaarMoment(1)">
+
+▶ Spring naar Moment 1
+
 </div>
 
-<label>1️⃣ Wat gaat goed?</label>
-<textarea id="goed" rows="3"></textarea>
+</div>
 
-<label>2️⃣ Wat kan beter?</label>
-<textarea id="beter" rows="3"></textarea>
+<!-- MOMENT 2 -->
 
-<label>3️⃣ Technische uitleg</label>
-<textarea id="techniekUitleg" rows="3"></textarea>
+<div class="moment-blok">
 
-<label>4️⃣ Oefening / aandachtspunt</label>
-<textarea id="oefening" rows="3"></textarea>
+<h3>🎯 Moment 2</h3>
 
-<button onclick="voegPinpointToe()">
-📌 Pinpoint Toevoegen
+<select id="min2"></select>
+<select id="sec2"></select>
+
+<button onclick="gebruikHuidigeTijd(2)">
+⏱ Gebruik huidige tijd
 </button>
 
-<button onclick="downloadAnalyse()">
-⬇ Download Analyse
+<div
+class="pinpoint-knop"
+onclick="springNaarMoment(2)">
+
+▶ Spring naar Moment 2
+
+</div>
+
+</div>
+
+<!-- MOMENT 3 -->
+
+<div class="moment-blok">
+
+<h3>🎯 Moment 3</h3>
+
+<select id="min3"></select>
+<select id="sec3"></select>
+
+<button onclick="gebruikHuidigeTijd(3)">
+⏱ Gebruik huidige tijd
 </button>
+
+<div
+class="pinpoint-knop"
+onclick="springNaarMoment(3)">
+
+▶ Spring naar Moment 3
+
+</div>
+
+</div>
+
+<!-- MOMENT 4 -->
+
+<div class="moment-blok">
+
+<h3>🎯 Moment 4</h3>
+
+<select id="min4"></select>
+<select id="sec4"></select>
+
+<button onclick="gebruikHuidigeTijd(4)">
+⏱ Gebruik huidige tijd
+</button>
+
+<div
+class="pinpoint-knop"
+onclick="springNaarMoment(4)">
+
+▶ Spring naar Moment 4
+
+</div>
+
+</div>
 
 <button onclick="wisAlles()">
 🗑 Wis Alles
 </button>
-
-<div id="pinpoints"></div>
 
 </div>
 
@@ -257,51 +314,51 @@ video, iframe{
 
 <script>
 
-let pinpoints = [];
 let mediaRecorder;
 let opgenomenChunks = [];
 let cameraStream;
 
-vulTijdKeuzes();
+vulTijden();
 
-function vulTijdKeuzes(){
+function vulTijden(){
 
-    const minuten =
-        document.getElementById("minuten");
+    for(let x=1; x<=4; x++){
 
-    const seconden =
-        document.getElementById("seconden");
+        const minSelect =
+            document.getElementById("min"+x);
 
-    minuten.innerHTML = "";
-    seconden.innerHTML = "";
+        const secSelect =
+            document.getElementById("sec"+x);
 
-    for(let i=0; i<=20; i++){
+        for(let i=0; i<=20; i++){
 
-        const option =
-            document.createElement("option");
+            const option =
+                document.createElement("option");
 
-        option.value = i;
+            option.value = i;
 
-        option.textContent =
-            i.toString().padStart(2,"0") +
-            " min";
+            option.textContent =
+                i.toString().padStart(2,"0") +
+                " min";
 
-        minuten.appendChild(option);
+            minSelect.appendChild(option);
 
-    }
+        }
 
-    for(let i=0; i<=59; i++){
+        for(let i=0; i<=59; i++){
 
-        const option =
-            document.createElement("option");
+            const option =
+                document.createElement("option");
 
-        option.value = i;
+            option.value = i;
 
-        option.textContent =
-            i.toString().padStart(2,"0") +
-            " sec";
+            option.textContent =
+                i.toString().padStart(2,"0") +
+                " sec";
 
-        seconden.appendChild(option);
+            secSelect.appendChild(option);
+
+        }
 
     }
 
@@ -403,6 +460,54 @@ function stopOpname(){
 
 }
 
+function gebruikHuidigeTijd(nummer){
+
+    const leerlingVideo =
+        document.getElementById("leerlingVideo");
+
+    const totaleSeconden =
+        Math.floor(leerlingVideo.currentTime || 0);
+
+    const min =
+        Math.floor(totaleSeconden / 60);
+
+    const sec =
+        totaleSeconden % 60;
+
+    document.getElementById("min"+nummer).value = min;
+
+    document.getElementById("sec"+nummer).value = sec;
+
+    toonMelding(
+        "⏱ Moment opgeslagen"
+    );
+
+}
+
+function springNaarMoment(nummer){
+
+    const min =
+        parseInt(
+            document.getElementById("min"+nummer).value
+        );
+
+    const sec =
+        parseInt(
+            document.getElementById("sec"+nummer).value
+        );
+
+    const totaal =
+        (min * 60) + sec;
+
+    const leerlingVideo =
+        document.getElementById("leerlingVideo");
+
+    leerlingVideo.currentTime = totaal;
+
+    leerlingVideo.play();
+
+}
+
 function zoekYoutubeVoorbeeld(){
 
     const techniek =
@@ -472,208 +577,7 @@ function plakYoutubeLink(){
 
 }
 
-function gebruikHuidigeTijd(){
-
-    const leerlingVideo =
-        document.getElementById("leerlingVideo");
-
-    const totaleSeconden =
-        Math.floor(leerlingVideo.currentTime || 0);
-
-    const min =
-        Math.floor(totaleSeconden / 60);
-
-    const sec =
-        totaleSeconden % 60;
-
-    document.getElementById("minuten").value = min;
-
-    document.getElementById("seconden").value = sec;
-
-    toonMelding(
-        "⏱ Huidige tijd gebruikt"
-    );
-
-}
-
-function maakTijdTekst(minuten, seconden){
-
-    return minuten
-        .toString()
-        .padStart(2,"0")
-
-        + ":" +
-
-        seconden
-        .toString()
-        .padStart(2,"0");
-
-}
-
-function tijdNaarSeconden(tijd){
-
-    const delen = tijd.split(":");
-
-    return parseInt(delen[0]) * 60 +
-           parseInt(delen[1]);
-
-}
-
-function springNaarTijd(tijd){
-
-    const leerlingVideo =
-        document.getElementById("leerlingVideo");
-
-    leerlingVideo.currentTime =
-        tijdNaarSeconden(tijd);
-
-    leerlingVideo.play();
-
-}
-
-function voegPinpointToe(){
-
-    const speler =
-        document.getElementById("spelerNaam").value ||
-        "Onbekende speler";
-
-    const niveau =
-        document.getElementById("niveau").value ||
-        "Niet gekozen";
-
-    const techniek =
-        document.getElementById("techniek").value ||
-        "Niet gekozen";
-
-    const min =
-        parseInt(
-            document.getElementById("minuten").value
-        );
-
-    const sec =
-        parseInt(
-            document.getElementById("seconden").value
-        );
-
-    const tijdstip =
-        maakTijdTekst(min, sec);
-
-    const goed =
-        document.getElementById("goed").value;
-
-    const beter =
-        document.getElementById("beter").value;
-
-    const techniekUitleg =
-        document.getElementById("techniekUitleg").value;
-
-    const oefening =
-        document.getElementById("oefening").value;
-
-    const datum =
-        new Date().toLocaleString("nl-NL", {
-
-            weekday:"long",
-            year:"numeric",
-            month:"long",
-            day:"numeric",
-            hour:"2-digit",
-            minute:"2-digit"
-
-        });
-
-    const pinpoint = {
-
-        speler,
-        niveau,
-        techniek,
-        datum,
-        tijdstip,
-        goed,
-        beter,
-        techniekUitleg,
-        oefening
-
-    };
-
-    pinpoints.push(pinpoint);
-
-    const div =
-        document.createElement("div");
-
-    div.className = "pinpoint";
-
-    div.innerHTML = `
-
-        <span
-        class="pinpoint-tijd"
-        onclick="springNaarTijd('${tijdstip}')">
-
-        ▶ ${tijdstip}
-
-        </span><br>
-
-        <strong>Speler:</strong> ${speler}<br>
-        <strong>Niveau:</strong> ${niveau}<br>
-        <strong>Techniek:</strong> ${techniek}<br>
-        <strong>Datum:</strong> ${datum}<br><br>
-
-        <strong>✅ Wat gaat goed:</strong><br>
-        ${goed}<br><br>
-
-        <strong>⚠ Wat kan beter:</strong><br>
-        ${beter}<br><br>
-
-        <strong>🏓 Technische uitleg:</strong><br>
-        ${techniekUitleg}<br><br>
-
-        <strong>🎯 Oefening / aandachtspunt:</strong><br>
-        ${oefening}
-
-    `;
-
-    document
-    .getElementById("pinpoints")
-    .appendChild(div);
-
-    document.getElementById("goed").value = "";
-    document.getElementById("beter").value = "";
-    document.getElementById("techniekUitleg").value = "";
-    document.getElementById("oefening").value = "";
-
-    toonMelding(
-        "📌 Pinpoint toegevoegd"
-    );
-
-}
-
-function downloadAnalyse(){
-
-    toonMelding(
-        "⬇ Analyse gedownload"
-    );
-
-}
-
 function wisAlles(){
-
-    document.getElementById("spelerNaam").value = "";
-
-    document.getElementById("niveau").value = "";
-
-    document.getElementById("techniek").value = "";
-
-    document.getElementById("minuten").value = 0;
-
-    document.getElementById("seconden").value = 0;
-
-    document.getElementById("goed").value = "";
-
-    document.getElementById("beter").value = "";
-
-    document.getElementById("techniekUitleg").value = "";
-
-    document.getElementById("oefening").value = "";
 
     const leerlingVideo =
         document.getElementById("leerlingVideo");
@@ -687,11 +591,12 @@ function wisAlles(){
     document.getElementById("youtubeFrame").src =
         "about:blank";
 
-    document.getElementById("pinpoints").innerHTML = "";
+    for(let x=1; x<=4; x++){
 
-    pinpoints = [];
+        document.getElementById("min"+x).value = 0;
+        document.getElementById("sec"+x).value = 0;
 
-    opgenomenChunks = [];
+    }
 
     if(cameraStream){
 

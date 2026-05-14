@@ -6,6 +6,7 @@
 <title>Pickleball Coach</title>
 
 <style>
+
 body{
     font-family:Arial,sans-serif;
     background:#1f5f3b;
@@ -13,8 +14,17 @@ body{
     padding:20px;
     color:white;
 }
-.container{max-width:1200px;margin:auto;}
-h1{text-align:center;margin-bottom:30px;}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
+}
+
 .card{
     background:white;
     color:#333;
@@ -23,7 +33,11 @@ h1{text-align:center;margin-bottom:30px;}
     margin-bottom:25px;
     box-shadow:0 4px 12px rgba(0,0,0,0.2);
 }
-h2{color:#1f5f3b;}
+
+h2{
+    color:#1f5f3b;
+}
+
 input, select, textarea{
     width:100%;
     padding:12px;
@@ -34,6 +48,7 @@ input, select, textarea{
     font-size:16px;
     box-sizing:border-box;
 }
+
 button{
     background:#1f5f3b;
     color:white;
@@ -44,15 +59,29 @@ button{
     cursor:pointer;
     margin:4px;
 }
-button:hover{background:#17482d;}
-.video-row{display:flex;gap:20px;flex-wrap:wrap;}
-.video-box{flex:1;min-width:300px;}
+
+button:hover{
+    background:#17482d;
+}
+
+.video-row{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.video-box{
+    flex:1;
+    min-width:300px;
+}
+
 video,#youtubePlayer{
     width:100%;
     height:350px;
     background:black;
     border-radius:15px;
 }
+
 .sync-box{
     text-align:center;
     background:#eef7f1;
@@ -60,20 +89,30 @@ video,#youtubePlayer{
     border-radius:15px;
     margin-top:20px;
 }
+
 .moment-blok{
     background:#f4f4f4;
     padding:15px;
     border-radius:12px;
     margin-bottom:15px;
 }
+
 .moment-row{
     display:flex;
     gap:10px;
     align-items:center;
     flex-wrap:wrap;
 }
-.moment-row select{width:110px;}
-.opmerking{flex:1;min-width:250px;}
+
+.moment-row select{
+    width:110px;
+}
+
+.opmerking{
+    flex:1;
+    min-width:250px;
+}
+
 .pinpoint-knop{
     background:#1f5f3b;
     color:white;
@@ -82,6 +121,7 @@ video,#youtubePlayer{
     cursor:pointer;
     font-weight:bold;
 }
+
 .melding{
     position:fixed;
     top:20px;
@@ -97,6 +137,17 @@ video,#youtubePlayer{
     display:none;
     z-index:9999;
 }
+
+.speler-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#eef7f1;
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+
 </style>
 </head>
 
@@ -108,25 +159,44 @@ video,#youtubePlayer{
 
 <h1>Pickleball Coach</h1>
 
+<!-- SPELERS BEHEREN -->
+
 <div class="card">
+
+<h2>👥 Spelers beheren</h2>
+
+<div style="display:flex; gap:10px; flex-wrap:wrap;">
+
+<input
+type="text"
+id="nieuweSpeler"
+placeholder="Nieuwe speler toevoegen"
+style="flex:1; min-width:250px;">
+
+<button onclick="voegSpelerToe()">
+➕ Voeg speler toe
+</button>
+
+</div>
+
+<div id="spelersOverzicht"></div>
+
+</div>
+
+<!-- HOOFDGEDEELTE -->
+
+<div class="card">
+
 <h2>Pickleball Pro Coach</h2>
 
 <label>Naam speler</label>
 
-<div style="display:flex; gap:10px; flex-wrap:wrap;">
-    <input
-        type="text"
-        id="spelerNaam"
-        list="spelersLijst"
-        placeholder="Naam speler"
-        style="flex:1; min-width:220px;">
-
-    <button onclick="voegSpelerToe()">➕ Voeg speler toe</button>
-</div>
-
-<datalist id="spelersLijst"></datalist>
+<select id="spelerNaam">
+    <option value="">Kies speler</option>
+</select>
 
 <label>Niveau</label>
+
 <select id="niveau">
     <option value="">Kies niveau</option>
     <option>Beginner</option>
@@ -135,6 +205,7 @@ video,#youtubePlayer{
 </select>
 
 <label>Techniek</label>
+
 <select id="techniek">
     <option value="">Kies techniek</option>
     <option>Footwork</option>
@@ -144,99 +215,106 @@ video,#youtubePlayer{
     <option>Volley</option>
     <option>Dink</option>
 </select>
+
 </div>
 
+<!-- VIDEO -->
+
 <div class="card">
+
 <h2>📺 Side-by-side Analyse</h2>
 
 <div class="video-row">
 
 <div class="video-box">
+
 <h3>Leerling Video</h3>
 
 <video id="leerlingVideo" controls playsinline></video>
 
 <br><br>
 
-<button onclick="startOpname()">🎥 Start Opname</button>
-<button onclick="stopOpname()">⏹ Stop Opname</button>
+<button onclick="startOpname()">
+🎥 Start Opname
+</button>
+
+<button onclick="stopOpname()">
+⏹ Stop Opname
+</button>
+
 </div>
 
 <div class="video-box">
+
 <h3>YouTube Voorbeeld</h3>
 
 <div id="youtubePlayer"></div>
 
 <br><br>
 
-<button onclick="zoekYoutubeVoorbeeld()">🔍 Zoek YouTube voorbeeldvideo</button>
-<button onclick="plakYoutubeLink()">📎 Plak YouTube link</button>
+<button onclick="zoekYoutubeVoorbeeld()">
+🔍 Zoek YouTube voorbeeldvideo
+</button>
+
+<button onclick="plakYoutubeLink()">
+📎 Plak YouTube link
+</button>
+
 </div>
 
 </div>
 
 <div class="sync-box">
+
 <h3>🔄 Sync-knoppen</h3>
 
-<button onclick="startBeideVideos()">▶ Start beide video’s</button>
-<button onclick="pauzeerBeideVideos()">⏸ Pauzeer beide video’s</button>
-<button onclick="youtubeGelijkAanLeerling()">🔁 Zet YouTube gelijk met leerling</button>
-<button onclick="leerlingGelijkAanYoutube()">🔁 Zet leerling gelijk met YouTube</button>
-<button onclick="beideNaarBegin()">↩ Beide naar begin</button>
+<button onclick="startBeideVideos()">
+▶ Start beide video’s
+</button>
+
+<button onclick="pauzeerBeideVideos()">
+⏸ Pauzeer beide video’s
+</button>
+
+<button onclick="youtubeGelijkAanLeerling()">
+🔁 Zet YouTube gelijk met leerling
+</button>
+
+<button onclick="leerlingGelijkAanYoutube()">
+🔁 Zet leerling gelijk met YouTube
+</button>
+
+<button onclick="beideNaarBegin()">
+↩ Beide naar begin
+</button>
+
 </div>
+
 </div>
+
+<!-- VIDEO ANALYSE -->
 
 <div class="card">
+
 <h2>🎥 Video Analyse</h2>
 
-<div class="moment-blok">
-<h3>🎯 Moment 1</h3>
-<div class="moment-row">
-<select id="min1"></select>
-<select id="sec1"></select>
-<button onclick="gebruikHuidigeTijd(1)">⏱ Tijd</button>
-<div class="pinpoint-knop" onclick="springNaarMoment(1)">▶ Ga naar moment</div>
-<input type="text" id="opmerking1" class="opmerking" placeholder="Opmerking moment 1">
-</div>
-</div>
+<div id="momentenContainer"></div>
 
-<div class="moment-blok">
-<h3>🎯 Moment 2</h3>
-<div class="moment-row">
-<select id="min2"></select>
-<select id="sec2"></select>
-<button onclick="gebruikHuidigeTijd(2)">⏱ Tijd</button>
-<div class="pinpoint-knop" onclick="springNaarMoment(2)">▶ Ga naar moment</div>
-<input type="text" id="opmerking2" class="opmerking" placeholder="Opmerking moment 2">
-</div>
-</div>
+<button onclick="opslaanSessie()">
+💾 Sessie Opslaan
+</button>
 
-<div class="moment-blok">
-<h3>🎯 Moment 3</h3>
-<div class="moment-row">
-<select id="min3"></select>
-<select id="sec3"></select>
-<button onclick="gebruikHuidigeTijd(3)">⏱ Tijd</button>
-<div class="pinpoint-knop" onclick="springNaarMoment(3)">▶ Ga naar moment</div>
-<input type="text" id="opmerking3" class="opmerking" placeholder="Opmerking moment 3">
-</div>
-</div>
+<button onclick="laadSessie()">
+📂 Sessie Laden
+</button>
 
-<div class="moment-blok">
-<h3>🎯 Moment 4</h3>
-<div class="moment-row">
-<select id="min4"></select>
-<select id="sec4"></select>
-<button onclick="gebruikHuidigeTijd(4)">⏱ Tijd</button>
-<div class="pinpoint-knop" onclick="springNaarMoment(4)">▶ Ga naar moment</div>
-<input type="text" id="opmerking4" class="opmerking" placeholder="Opmerking moment 4">
-</div>
-</div>
+<button onclick="downloadAnalyse()">
+⬇ Download Analyse
+</button>
 
-<button onclick="opslaanSessie()">💾 Sessie Opslaan</button>
-<button onclick="laadSessie()">📂 Sessie Laden</button>
-<button onclick="downloadAnalyse()">⬇ Download Analyse</button>
-<button onclick="wisAlles()">🗑 Wis Alles</button>
+<button onclick="wisAlles()">
+🗑 Wis Alles
+</button>
 
 </div>
 
@@ -245,433 +323,836 @@ video,#youtubePlayer{
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
+
 let youtubePlayer;
 let youtubeKlaar = false;
+
 let mediaRecorder;
 let recordedChunks = [];
 let cameraStream = null;
+
 let spelers = [];
 
-function onYouTubeIframeAPIReady(){
-    youtubePlayer = new YT.Player("youtubePlayer", {
-        height:"350",
-        width:"100%",
-        videoId:"",
-        playerVars:{
-            playsinline:1,
-            controls:1,
-            rel:0
-        },
-        events:{
-            onReady:function(){
-                youtubeKlaar = true;
-            }
-        }
-    });
-}
-
 function toonMelding(tekst){
-    const melding = document.getElementById("melding");
+
+    const melding =
+        document.getElementById("melding");
+
     melding.innerText = tekst;
+
     melding.style.display = "block";
 
     setTimeout(()=>{
+
         melding.style.display = "none";
+
     },2000);
-}
 
-function vulTijden(){
-    for(let x=1; x<=4; x++){
-        const minSelect = document.getElementById("min"+x);
-        const secSelect = document.getElementById("sec"+x);
-
-        minSelect.innerHTML = "";
-        secSelect.innerHTML = "";
-
-        for(let i=0; i<=20; i++){
-            const option = document.createElement("option");
-            option.value = i;
-            option.textContent = i.toString().padStart(2,"0") + " min";
-            minSelect.appendChild(option);
-        }
-
-        for(let i=0; i<=59; i++){
-            const option = document.createElement("option");
-            option.value = i;
-            option.textContent = i.toString().padStart(2,"0") + " sec";
-            secSelect.appendChild(option);
-        }
-    }
 }
 
 function laadSpelers(){
-    const opgeslagen = localStorage.getItem("pickleballSpelers");
+
+    const opgeslagen =
+        localStorage.getItem("pickleballSpelers");
 
     if(opgeslagen){
-        try{
-            spelers = JSON.parse(opgeslagen);
-        } catch(e){
-            spelers = [];
-        }
+
+        spelers = JSON.parse(opgeslagen);
+
     }
 
-    updateSpelersLijst();
+    updateSpelerDropdown();
+    updateSpelerOverzicht();
+
 }
 
-function updateSpelersLijst(){
-    const lijst = document.getElementById("spelersLijst");
-    lijst.innerHTML = "";
+function opslaanSpelers(){
 
-    spelers.forEach(naam => {
-        const option = document.createElement("option");
-        option.value = naam;
-        lijst.appendChild(option);
-    });
+    localStorage.setItem(
+        "pickleballSpelers",
+        JSON.stringify(spelers)
+    );
+
 }
 
 function voegSpelerToe(){
-    const naam = document.getElementById("spelerNaam").value.trim();
+
+    const input =
+        document.getElementById("nieuweSpeler");
+
+    const naam =
+        input.value.trim();
 
     if(!naam){
-        toonMelding("⚠️ Vul eerst een naam in");
+
+        toonMelding(
+            "⚠️ Vul een naam in"
+        );
+
         return;
+
     }
 
-    if(!spelers.includes(naam)){
-        spelers.push(naam);
-        spelers.sort();
-        localStorage.setItem("pickleballSpelers", JSON.stringify(spelers));
-        updateSpelersLijst();
-        toonMelding("✅ Speler opgeslagen");
-    } else {
-        toonMelding("ℹ️ Speler bestaat al");
-    }
-}
+    if(spelers.includes(naam)){
 
-async function startOpname(){
-    try{
-        cameraStream = await navigator.mediaDevices.getUserMedia({
-            video:{ facingMode:{ ideal:"environment" } },
-            audio:true
-        });
+        toonMelding(
+            "ℹ️ Speler bestaat al"
+        );
 
-        recordedChunks = [];
-
-        const opties = MediaRecorder.isTypeSupported("video/webm")
-            ? { mimeType:"video/webm" }
-            : {};
-
-        mediaRecorder = new MediaRecorder(cameraStream, opties);
-
-        mediaRecorder.ondataavailable = function(e){
-            if(e.data.size > 0){
-                recordedChunks.push(e.data);
-            }
-        };
-
-        mediaRecorder.onstop = function(){
-            const blob = new Blob(recordedChunks, { type:"video/webm" });
-            const url = URL.createObjectURL(blob);
-
-            const leerlingVideo = document.getElementById("leerlingVideo");
-            leerlingVideo.srcObject = null;
-            leerlingVideo.src = url;
-            leerlingVideo.load();
-
-            toonMelding("✅ Opname staat klaar");
-        };
-
-        mediaRecorder.start();
-        toonMelding("🎥 Opname gestart");
-
-    } catch(err){
-        toonMelding("❌ Camera toegang geweigerd");
-        console.error(err);
-    }
-}
-
-function stopOpname(){
-    if(mediaRecorder && mediaRecorder.state !== "inactive"){
-        mediaRecorder.stop();
-    }
-
-    if(cameraStream){
-        cameraStream.getTracks().forEach(track => track.stop());
-        cameraStream = null;
-    }
-}
-
-function zoekYoutubeVoorbeeld(){
-    const niveau = document.getElementById("niveau").value;
-    const techniek = document.getElementById("techniek").value;
-
-    if(!techniek){
-        toonMelding("⚠️ Kies eerst een techniek");
         return;
+
     }
 
-    const query = `pickleball ${techniek} ${niveau}`.trim();
-    const searchUrl = "https://www.youtube.com/results?search_query=" + encodeURIComponent(query);
+    spelers.push(naam);
 
-    window.open(searchUrl, "_blank");
+    spelers.sort();
+
+    opslaanSpelers();
+
+    updateSpelerDropdown();
+
+    updateSpelerOverzicht();
+
+    input.value = "";
+
+    toonMelding(
+        "✅ Speler toegevoegd"
+    );
+
 }
 
-function plakYoutubeLink(){
-    const link = prompt("Plak de YouTube link:");
+function verwijderSpeler(naam){
 
-    if(!link) return;
+    spelers =
+        spelers.filter(
+            speler => speler !== naam
+        );
 
-    const videoId = extractYouTubeID(link);
+    opslaanSpelers();
 
-    if(videoId && youtubeKlaar){
-        youtubePlayer.cueVideoById(videoId);
-        toonMelding("✅ YouTube-video geladen");
-    } else {
-        toonMelding("❌ Ongeldige YouTube link");
-    }
+    updateSpelerDropdown();
+
+    updateSpelerOverzicht();
+
+    toonMelding(
+        "🗑 Speler verwijderd"
+    );
+
 }
 
-function extractYouTubeID(url){
-    if(url.includes("/shorts/")){
-        return url.split("/shorts/")[1].split("?")[0].split("&")[0];
-    }
+function updateSpelerDropdown(){
 
-    if(url.includes("youtu.be/")){
-        return url.split("youtu.be/")[1].split("?")[0].split("&")[0];
-    }
+    const dropdown =
+        document.getElementById("spelerNaam");
 
-    if(url.includes("watch?v=")){
-        return url.split("watch?v=")[1].split("&")[0];
-    }
+    dropdown.innerHTML =
+        '<option value="">Kies speler</option>';
 
-    if(url.includes("/embed/")){
-        return url.split("/embed/")[1].split("?")[0].split("&")[0];
-    }
+    spelers.forEach(naam => {
 
-    return null;
+        const option =
+            document.createElement("option");
+
+        option.value = naam;
+
+        option.textContent = naam;
+
+        dropdown.appendChild(option);
+
+    });
+
 }
 
-function startBeideVideos(){
-    const leerlingVideo = document.getElementById("leerlingVideo");
+function updateSpelerOverzicht(){
 
-    if(leerlingVideo.src){
-        leerlingVideo.play();
-    }
+    const overzicht =
+        document.getElementById("spelersOverzicht");
 
-    if(youtubeKlaar){
-        youtubePlayer.playVideo();
-    }
+    overzicht.innerHTML = "";
 
-    toonMelding("▶ Beide video’s gestart");
+    spelers.forEach(naam => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "speler-item";
+
+        div.innerHTML = `
+
+            <span>${naam}</span>
+
+            <button
+            onclick="verwijderSpeler('${naam}')">
+
+            ❌ Verwijderen
+
+            </button>
+
+        `;
+
+        overzicht.appendChild(div);
+
+    });
+
 }
 
-function pauzeerBeideVideos(){
-    document.getElementById("leerlingVideo").pause();
+function maakMomenten(){
 
-    if(youtubeKlaar){
-        youtubePlayer.pauseVideo();
+    const container =
+        document.getElementById("momentenContainer");
+
+    container.innerHTML = "";
+
+    for(let i=1; i<=4; i++){
+
+        const blok =
+            document.createElement("div");
+
+        blok.className = "moment-blok";
+
+        blok.innerHTML = `
+
+            <h3>🎯 Moment ${i}</h3>
+
+            <div class="moment-row">
+
+                <select id="min${i}"></select>
+
+                <select id="sec${i}"></select>
+
+                <button onclick="gebruikHuidigeTijd(${i})">
+                ⏱ Tijd
+                </button>
+
+                <div
+                class="pinpoint-knop"
+                onclick="springNaarMoment(${i})">
+
+                ▶ Ga naar moment
+
+                </div>
+
+                <input
+                type="text"
+                id="opmerking${i}"
+                class="opmerking"
+                placeholder="Opmerking moment ${i}">
+
+            </div>
+
+        `;
+
+        container.appendChild(blok);
+
     }
 
-    toonMelding("⏸ Beide video’s gepauzeerd");
+    vulTijden();
+
 }
 
-function youtubeGelijkAanLeerling(){
-    const time = document.getElementById("leerlingVideo").currentTime || 0;
+function vulTijden(){
 
-    if(youtubeKlaar){
-        youtubePlayer.seekTo(time, true);
+    for(let x=1; x<=4; x++){
+
+        const minSelect =
+            document.getElementById("min"+x);
+
+        const secSelect =
+            document.getElementById("sec"+x);
+
+        for(let i=0; i<=20; i++){
+
+            const option =
+                document.createElement("option");
+
+            option.value = i;
+
+            option.textContent =
+                i.toString().padStart(2,"0") +
+                " min";
+
+            minSelect.appendChild(option);
+
+        }
+
+        for(let i=0; i<=59; i++){
+
+            const option =
+                document.createElement("option");
+
+            option.value = i;
+
+            option.textContent =
+                i.toString().padStart(2,"0") +
+                " sec";
+
+            secSelect.appendChild(option);
+
+        }
+
     }
 
-    toonMelding("🔁 YouTube gesynchroniseerd");
-}
-
-function leerlingGelijkAanYoutube(){
-    if(youtubeKlaar){
-        const time = youtubePlayer.getCurrentTime();
-        document.getElementById("leerlingVideo").currentTime = time;
-    }
-
-    toonMelding("🔁 Leerling gesynchroniseerd");
-}
-
-function beideNaarBegin(){
-    const leerlingVideo = document.getElementById("leerlingVideo");
-
-    leerlingVideo.currentTime = 0;
-    leerlingVideo.pause();
-
-    if(youtubeKlaar){
-        youtubePlayer.seekTo(0, true);
-        youtubePlayer.pauseVideo();
-    }
-
-    toonMelding("↩ Beide naar begin");
 }
 
 function gebruikHuidigeTijd(nummer){
-    const leerlingVideo = document.getElementById("leerlingVideo");
-    const totaal = Math.floor(leerlingVideo.currentTime || 0);
 
-    const min = Math.floor(totaal / 60);
-    const sec = totaal % 60;
+    const video =
+        document.getElementById("leerlingVideo");
+
+    const totaal =
+        Math.floor(video.currentTime || 0);
+
+    const min =
+        Math.floor(totaal / 60);
+
+    const sec =
+        totaal % 60;
 
     document.getElementById("min"+nummer).value = min;
+
     document.getElementById("sec"+nummer).value = sec;
 
-    toonMelding("⏱ Tijd opgeslagen");
+    toonMelding(
+        "⏱ Tijd opgeslagen"
+    );
+
 }
 
 function springNaarMoment(nummer){
-    const min = parseInt(document.getElementById("min"+nummer).value);
-    const sec = parseInt(document.getElementById("sec"+nummer).value);
-    const totaal = (min * 60) + sec;
 
-    const leerlingVideo = document.getElementById("leerlingVideo");
+    const min =
+        parseInt(
+            document.getElementById("min"+nummer).value
+        );
 
-    if(leerlingVideo.src){
-        leerlingVideo.currentTime = totaal;
-        leerlingVideo.play();
-    }
+    const sec =
+        parseInt(
+            document.getElementById("sec"+nummer).value
+        );
 
-    if(youtubeKlaar){
-        youtubePlayer.seekTo(totaal, true);
-    }
+    const totaal =
+        (min * 60) + sec;
 
-    toonMelding("▶ Naar moment " + nummer);
-}
+    const video =
+        document.getElementById("leerlingVideo");
 
-function opslaanSessie(){
-    const naam = document.getElementById("spelerNaam").value.trim();
+    video.currentTime = totaal;
 
-    if(naam && !spelers.includes(naam)){
-        spelers.push(naam);
-        spelers.sort();
-        localStorage.setItem("pickleballSpelers", JSON.stringify(spelers));
-        updateSpelersLijst();
-    }
-
-    const data = {
-        spelerNaam: document.getElementById("spelerNaam").value,
-        niveau: document.getElementById("niveau").value,
-        techniek: document.getElementById("techniek").value,
-        momenten:[]
-    };
-
-    for(let i=1; i<=4; i++){
-        data.momenten.push({
-            min: document.getElementById("min"+i).value,
-            sec: document.getElementById("sec"+i).value,
-            opmerking: document.getElementById("opmerking"+i).value
-        });
-    }
-
-    localStorage.setItem("pickleballSessie", JSON.stringify(data));
-    toonMelding("💾 Sessie opgeslagen");
-}
-
-function laadSessie(){
-    const opgeslagen = localStorage.getItem("pickleballSessie");
-
-    if(!opgeslagen){
-        toonMelding("❌ Geen sessie gevonden");
-        return;
-    }
-
-    const data = JSON.parse(opgeslagen);
-
-    document.getElementById("spelerNaam").value = data.spelerNaam || "";
-    document.getElementById("niveau").value = data.niveau || "";
-    document.getElementById("techniek").value = data.techniek || "";
-
-    for(let i=1; i<=4; i++){
-        if(data.momenten && data.momenten[i-1]){
-            document.getElementById("min"+i).value = data.momenten[i-1].min || 0;
-            document.getElementById("sec"+i).value = data.momenten[i-1].sec || 0;
-            document.getElementById("opmerking"+i).value = data.momenten[i-1].opmerking || "";
-        }
-    }
-
-    toonMelding("📂 Sessie geladen");
-}
-
-function downloadAnalyse(){
-    const speler = document.getElementById("spelerNaam").value || "Speler";
-    const niveau = document.getElementById("niveau").value || "Niveau niet gekozen";
-    const techniek = document.getElementById("techniek").value || "Techniek niet gekozen";
-
-    let tekst = "PICKLEBALL COACH VIDEO ANALYSE\n";
-    tekst += "==============================\n\n";
-    tekst += "Speler: " + speler + "\n";
-    tekst += "Niveau: " + niveau + "\n";
-    tekst += "Techniek: " + techniek + "\n";
-    tekst += "Datum: " + new Date().toLocaleString("nl-NL") + "\n\n";
-
-    for(let i=1; i<=4; i++){
-        const min = document.getElementById("min"+i).value.toString().padStart(2,"0");
-        const sec = document.getElementById("sec"+i).value.toString().padStart(2,"0");
-        const opmerking = document.getElementById("opmerking"+i).value;
-
-        tekst += "Moment " + i + ": " + min + ":" + sec + "\n";
-        tekst += "Opmerking: " + opmerking + "\n";
-        tekst += "------------------------------\n";
-    }
-
-    const datum = new Date();
-    const bestandsDatum =
-        datum.getDate() + "_" +
-        (datum.getMonth()+1) + "_" +
-        datum.getFullYear();
-
-    const veiligeSpeler = speler.replaceAll(" ","_");
-    const veiligeTechniek = techniek.replaceAll(" ","_");
-    const bestandsNaam = veiligeSpeler + "_" + veiligeTechniek + "_" + bestandsDatum + ".txt";
-
-    const blob = new Blob([tekst], { type:"text/plain" });
-    const link = document.createElement("a");
-
-    link.href = URL.createObjectURL(blob);
-    link.download = bestandsNaam;
-    link.click();
-
-    toonMelding("⬇ Analyse gedownload");
-}
-
-function wisAlles(){
-    document.getElementById("spelerNaam").value = "";
-    document.getElementById("niveau").value = "";
-    document.getElementById("techniek").value = "";
-
-    for(let x=1; x<=4; x++){
-        document.getElementById("min"+x).value = 0;
-        document.getElementById("sec"+x).value = 0;
-        document.getElementById("opmerking"+x).value = "";
-    }
-
-    const leerlingVideo = document.getElementById("leerlingVideo");
-    leerlingVideo.pause();
-    leerlingVideo.removeAttribute("src");
-    leerlingVideo.srcObject = null;
-    leerlingVideo.load();
+    video.play();
 
     if(youtubeKlaar){
-        youtubePlayer.stopVideo();
-        youtubePlayer.clearVideo();
+
+        youtubePlayer.seekTo(totaal,true);
+
+    }
+
+}
+
+async function startOpname(){
+
+    try{
+
+        cameraStream =
+            await navigator.mediaDevices.getUserMedia({
+
+                video:{
+                    facingMode:{
+                        ideal:"environment"
+                    }
+                },
+
+                audio:true
+
+            });
+
+        recordedChunks = [];
+
+        mediaRecorder =
+            new MediaRecorder(cameraStream);
+
+        mediaRecorder.ondataavailable =
+            function(e){
+
+                if(e.data.size > 0){
+
+                    recordedChunks.push(e.data);
+
+                }
+
+            };
+
+        mediaRecorder.onstop =
+            function(){
+
+                const blob =
+                    new Blob(recordedChunks, {
+
+                        type:"video/webm"
+
+                    });
+
+                const url =
+                    URL.createObjectURL(blob);
+
+                const video =
+                    document.getElementById("leerlingVideo");
+
+                video.srcObject = null;
+
+                video.src = url;
+
+                video.load();
+
+                toonMelding(
+                    "✅ Opname klaar"
+                );
+
+            };
+
+        mediaRecorder.start();
+
+        toonMelding(
+            "🎥 Opname gestart"
+        );
+
+    }
+
+    catch(err){
+
+        toonMelding(
+            "❌ Camera geweigerd"
+        );
+
+    }
+
+}
+
+function stopOpname(){
+
+    if(mediaRecorder &&
+       mediaRecorder.state !== "inactive"){
+
+        mediaRecorder.stop();
+
     }
 
     if(cameraStream){
-        cameraStream.getTracks().forEach(track => track.stop());
-        cameraStream = null;
+
+        cameraStream
+        .getTracks()
+        .forEach(track => track.stop());
+
     }
 
-    recordedChunks = [];
-
-    toonMelding("✅ Alles is gewist");
 }
 
-window.addEventListener("load", function(){
-    vulTijden();
+function onYouTubeIframeAPIReady(){
+
+    youtubePlayer =
+        new YT.Player("youtubePlayer", {
+
+            height:"350",
+            width:"100%",
+            videoId:"",
+
+            playerVars:{
+                playsinline:1,
+                controls:1,
+                rel:0
+            },
+
+            events:{
+                onReady:function(){
+
+                    youtubeKlaar = true;
+
+                }
+            }
+
+        });
+
+}
+
+function extractYouTubeID(url){
+
+    if(url.includes("/shorts/")){
+
+        return url
+            .split("/shorts/")[1]
+            .split("?")[0];
+
+    }
+
+    if(url.includes("watch?v=")){
+
+        return url
+            .split("watch?v=")[1]
+            .split("&")[0];
+
+    }
+
+    if(url.includes("youtu.be/")){
+
+        return url
+            .split("youtu.be/")[1]
+            .split("?")[0];
+
+    }
+
+    return null;
+
+}
+
+function plakYoutubeLink(){
+
+    const link =
+        prompt("Plak YouTube link");
+
+    if(!link) return;
+
+    const videoId =
+        extractYouTubeID(link);
+
+    if(videoId && youtubeKlaar){
+
+        youtubePlayer.cueVideoById(videoId);
+
+        toonMelding(
+            "✅ YouTube geladen"
+        );
+
+    }
+
+    else{
+
+        toonMelding(
+            "❌ Ongeldige link"
+        );
+
+    }
+
+}
+
+function zoekYoutubeVoorbeeld(){
+
+    const techniek =
+        document.getElementById("techniek").value;
+
+    const niveau =
+        document.getElementById("niveau").value;
+
+    if(!techniek){
+
+        toonMelding(
+            "⚠️ Kies techniek"
+        );
+
+        return;
+
+    }
+
+    const query =
+        `pickleball ${techniek} ${niveau}`;
+
+    const url =
+        "https://www.youtube.com/results?search_query=" +
+        encodeURIComponent(query);
+
+    window.open(url,"_blank");
+
+}
+
+function startBeideVideos(){
+
+    const video =
+        document.getElementById("leerlingVideo");
+
+    if(video.src){
+
+        video.play();
+
+    }
+
+    if(youtubeKlaar){
+
+        youtubePlayer.playVideo();
+
+    }
+
+}
+
+function pauzeerBeideVideos(){
+
+    document
+        .getElementById("leerlingVideo")
+        .pause();
+
+    if(youtubeKlaar){
+
+        youtubePlayer.pauseVideo();
+
+    }
+
+}
+
+function youtubeGelijkAanLeerling(){
+
+    const tijd =
+        document.getElementById("leerlingVideo")
+        .currentTime;
+
+    if(youtubeKlaar){
+
+        youtubePlayer.seekTo(tijd,true);
+
+    }
+
+}
+
+function leerlingGelijkAanYoutube(){
+
+    if(youtubeKlaar){
+
+        const tijd =
+            youtubePlayer.getCurrentTime();
+
+        document
+            .getElementById("leerlingVideo")
+            .currentTime = tijd;
+
+    }
+
+}
+
+function beideNaarBegin(){
+
+    const video =
+        document.getElementById("leerlingVideo");
+
+    video.currentTime = 0;
+
+    video.pause();
+
+    if(youtubeKlaar){
+
+        youtubePlayer.seekTo(0,true);
+
+        youtubePlayer.pauseVideo();
+
+    }
+
+}
+
+function opslaanSessie(){
+
+    const data = {
+
+        speler:
+            document.getElementById("spelerNaam").value,
+
+        niveau:
+            document.getElementById("niveau").value,
+
+        techniek:
+            document.getElementById("techniek").value,
+
+        momenten:[]
+
+    };
+
+    for(let i=1; i<=4; i++){
+
+        data.momenten.push({
+
+            min:
+                document.getElementById("min"+i).value,
+
+            sec:
+                document.getElementById("sec"+i).value,
+
+            opmerking:
+                document.getElementById("opmerking"+i).value
+
+        });
+
+    }
+
+    localStorage.setItem(
+        "pickleballSessie",
+        JSON.stringify(data)
+    );
+
+    toonMelding(
+        "💾 Sessie opgeslagen"
+    );
+
+}
+
+function laadSessie(){
+
+    const opgeslagen =
+        localStorage.getItem("pickleballSessie");
+
+    if(!opgeslagen){
+
+        toonMelding(
+            "❌ Geen sessie"
+        );
+
+        return;
+
+    }
+
+    const data =
+        JSON.parse(opgeslagen);
+
+    document.getElementById("spelerNaam").value =
+        data.speler || "";
+
+    document.getElementById("niveau").value =
+        data.niveau || "";
+
+    document.getElementById("techniek").value =
+        data.techniek || "";
+
+    for(let i=1; i<=4; i++){
+
+        if(data.momenten[i-1]){
+
+            document.getElementById("min"+i).value =
+                data.momenten[i-1].min;
+
+            document.getElementById("sec"+i).value =
+                data.momenten[i-1].sec;
+
+            document.getElementById("opmerking"+i).value =
+                data.momenten[i-1].opmerking;
+
+        }
+
+    }
+
+    toonMelding(
+        "📂 Sessie geladen"
+    );
+
+}
+
+function downloadAnalyse(){
+
+    const speler =
+        document.getElementById("spelerNaam").value ||
+        "Speler";
+
+    const techniek =
+        document.getElementById("techniek").value ||
+        "Techniek";
+
+    let tekst =
+        "PICKLEBALL VIDEO ANALYSE\n\n";
+
+    tekst +=
+        "Speler: " + speler + "\n";
+
+    tekst +=
+        "Techniek: " + techniek + "\n\n";
+
+    for(let i=1; i<=4; i++){
+
+        const min =
+            document.getElementById("min"+i).value;
+
+        const sec =
+            document.getElementById("sec"+i).value;
+
+        const opmerking =
+            document.getElementById("opmerking"+i).value;
+
+        tekst +=
+            "Moment " + i + ": " +
+            min + ":" + sec + "\n";
+
+        tekst +=
+            "Opmerking: " +
+            opmerking + "\n\n";
+
+    }
+
+    const blob =
+        new Blob([tekst], {
+
+            type:"text/plain"
+
+        });
+
+    const link =
+        document.createElement("a");
+
+    link.href =
+        URL.createObjectURL(blob);
+
+    link.download =
+        speler + "_analyse.txt";
+
+    link.click();
+
+    toonMelding(
+        "⬇ Analyse gedownload"
+    );
+
+}
+
+function wisAlles(){
+
+    document.getElementById("spelerNaam").value = "";
+
+    document.getElementById("niveau").value = "";
+
+    document.getElementById("techniek").value = "";
+
+    for(let i=1; i<=4; i++){
+
+        document.getElementById("min"+i).value = 0;
+
+        document.getElementById("sec"+i).value = 0;
+
+        document.getElementById("opmerking"+i).value = "";
+
+    }
+
+    const video =
+        document.getElementById("leerlingVideo");
+
+    video.pause();
+
+    video.removeAttribute("src");
+
+    video.srcObject = null;
+
+    video.load();
+
+    if(youtubeKlaar){
+
+        youtubePlayer.stopVideo();
+
+        youtubePlayer.clearVideo();
+
+    }
+
+    toonMelding(
+        "✅ Alles gewist"
+    );
+
+}
+
+window.addEventListener("load",function(){
+
     laadSpelers();
+
+    maakMomenten();
+
 });
+
 </script>
 
 </body>

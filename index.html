@@ -6,7 +6,6 @@
 <title>Pickleball Coach</title>
 
 <style>
-
 body{
     font-family: Arial, sans-serif;
     background:#1f5f3b;
@@ -75,11 +74,26 @@ button:hover{
     min-width:300px;
 }
 
-video, iframe{
+video, #youtubePlayer{
     width:100%;
     height:350px;
     background:black;
     border-radius:15px;
+}
+
+.sync-box{
+    text-align:center;
+    background:#eef7f1;
+    padding:15px;
+    border-radius:15px;
+    margin-top:20px;
+}
+
+.moment-blok{
+    background:#f4f4f4;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:15px;
 }
 
 .pinpoint{
@@ -116,16 +130,7 @@ video, iframe{
     display:none;
     z-index:9999;
 }
-
-.moment-blok{
-    background:#f4f4f4;
-    padding:15px;
-    border-radius:12px;
-    margin-bottom:20px;
-}
-
 </style>
-
 </head>
 
 <body>
@@ -137,14 +142,14 @@ video, iframe{
 <h1>Pickleball Coach</h1>
 
 <div class="card">
-
 <h2>Pickleball Pro Coach</h2>
 
 <label>Naam speler</label>
-<input type="text" id="spelerNaam">
+<input type="text" id="spelerNaam" placeholder="Naam speler">
 
 <label>Niveau</label>
 <select id="niveau">
+    <option value="">Kies niveau</option>
     <option>Beginner</option>
     <option>Gemiddeld</option>
     <option>Gevorderd</option>
@@ -152,6 +157,7 @@ video, iframe{
 
 <label>Techniek</label>
 <select id="techniek">
+    <option value="">Kies techniek</option>
     <option>Footwork</option>
     <option>Serve</option>
     <option>Forehand</option>
@@ -159,478 +165,524 @@ video, iframe{
     <option>Volley</option>
     <option>Dink</option>
 </select>
-
 </div>
 
 <div class="card">
-
 <h2>📺 Side-by-side Analyse</h2>
 
 <div class="video-row">
 
 <div class="video-box">
-
 <h3>Leerling Video</h3>
 
 <video id="leerlingVideo" controls playsinline></video>
 
 <br><br>
 
-<button onclick="startOpname()">
-🎥 Start Opname
-</button>
-
-<button onclick="stopOpname()">
-⏹ Stop Opname
-</button>
-
+<button onclick="startOpname()">🎥 Start Opname</button>
+<button onclick="stopOpname()">⏹ Stop Opname</button>
 </div>
 
 <div class="video-box">
-
 <h3>YouTube Voorbeeld</h3>
 
-<iframe id="youtubeFrame" src="" allowfullscreen></iframe>
+<div id="youtubePlayer"></div>
 
 <br><br>
 
-<button onclick="zoekYoutubeVoorbeeld()">
-🔍 Zoek YouTube voorbeeldvideo
-</button>
-
-<button onclick="plakYoutubeLink()">
-📎 Plak YouTube link
-</button>
+<button onclick="zoekYoutubeVoorbeeld()">🔍 Zoek YouTube voorbeeldvideo</button>
+<button onclick="plakYoutubeLink()">📎 Plak YouTube link</button>
+</div>
 
 </div>
 
+<div class="sync-box">
+<h3>🔄 Sync-knoppen</h3>
+
+<button onclick="startBeideVideos()">▶ Start beide video’s</button>
+<button onclick="pauzeerBeideVideos()">⏸ Pauzeer beide video’s</button>
+<button onclick="youtubeGelijkAanLeerling()">🔁 Zet YouTube gelijk met leerling</button>
+<button onclick="leerlingGelijkAanYoutube()">🔁 Zet leerling gelijk met YouTube</button>
+<button onclick="beideNaarBegin()">↩ Beide naar begin</button>
 </div>
 
 </div>
 
 <div class="card">
-
 <h2>📌 Pinpoint Analyse</h2>
 
-<!-- MOMENT 1 -->
-
 <div class="moment-blok">
-
 <h3>🎯 Moment 1</h3>
-
 <select id="min1"></select>
 <select id="sec1"></select>
-
-<button onclick="gebruikHuidigeTijd(1)">
-⏱ Gebruik huidige tijd
-</button>
-
-<div
-class="pinpoint-knop"
-onclick="springNaarMoment(1)">
-
-▶ Spring naar Moment 1
-
+<button onclick="gebruikHuidigeTijd(1)">⏱ Gebruik huidige tijd</button>
+<span class="pinpoint-knop" onclick="springNaarMoment(1)">▶ Spring naar Moment 1</span>
 </div>
-
-</div>
-
-<!-- MOMENT 2 -->
 
 <div class="moment-blok">
-
 <h3>🎯 Moment 2</h3>
-
 <select id="min2"></select>
 <select id="sec2"></select>
-
-<button onclick="gebruikHuidigeTijd(2)">
-⏱ Gebruik huidige tijd
-</button>
-
-<div
-class="pinpoint-knop"
-onclick="springNaarMoment(2)">
-
-▶ Spring naar Moment 2
-
+<button onclick="gebruikHuidigeTijd(2)">⏱ Gebruik huidige tijd</button>
+<span class="pinpoint-knop" onclick="springNaarMoment(2)">▶ Spring naar Moment 2</span>
 </div>
-
-</div>
-
-<!-- MOMENT 3 -->
 
 <div class="moment-blok">
-
 <h3>🎯 Moment 3</h3>
-
 <select id="min3"></select>
 <select id="sec3"></select>
-
-<button onclick="gebruikHuidigeTijd(3)">
-⏱ Gebruik huidige tijd
-</button>
-
-<div
-class="pinpoint-knop"
-onclick="springNaarMoment(3)">
-
-▶ Spring naar Moment 3
-
+<button onclick="gebruikHuidigeTijd(3)">⏱ Gebruik huidige tijd</button>
+<span class="pinpoint-knop" onclick="springNaarMoment(3)">▶ Spring naar Moment 3</span>
 </div>
-
-</div>
-
-<!-- MOMENT 4 -->
 
 <div class="moment-blok">
-
 <h3>🎯 Moment 4</h3>
-
 <select id="min4"></select>
 <select id="sec4"></select>
+<button onclick="gebruikHuidigeTijd(4)">⏱ Gebruik huidige tijd</button>
+<span class="pinpoint-knop" onclick="springNaarMoment(4)">▶ Spring naar Moment 4</span>
+</div>
 
-<button onclick="gebruikHuidigeTijd(4)">
-⏱ Gebruik huidige tijd
-</button>
+<label>1️⃣ Wat gaat goed?</label>
+<textarea id="goed" rows="3"></textarea>
 
-<div
-class="pinpoint-knop"
-onclick="springNaarMoment(4)">
+<label>2️⃣ Wat kan beter?</label>
+<textarea id="beter" rows="3"></textarea>
 
-▶ Spring naar Moment 4
+<label>3️⃣ Technische uitleg</label>
+<textarea id="techniekUitleg" rows="3"></textarea>
 
+<label>4️⃣ Oefening / aandachtspunt</label>
+<textarea id="oefening" rows="3"></textarea>
+
+<button onclick="voegPinpointToe()">📌 Pinpoint Toevoegen</button>
+<button onclick="downloadAnalyse()">⬇ Download Analyse</button>
+<button onclick="wisAlles()">🗑 Wis Alles</button>
+
+<div id="pinpoints"></div>
 </div>
 
 </div>
 
-<button onclick="wisAlles()">
-🗑 Wis Alles
-</button>
-
-</div>
-
-</div>
+<script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
-
+let pinpoints = [];
 let mediaRecorder;
 let opgenomenChunks = [];
 let cameraStream;
+let youtubePlayer;
+let youtubeKlaar = false;
 
 vulTijden();
 
+function onYouTubeIframeAPIReady(){
+    youtubePlayer = new YT.Player("youtubePlayer", {
+        height: "350",
+        width: "100%",
+        videoId: "",
+        playerVars: {
+            playsinline: 1,
+            controls: 1,
+            rel: 0
+        },
+        events: {
+            onReady: function(){
+                youtubeKlaar = true;
+            }
+        }
+    });
+}
+
 function vulTijden(){
-
     for(let x=1; x<=4; x++){
+        const minSelect = document.getElementById("min"+x);
+        const secSelect = document.getElementById("sec"+x);
 
-        const minSelect =
-            document.getElementById("min"+x);
-
-        const secSelect =
-            document.getElementById("sec"+x);
+        minSelect.innerHTML = "";
+        secSelect.innerHTML = "";
 
         for(let i=0; i<=20; i++){
-
-            const option =
-                document.createElement("option");
-
+            const option = document.createElement("option");
             option.value = i;
-
-            option.textContent =
-                i.toString().padStart(2,"0") +
-                " min";
-
+            option.textContent = i.toString().padStart(2,"0") + " min";
             minSelect.appendChild(option);
-
         }
 
         for(let i=0; i<=59; i++){
-
-            const option =
-                document.createElement("option");
-
+            const option = document.createElement("option");
             option.value = i;
-
-            option.textContent =
-                i.toString().padStart(2,"0") +
-                " sec";
-
+            option.textContent = i.toString().padStart(2,"0") + " sec";
             secSelect.appendChild(option);
-
         }
-
     }
-
 }
 
 async function startOpname(){
-
     try{
-
-        cameraStream =
-            await navigator.mediaDevices.getUserMedia({
-
-                video:{
-                    facingMode:{
-                        ideal:"environment"
-                    }
-                },
-
-                audio:true
-
-            });
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+            video:{
+                facingMode:{ ideal:"environment" }
+            },
+            audio:true
+        });
 
         opgenomenChunks = [];
 
-        mediaRecorder =
-            new MediaRecorder(cameraStream);
+        const opties = MediaRecorder.isTypeSupported("video/webm")
+            ? { mimeType:"video/webm" }
+            : {};
+
+        mediaRecorder = new MediaRecorder(cameraStream, opties);
 
         mediaRecorder.ondataavailable = e => {
-
             if(e.data.size > 0){
-
                 opgenomenChunks.push(e.data);
-
             }
-
         };
 
         mediaRecorder.onstop = () => {
+            const blob = new Blob(opgenomenChunks, { type:"video/webm" });
+            const videoURL = URL.createObjectURL(blob);
 
-            const blob =
-                new Blob(opgenomenChunks, {
-
-                    type:"video/mp4"
-
-                });
-
-            const videoURL =
-                URL.createObjectURL(blob);
-
-            const leerlingVideo =
-                document.getElementById("leerlingVideo");
-
+            const leerlingVideo = document.getElementById("leerlingVideo");
             leerlingVideo.src = videoURL;
-
             leerlingVideo.load();
 
-            toonMelding(
-                "✅ Opname staat klaar"
-            );
-
+            toonMelding("✅ Opname staat klaar");
         };
 
         mediaRecorder.start();
+        toonMelding("🎥 Opname gestart");
 
-        toonMelding(
-            "🎥 Opname gestart"
-        );
-
+    } catch(error){
+        toonMelding("Camera kon niet geopend worden");
     }
-
-    catch(error){
-
-        toonMelding(
-            "Camera kon niet geopend worden"
-        );
-
-    }
-
 }
 
 function stopOpname(){
-
-    if(mediaRecorder &&
-       mediaRecorder.state !== "inactive"){
-
+    if(mediaRecorder && mediaRecorder.state !== "inactive"){
         mediaRecorder.stop();
-
     }
 
     if(cameraStream){
-
-        cameraStream
-        .getTracks()
-        .forEach(track => track.stop());
-
+        cameraStream.getTracks().forEach(track => track.stop());
         cameraStream = null;
-
     }
-
-}
-
-function gebruikHuidigeTijd(nummer){
-
-    const leerlingVideo =
-        document.getElementById("leerlingVideo");
-
-    const totaleSeconden =
-        Math.floor(leerlingVideo.currentTime || 0);
-
-    const min =
-        Math.floor(totaleSeconden / 60);
-
-    const sec =
-        totaleSeconden % 60;
-
-    document.getElementById("min"+nummer).value = min;
-
-    document.getElementById("sec"+nummer).value = sec;
-
-    toonMelding(
-        "⏱ Moment opgeslagen"
-    );
-
-}
-
-function springNaarMoment(nummer){
-
-    const min =
-        parseInt(
-            document.getElementById("min"+nummer).value
-        );
-
-    const sec =
-        parseInt(
-            document.getElementById("sec"+nummer).value
-        );
-
-    const totaal =
-        (min * 60) + sec;
-
-    const leerlingVideo =
-        document.getElementById("leerlingVideo");
-
-    leerlingVideo.currentTime = totaal;
-
-    leerlingVideo.play();
-
 }
 
 function zoekYoutubeVoorbeeld(){
+    const techniek = document.getElementById("techniek").value;
+    const niveau = document.getElementById("niveau").value;
 
-    const techniek =
-        document.getElementById("techniek").value;
-
-    const niveau =
-        document.getElementById("niveau").value;
-
-    const zoekterm =
-        `pickleball ${techniek} ${niveau}`;
-
-    const youtubeUrl =
-        "https://www.youtube.com/results?search_query=" +
-        encodeURIComponent(zoekterm);
+    const zoekterm = `pickleball ${techniek} ${niveau}`;
+    const youtubeUrl = "https://www.youtube.com/results?search_query=" + encodeURIComponent(zoekterm);
 
     window.open(youtubeUrl, "_blank");
-
 }
 
 function plakYoutubeLink(){
-
-    const link =
-        prompt("Plak hier de YouTube-link:");
+    const link = prompt("Plak hier de YouTube-link:");
 
     if(!link) return;
 
+    const videoId = haalYoutubeIdUitLink(link);
+
+    if(videoId && youtubeKlaar){
+        youtubePlayer.loadVideoById(videoId);
+        youtubePlayer.pauseVideo();
+        toonMelding("✅ YouTube-video geladen");
+    } else {
+        toonMelding("YouTube-link niet herkend");
+    }
+}
+
+function haalYoutubeIdUitLink(link){
     let videoId = "";
 
     if(link.includes("watch?v=")){
-
-        videoId =
-            link.split("watch?v=")[1].split("&")[0];
-
+        videoId = link.split("watch?v=")[1].split("&")[0];
     }
-
     else if(link.includes("youtu.be/")){
-
-        videoId =
-            link.split("youtu.be/")[1].split("?")[0];
-
+        videoId = link.split("youtu.be/")[1].split("?")[0];
     }
-
     else if(link.includes("/shorts/")){
-
-        videoId =
-            link.split("/shorts/")[1].split("?")[0];
-
+        videoId = link.split("/shorts/")[1].split("?")[0];
+    }
+    else if(link.includes("/embed/")){
+        videoId = link.split("/embed/")[1].split("?")[0];
     }
 
-    if(videoId){
-
-        document
-        .getElementById("youtubeFrame")
-        .src =
-            "https://www.youtube.com/embed/" +
-            videoId;
-
-    }
-
-    else{
-
-        toonMelding(
-            "YouTube-link niet herkend"
-        );
-
-    }
-
+    return videoId;
 }
 
-function wisAlles(){
+function startBeideVideos(){
+    const leerlingVideo = document.getElementById("leerlingVideo");
 
-    const leerlingVideo =
-        document.getElementById("leerlingVideo");
+    if(leerlingVideo.src){
+        leerlingVideo.play();
+    }
+
+    if(youtubeKlaar && youtubePlayer){
+        youtubePlayer.playVideo();
+    }
+
+    toonMelding("▶ Beide video’s gestart");
+}
+
+function pauzeerBeideVideos(){
+    const leerlingVideo = document.getElementById("leerlingVideo");
 
     leerlingVideo.pause();
 
-    leerlingVideo.removeAttribute("src");
+    if(youtubeKlaar && youtubePlayer){
+        youtubePlayer.pauseVideo();
+    }
 
-    leerlingVideo.load();
+    toonMelding("⏸ Beide video’s gepauzeerd");
+}
 
-    document.getElementById("youtubeFrame").src =
-        "about:blank";
+function youtubeGelijkAanLeerling(){
+    const leerlingVideo = document.getElementById("leerlingVideo");
+    const tijd = leerlingVideo.currentTime || 0;
+
+    if(youtubeKlaar && youtubePlayer){
+        youtubePlayer.seekTo(tijd, true);
+    }
+
+    toonMelding("🔁 YouTube gelijkgezet");
+}
+
+function leerlingGelijkAanYoutube(){
+    const leerlingVideo = document.getElementById("leerlingVideo");
+
+    if(youtubeKlaar && youtubePlayer){
+        const tijd = youtubePlayer.getCurrentTime();
+        leerlingVideo.currentTime = tijd;
+    }
+
+    toonMelding("🔁 Leerlingvideo gelijkgezet");
+}
+
+function beideNaarBegin(){
+    const leerlingVideo = document.getElementById("leerlingVideo");
+
+    leerlingVideo.currentTime = 0;
+
+    if(youtubeKlaar && youtubePlayer){
+        youtubePlayer.seekTo(0, true);
+        youtubePlayer.pauseVideo();
+    }
+
+    leerlingVideo.pause();
+
+    toonMelding("↩ Beide naar begin");
+}
+
+function gebruikHuidigeTijd(nummer){
+    const leerlingVideo = document.getElementById("leerlingVideo");
+    const totaleSeconden = Math.floor(leerlingVideo.currentTime || 0);
+
+    const min = Math.floor(totaleSeconden / 60);
+    const sec = totaleSeconden % 60;
+
+    document.getElementById("min"+nummer).value = min;
+    document.getElementById("sec"+nummer).value = sec;
+
+    toonMelding("⏱ Moment opgeslagen");
+}
+
+function springNaarMoment(nummer){
+    const min = parseInt(document.getElementById("min"+nummer).value);
+    const sec = parseInt(document.getElementById("sec"+nummer).value);
+    const totaal = (min * 60) + sec;
+
+    const leerlingVideo = document.getElementById("leerlingVideo");
+    leerlingVideo.currentTime = totaal;
+    leerlingVideo.play();
+
+    if(youtubeKlaar && youtubePlayer){
+        youtubePlayer.seekTo(totaal, true);
+    }
+
+    toonMelding("▶ Naar moment " + nummer);
+}
+
+function maakTijdTekst(min, sec){
+    return min.toString().padStart(2,"0") + ":" + sec.toString().padStart(2,"0");
+}
+
+function voegPinpointToe(){
+    const speler = document.getElementById("spelerNaam").value || "Onbekende speler";
+    const niveau = document.getElementById("niveau").value || "Niet gekozen";
+    const techniek = document.getElementById("techniek").value || "Niet gekozen";
+
+    const goed = document.getElementById("goed").value;
+    const beter = document.getElementById("beter").value;
+    const techniekUitleg = document.getElementById("techniekUitleg").value;
+    const oefening = document.getElementById("oefening").value;
+
+    const datum = new Date().toLocaleString("nl-NL", {
+        weekday:"long",
+        year:"numeric",
+        month:"long",
+        day:"numeric",
+        hour:"2-digit",
+        minute:"2-digit"
+    });
+
+    const momenten = [];
+
+    for(let i=1; i<=4; i++){
+        const min = parseInt(document.getElementById("min"+i).value);
+        const sec = parseInt(document.getElementById("sec"+i).value);
+        momenten.push(maakTijdTekst(min, sec));
+    }
+
+    const pinpoint = {
+        speler,
+        niveau,
+        techniek,
+        datum,
+        momenten,
+        goed,
+        beter,
+        techniekUitleg,
+        oefening
+    };
+
+    pinpoints.push(pinpoint);
+
+    const div = document.createElement("div");
+    div.className = "pinpoint";
+
+    div.innerHTML = `
+        <strong>Speler:</strong> ${speler}<br>
+        <strong>Niveau:</strong> ${niveau}<br>
+        <strong>Techniek:</strong> ${techniek}<br>
+        <strong>Datum:</strong> ${datum}<br><br>
+
+        <strong>Momenten:</strong><br>
+        ${momenten.map((m, index) => `
+            <span class="pinpoint-knop" onclick="springNaarMoment(${index + 1})">
+                ▶ Moment ${index + 1}: ${m}
+            </span>
+        `).join("")}
+
+        <br><br>
+        <strong>✅ Wat gaat goed?</strong><br>
+        ${goed}<br><br>
+
+        <strong>⚠ Wat kan beter?</strong><br>
+        ${beter}<br><br>
+
+        <strong>🏓 Technische uitleg</strong><br>
+        ${techniekUitleg}<br><br>
+
+        <strong>🎯 Oefening / aandachtspunt</strong><br>
+        ${oefening}
+    `;
+
+    document.getElementById("pinpoints").appendChild(div);
+
+    document.getElementById("goed").value = "";
+    document.getElementById("beter").value = "";
+    document.getElementById("techniekUitleg").value = "";
+    document.getElementById("oefening").value = "";
+
+    toonMelding("📌 Pinpoint toegevoegd");
+}
+
+function downloadAnalyse(){
+    const speler = document.getElementById("spelerNaam").value || "Speler";
+    const techniek = document.getElementById("techniek").value || "Techniek";
+
+    let tekst = "PICKLEBALL COACH ANALYSE\n";
+    tekst += "========================\n\n";
+
+    pinpoints.forEach((p, index)=>{
+        tekst += `Pinpoint ${index+1}\n`;
+        tekst += `Speler: ${p.speler}\n`;
+        tekst += `Niveau: ${p.niveau}\n`;
+        tekst += `Techniek: ${p.techniek}\n`;
+        tekst += `Datum: ${p.datum}\n`;
+        tekst += `Moment 1: ${p.momenten[0]}\n`;
+        tekst += `Moment 2: ${p.momenten[1]}\n`;
+        tekst += `Moment 3: ${p.momenten[2]}\n`;
+        tekst += `Moment 4: ${p.momenten[3]}\n\n`;
+        tekst += `Wat gaat goed: ${p.goed}\n`;
+        tekst += `Wat kan beter: ${p.beter}\n`;
+        tekst += `Technische uitleg: ${p.techniekUitleg}\n`;
+        tekst += `Oefening / aandachtspunt: ${p.oefening}\n`;
+        tekst += "------------------------\n\n";
+    });
+
+    const datum = new Date();
+    const bestandsDatum =
+        datum.getDate() + "_" +
+        (datum.getMonth()+1) + "_" +
+        datum.getFullYear();
+
+    const bestandsNaam = `${speler}_${techniek}_${bestandsDatum}.txt`;
+
+    const blob = new Blob([tekst], { type:"text/plain" });
+    const link = document.createElement("a");
+
+    link.href = URL.createObjectURL(blob);
+    link.download = bestandsNaam;
+    link.click();
+
+    toonMelding("⬇ Analyse gedownload");
+}
+
+function wisAlles(){
+    document.getElementById("spelerNaam").value = "";
+    document.getElementById("niveau").value = "";
+    document.getElementById("techniek").value = "";
 
     for(let x=1; x<=4; x++){
-
         document.getElementById("min"+x).value = 0;
         document.getElementById("sec"+x).value = 0;
-
     }
+
+    document.getElementById("goed").value = "";
+    document.getElementById("beter").value = "";
+    document.getElementById("techniekUitleg").value = "";
+    document.getElementById("oefening").value = "";
+
+    const leerlingVideo = document.getElementById("leerlingVideo");
+    leerlingVideo.pause();
+    leerlingVideo.removeAttribute("src");
+    leerlingVideo.load();
+
+    if(youtubeKlaar && youtubePlayer){
+        youtubePlayer.stopVideo();
+        youtubePlayer.clearVideo();
+    }
+
+    document.getElementById("pinpoints").innerHTML = "";
+
+    pinpoints = [];
+    opgenomenChunks = [];
 
     if(cameraStream){
-
-        cameraStream
-        .getTracks()
-        .forEach(track => track.stop());
-
+        cameraStream.getTracks().forEach(track => track.stop());
         cameraStream = null;
-
     }
 
-    toonMelding(
-        "✅ Alles is gewist"
-    );
-
+    toonMelding("✅ Alles is gewist");
 }
 
 function toonMelding(tekst){
-
-    const melding =
-        document.getElementById("melding");
+    const melding = document.getElementById("melding");
 
     melding.innerText = tekst;
-
     melding.style.display = "block";
 
     setTimeout(()=>{
-
         melding.style.display = "none";
-
     }, 2000);
-
 }
-
 </script>
 
 </body>

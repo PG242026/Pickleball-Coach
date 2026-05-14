@@ -528,15 +528,37 @@ function wisAlles(){
 
     document.getElementById("analyseTekst").value = "";
 
-    document.getElementById("leerlingVideo").src = "";
+    const leerlingVideo =
+        document.getElementById("leerlingVideo");
 
-    document.getElementById("youtubeFrame").src = "";
+    leerlingVideo.pause();
+
+    leerlingVideo.removeAttribute("src");
+
+    leerlingVideo.load();
+
+    const youtubeFrame =
+        document.getElementById("youtubeFrame");
+
+    youtubeFrame.src = "about:blank";
 
     document.getElementById("pinpoints").innerHTML = "";
 
     pinpoints = [];
 
     opgenomenChunks = [];
+
+    if(cameraStream){
+
+        cameraStream
+        .getTracks()
+        .forEach(track => track.stop());
+
+        cameraStream = null;
+
+    }
+
+    alert("Alles is gewist.");
 
 }
 

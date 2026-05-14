@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pickleball Coach</title>
+<title>🏓 Pickleball Coach</title>
 
 <style>
 
@@ -12,13 +12,18 @@ body{
     font-family: Arial, sans-serif;
     background:#1f5f3b;
     margin:0;
-    padding:30px;
+    padding:25px;
     color:white;
 }
 
 .container{
     max-width:1200px;
     margin:auto;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
 }
 
 .card{
@@ -28,12 +33,6 @@ body{
     border-radius:20px;
     margin-bottom:25px;
     box-shadow:0 4px 12px rgba(0,0,0,0.2);
-}
-
-h1{
-    text-align:center;
-    margin-bottom:30px;
-    font-size:40px;
 }
 
 h2{
@@ -130,9 +129,28 @@ video, iframe{
 
 <div class="card">
 
-<h2>🎥 Upload leerling video</h2>
+<h2>🎥 Neem leerling video op</h2>
 
-<input type="file" id="videoUpload" accept="video/*">
+<video
+id="cameraPreview"
+autoplay
+muted
+playsinline>
+</video>
+
+<br><br>
+
+<button onclick="startCamera()">
+📷 Camera Starten
+</button>
+
+<button onclick="startOpname()">
+⏺ Opname Starten
+</button>
+
+<button onclick="stopOpname()">
+⏹ Opname Stoppen
+</button>
 
 </div>
 
@@ -146,7 +164,10 @@ video, iframe{
 
 <h3>Leerling Video</h3>
 
-<video id="leerlingVideo" controls></video>
+<video
+id="leerlingVideo"
+controls>
+</video>
 
 </div>
 
@@ -181,6 +202,7 @@ allowfullscreen>
 <h2>📌 Pinpoint Analyse</h2>
 
 <label>Tijdstip video</label>
+
 <input
 type="text"
 id="tijdstip"
@@ -211,21 +233,88 @@ placeholder="Schrijf hier je analyse of verbeterpunt"></textarea>
 
 let pinpoints = [];
 
-document
-.getElementById("videoUpload")
-.addEventListener("change", function(){
+let mediaRecorder;
 
-    const file = this.files[0];
+let opgenomenChunks = [];
 
-    if(file){
+let cameraStream;
+
+async function startCamera(){
+
+    try{
+
+        cameraStream =
+            await navigator.mediaDevices.getUserMedia({
+
+                video:true,
+                audio:true
+
+            });
 
         document
-        .getElementById("leerlingVideo")
-        .src = URL.createObjectURL(file);
+        .getElementById("cameraPreview")
+        .srcObject = cameraStream;
 
     }
 
-});
+    catch(error){
+
+        alert(
+            "Camera kon niet worden geopend."
+        );
+
+    }
+
+}
+
+function startOpname(){
+
+    opgenomenChunks = [];
+
+    mediaRecorder =
+        new MediaRecorder(cameraStream);
+
+    mediaRecorder.ondataavailable = e => {
+
+        if(e.data.size > 0){
+
+            opgenomenChunks.push(e.data);
+
+        }
+
+    };
+
+    mediaRecorder.onstop = () => {
+
+        const blob =
+            new Blob(opgenomenChunks, {
+
+                type:"video/mp4"
+
+            });
+
+        const videoURL =
+            URL.createObjectURL(blob);
+
+        document
+        .getElementById("leerlingVideo")
+        .src = videoURL;
+
+    };
+
+    mediaRecorder.start();
+
+    alert("Opname gestart");
+
+}
+
+function stopOpname(){
+
+    mediaRecorder.stop();
+
+    alert("Opname opgeslagen");
+
+}
 
 function zoekYoutubeVoorbeeld(){
 

@@ -3,63 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Pickleball Pro Coach</title>
+<title>Pickleball Coach Analyse</title>
 
 <style>
-
 body{
     font-family: Arial, sans-serif;
-    background:#f2f2f2;
+    background:#f4f4f4;
+    color:#333;
     margin:0;
     padding:20px;
 }
 
-.container{
-    max-width:1400px;
-    margin:auto;
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom:20px;
 }
 
 h1{
     text-align:center;
-    color:#c40000;
+    color:#0b7a3b;
 }
 
-.card{
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    margin-bottom:20px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+h2{
+    color:#0b7a3b;
 }
 
 input, select, textarea{
     width:100%;
     padding:12px;
-    margin-top:10px;
-    margin-bottom:15px;
-    border-radius:10px;
+    margin:8px 0 15px 0;
     border:1px solid #ccc;
+    border-radius:8px;
     font-size:16px;
 }
 
 button{
-    background:#c40000;
+    background:#0b7a3b;
     color:white;
     border:none;
-    padding:12px 20px;
-    border-radius:10px;
-    cursor:pointer;
+    padding:12px 18px;
+    border-radius:8px;
     font-size:16px;
-    margin-right:10px;
-    margin-top:10px;
+    cursor:pointer;
+    margin:5px 5px 5px 0;
 }
 
 button:hover{
-    background:#900000;
+    background:#095f2f;
 }
 
-.video-container{
+.video-row{
     display:flex;
     gap:20px;
     flex-wrap:wrap;
@@ -72,220 +68,226 @@ button:hover{
 
 video, iframe{
     width:100%;
-    border-radius:15px;
+    height:360px;
     background:black;
+    border-radius:12px;
 }
 
 .pinpoint{
-    background:#f7f7f7;
-    padding:10px;
-    border-radius:10px;
-    margin-bottom:10px;
-    border-left:5px solid #c40000;
+    background:#eef8f1;
+    border-left:5px solid #0b7a3b;
+    padding:12px;
+    margin-top:10px;
+    border-radius:8px;
 }
 
+.small{
+    font-size:14px;
+    color:#666;
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
-<h1>🏓 Pickleball Pro Coach</h1>
+<h1>🏓 Pickleball Coach Analyse</h1>
 
 <div class="card">
+    <h2>Pickleball Pro Coach</h2>
 
-<h2>Spelerinformatie</h2>
+    <label>Naam speler</label>
+    <input type="text" id="spelerNaam" placeholder="Bijvoorbeeld Testkees">
 
-<input type="text" id="spelerNaam" placeholder="Naam speler">
+    <label>Niveau</label>
+    <select id="niveau">
+        <option>Beginner</option>
+        <option>Gemiddeld</option>
+        <option>Gevorderd</option>
+    </select>
 
-<select id="niveau">
-    <option>Beginner</option>
-    <option>Gemiddeld</option>
-    <option>Gevorderd</option>
-    <option>Professional</option>
-</select>
-
-<select id="techniek">
-    <option>Footwork</option>
-    <option>Serve</option>
-    <option>Backhand</option>
-    <option>Forehand</option>
-    <option>Volley</option>
-    <option>Dink</option>
-</select>
-
-</div>
-
-<div class="card">
-
-<h2>🎥 Upload leerling video</h2>
-
-<input type="file" id="videoUpload" accept="video/*">
-
-<button onclick="laadVergelijking()">
-🔍 Zoek YouTube voorbeeldvideo
-</button>
-
+    <label>Techniek</label>
+    <select id="techniek">
+        <option>Footwork</option>
+        <option>Serve</option>
+        <option>Forehand</option>
+        <option>Backhand</option>
+        <option>Volley</option>
+        <option>Dink</option>
+        <option>Return</option>
+    </select>
 </div>
 
 <div class="card">
+    <h2>🎥 Upload leerling video</h2>
 
-<h2>📺 Side-by-side Analyse</h2>
+    <input type="file" id="videoUpload" accept="video/*">
 
-<div class="video-container">
+    <button onclick="zoekYoutubeVoorbeeld()">🔍 Zoek YouTube voorbeeldvideo</button>
 
-<div class="video-box">
-<h3>Leerling Video</h3>
-
-<video id="leerlingVideo" controls></video>
-</div>
-
-<div class="video-box">
-<h3>YouTube Voorbeeld</h3>
-
-<iframe
-id="youtubeFrame"
-height="400"
-src=""
-frameborder="0"
-allowfullscreen>
-</iframe>
-
-</div>
-
-</div>
-
+    <p class="small">
+        De zoekterm wordt automatisch gemaakt van niveau + techniek.
+    </p>
 </div>
 
 <div class="card">
+    <h2>📺 Side-by-side Analyse</h2>
 
-<h2>📌 Pinpoint Analyse</h2>
+    <div class="video-row">
+        <div class="video-box">
+            <h3>Leerling Video</h3>
+            <video id="leerlingVideo" controls></video>
+        </div>
 
-<input type="text" id="tijdstip" placeholder="Tijdstip video (00:12)">
-
-<textarea
-id="analyse"
-placeholder="Schrijf hier je analyse of verbeterpunt">
-</textarea>
-
-<button onclick="voegPinpointToe()">
-📌 Pinpoint Toevoegen
-</button>
-
-<div id="pinpoints"></div>
-
+        <div class="video-box">
+            <h3>YouTube Voorbeeld</h3>
+            <iframe id="youtubeFrame" src="" allowfullscreen></iframe>
+        </div>
+    </div>
 </div>
 
+<div class="card">
+    <h2>📌 Pinpoint Analyse</h2>
+
+    <label>Tijdstip video</label>
+    <input type="text" id="tijdstip" placeholder="Bijvoorbeeld 00:12">
+
+    <label>Analyse of verbeterpunt</label>
+    <textarea id="analyseTekst" rows="5" placeholder="Schrijf hier je analyse of verbeterpunt"></textarea>
+
+    <button onclick="voegPinpointToe()">📌 Pinpoint Toevoegen</button>
+    <button onclick="downloadAnalyse()">⬇ Download Analyse</button>
+
+    <div id="pinpoints"></div>
 </div>
 
 <script>
+let pinpoints = [];
 
-const videoUpload = document.getElementById("videoUpload");
-const leerlingVideo = document.getElementById("leerlingVideo");
-
-videoUpload.addEventListener("change", function(){
-
+document.getElementById("videoUpload").addEventListener("change", function(){
     const file = this.files[0];
 
     if(file){
-
-        const url = URL.createObjectURL(file);
-
-        leerlingVideo.src = url;
+        const videoURL = URL.createObjectURL(file);
+        document.getElementById("leerlingVideo").src = videoURL;
     }
-
 });
 
-function laadVergelijking(){
+function zoekYoutubeVoorbeeld(){
+    const niveau = document.getElementById("niveau").value;
+    const techniek = document.getElementById("techniek").value;
 
-    const techniek =
-        document.getElementById("techniek").value;
+    const zoekterm = `pickleball ${techniek} ${niveau} drill`;
 
-    const niveau =
-        document.getElementById("niveau").value;
+    const youtubeZoekUrl =
+        "https://www.youtube.com/results?search_query=" +
+        encodeURIComponent(zoekterm);
 
-    let youtubeVideoId = "";
+    window.open(youtubeZoekUrl, "_blank");
 
-    // Voorbeeldvideo’s
-    if(techniek === "Footwork"){
-        youtubeVideoId = "b_y2lF0M6A0";
+    alert("Kies op YouTube een voorbeeldvideo. Kopieer daarna de YouTube-link en plak die in de volgende stap.");
+    
+    const link = prompt("Plak hier de YouTube-link van de voorbeeldvideo:");
+
+    if(link){
+        laadYoutubeVideo(link);
+    }
+}
+
+function laadYoutubeVideo(link){
+    let videoId = "";
+
+    if(link.includes("watch?v=")){
+        videoId = link.split("watch?v=")[1].split("&")[0];
+    } else if(link.includes("youtu.be/")){
+        videoId = link.split("youtu.be/")[1].split("?")[0];
     }
 
-    if(techniek === "Serve"){
-        youtubeVideoId = "p1S0dX74G1g";
+    if(videoId){
+        document.getElementById("youtubeFrame").src =
+            "https://www.youtube.com/embed/" + videoId;
+    } else {
+        alert("Deze YouTube-link wordt niet herkend.");
     }
-
-    if(techniek === "Backhand"){
-        youtubeVideoId = "W66i7Z8s4dY";
-    }
-
-    if(techniek === "Forehand"){
-        youtubeVideoId = "7tibn0lT6aw";
-    }
-
-    if(techniek === "Volley"){
-        youtubeVideoId = "Q9sN0h6Wz0A";
-    }
-
-    if(techniek === "Dink"){
-        youtubeVideoId = "w0f5a2s4f9Q";
-    }
-
-    document.getElementById("youtubeFrame").src =
-        `https://www.youtube.com/embed/${youtubeVideoId}`;
-
 }
 
 function voegPinpointToe(){
+    const speler = document.getElementById("spelerNaam").value || "Onbekende speler";
+    const niveau = document.getElementById("niveau").value;
+    const techniek = document.getElementById("techniek").value;
+    const tijdstip = document.getElementById("tijdstip").value;
+    const analyse = document.getElementById("analyseTekst").value;
 
-    const speler =
-        document.getElementById("spelerNaam").value;
+    const datum = new Date().toLocaleString("nl-NL", {
+        weekday:"long",
+        year:"numeric",
+        month:"long",
+        day:"numeric",
+        hour:"2-digit",
+        minute:"2-digit"
+    });
 
-    const techniek =
-        document.getElementById("techniek").value;
+    const pinpoint = {
+        speler,
+        niveau,
+        techniek,
+        datum,
+        tijdstip,
+        analyse
+    };
 
-    const niveau =
-        document.getElementById("niveau").value;
+    pinpoints.push(pinpoint);
 
-    const tijdstip =
-        document.getElementById("tijdstip").value;
-
-    const analyse =
-        document.getElementById("analyse").value;
-
-    const datum = new Date();
-
-    const nederlandseDatum =
-        datum.toLocaleString("nl-NL", {
-            weekday:'long',
-            year:'numeric',
-            month:'long',
-            day:'numeric',
-            hour:'2-digit',
-            minute:'2-digit'
-        });
-
-    const pinpoint = document.createElement("div");
-
-    pinpoint.className = "pinpoint";
-
-    pinpoint.innerHTML = `
+    const div = document.createElement("div");
+    div.className = "pinpoint";
+    div.innerHTML = `
         <strong>Speler:</strong> ${speler}<br>
         <strong>Niveau:</strong> ${niveau}<br>
         <strong>Techniek:</strong> ${techniek}<br>
-        <strong>Datum:</strong> ${nederlandseDatum}<br>
-        <strong>Tijdstip:</strong> ${tijdstip}<br>
+        <strong>Datum:</strong> ${datum}<br>
+        <strong>Tijdstip video:</strong> ${tijdstip}<br>
         <strong>Analyse:</strong> ${analyse}
     `;
 
-    document.getElementById("pinpoints")
-        .appendChild(pinpoint);
+    document.getElementById("pinpoints").appendChild(div);
 
-    document.getElementById("analyse").value = "";
-
+    document.getElementById("tijdstip").value = "";
+    document.getElementById("analyseTekst").value = "";
 }
 
+function downloadAnalyse(){
+    const speler = document.getElementById("spelerNaam").value || "Onbekende speler";
+    const techniek = document.getElementById("techniek").value;
+
+    let tekst = "PICKLEBALL COACH ANALYSE\n";
+    tekst += "========================\n\n";
+
+    pinpoints.forEach((p, index) => {
+        tekst += `Pinpoint ${index + 1}\n`;
+        tekst += `Speler: ${p.speler}\n`;
+        tekst += `Niveau: ${p.niveau}\n`;
+        tekst += `Techniek: ${p.techniek}\n`;
+        tekst += `Datum: ${p.datum}\n`;
+        tekst += `Tijdstip video: ${p.tijdstip}\n`;
+        tekst += `Analyse: ${p.analyse}\n`;
+        tekst += "------------------------\n\n";
+    });
+
+    const datum = new Date();
+    const bestandsDatum =
+        datum.getDate() + "-" +
+        (datum.getMonth() + 1) + "-" +
+        datum.getFullYear();
+
+    const bestandsNaam =
+        `${speler}_${techniek}_${bestandsDatum}.txt`;
+
+    const blob = new Blob([tekst], {type:"text/plain"});
+    const link = document.createElement("a");
+
+    link.href = URL.createObjectURL(blob);
+    link.download = bestandsNaam;
+    link.click();
+}
 </script>
 
 </body>

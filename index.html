@@ -19,13 +19,14 @@ button:hover{background:#17482d;}
 video,#youtubePlayer,iframe{width:100%;height:350px;background:black;border-radius:15px;}
 .sync-box{text-align:center;background:#eef7f1;padding:15px;border-radius:15px;margin-top:20px;}
 .moment-blok{background:#f4f4f4;padding:15px;border-radius:12px;margin-bottom:15px;}
-.moment-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.moment-blok summary{font-size:18px;font-weight:bold;cursor:pointer;color:#1f5f3b;}
+.moment-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:15px;}
 .moment-row select{width:110px;}
 .opmerking{flex:1;min-width:250px;}
 .pinpoint-knop{background:#1f5f3b;color:white;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:bold;}
 .melding{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:white;color:#1f5f3b;padding:15px 25px;border-radius:12px;font-size:18px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,0.3);display:none;z-index:9999;}
 .speler-item{display:flex;justify-content:space-between;align-items:center;background:#eef7f1;padding:10px;border-radius:10px;margin-bottom:10px;}
-details summary{font-size:22px;font-weight:bold;cursor:pointer;color:#1f5f3b;margin-bottom:15px;}
+details summary.beheer-summary{font-size:22px;font-weight:bold;cursor:pointer;color:#1f5f3b;margin-bottom:15px;}
 </style>
 </head>
 
@@ -39,7 +40,7 @@ details summary{font-size:22px;font-weight:bold;cursor:pointer;color:#1f5f3b;mar
 
 <div class="card">
 <details>
-<summary>👥 Spelers beheren</summary>
+<summary class="beheer-summary">👥 Spelers beheren</summary>
 
 <div style="margin-top:20px;">
 <div style="display:flex; gap:10px; flex-wrap:wrap;">
@@ -196,22 +197,46 @@ function updateSpelerOverzicht(){
 function maakMomenten(){
     const container=document.getElementById("momentenContainer");
     container.innerHTML="";
+
     for(let i=1;i<=4;i++){
-        const blok=document.createElement("div");
+        const blok=document.createElement("details");
         blok.className="moment-blok";
+
+        if(i===1){
+            blok.setAttribute("open","");
+        }
+
         blok.innerHTML=`
-            <h3>🎯 Moment ${i}</h3>
+            <summary>🎯 Moment ${i}</summary>
+
             <div class="moment-row">
                 <select id="min${i}"></select>
                 <select id="sec${i}"></select>
                 <button onclick="gebruikHuidigeTijd(${i})">⏱ Tijd</button>
                 <div class="pinpoint-knop" onclick="springNaarMoment(${i})">▶ Ga naar moment</div>
-                <input type="text" id="opmerking${i}" class="opmerking" placeholder="Opmerking moment ${i}">
             </div>
+
+            <input type="text" id="opmerking${i}" class="opmerking" placeholder="Opmerking moment ${i}">
+
+            <button onclick="volgendMoment(${i})">➡ Volgend moment</button>
         `;
+
         container.appendChild(blok);
     }
+
     vulTijden();
+}
+
+function volgendMoment(huidig){
+    const alleMomenten=document.querySelectorAll("#momentenContainer .moment-blok");
+
+    if(huidig < alleMomenten.length){
+        alleMomenten[huidig - 1].removeAttribute("open");
+        alleMomenten[huidig].setAttribute("open","");
+        toonMelding("➡ Moment " + (huidig + 1) + " geopend");
+    } else {
+        toonMelding("✅ Alle momenten ingevuld");
+    }
 }
 
 function vulTijden(){
@@ -220,12 +245,14 @@ function vulTijden(){
         const secSelect=document.getElementById("sec"+x);
         minSelect.innerHTML="";
         secSelect.innerHTML="";
+
         for(let i=0;i<=20;i++){
             const option=document.createElement("option");
             option.value=i;
             option.textContent=i.toString().padStart(2,"0")+" min";
             minSelect.appendChild(option);
         }
+
         for(let i=0;i<=59;i++){
             const option=document.createElement("option");
             option.value=i;
@@ -255,7 +282,7 @@ function springNaarMoment(nummer){
     }
 
     if(youtubeKlaar && youtubePlayer){
-        youtubePlayer.seekTo(totaal,true);
+        try{youtubePlayer.seekTo(totaal,true);}catch(e){}
     }
 
     toonMelding("▶ Naar moment "+nummer);
@@ -583,6 +610,15 @@ function wisAlles(){
         document.getElementById("sec"+i).value=0;
         document.getElementById("opmerking"+i).value="";
     }
+
+    const alleMomenten=document.querySelectorAll("#momentenContainer .moment-blok");
+    alleMomenten.forEach((moment,index)=>{
+        if(index===0){
+            moment.setAttribute("open","");
+        }else{
+            moment.removeAttribute("open");
+        }
+    });
 
     wisLeerlingVideo();
     wisYoutubeVideo();

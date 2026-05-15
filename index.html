@@ -200,8 +200,8 @@ placeholder="Typ hier zelf de oefening of techniek">
 
 <button onclick="zoekYoutubeVoorbeeld()">🔍 Zoek YouTube voorbeeldvideo</button>
 <button onclick="plakYoutubeLink()">📎 Plak YouTube link</button>
-<button onclick="wisYoutubeVideo()">🗑 Wis YouTube-video</button>
-<button onclick="andereYoutubeVideo()">🔄 Zoek andere video</button>
+<button onclick="wisYoutubeVideo()">🗑 Wis de video</button>
+<button onclick="andereYoutubeVideo()">🔄 Zoek een ander</button>
 
 </div>
 
@@ -245,7 +245,6 @@ let mediaRecorder;
 let recordedChunks = [];
 let cameraStream = null;
 let spelers = [];
-let laatsteZoekUrl = "";
 
 function toonMelding(tekst){
     const melding = document.getElementById("melding");
@@ -622,7 +621,6 @@ function zoekYoutubeVoorbeeld(){
     const query = `pickleball ${techniek} ${niveau}`;
     const url = "https://www.youtube.com/results?search_query=" + encodeURIComponent(query);
 
-    laatsteZoekUrl = url;
     window.open(url,"_blank");
 }
 

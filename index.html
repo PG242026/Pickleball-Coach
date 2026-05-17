@@ -27,6 +27,8 @@ video,#youtubePlayer,iframe{width:100%;height:350px;background:black;border-radi
 .melding{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:white;color:#1f5f3b;padding:15px 25px;border-radius:12px;font-size:18px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,0.3);display:none;z-index:9999;}
 .speler-item{display:flex;justify-content:space-between;align-items:center;background:#eef7f1;padding:10px;border-radius:10px;margin-bottom:10px;}
 details summary.beheer-summary{font-size:22px;font-weight:bold;cursor:pointer;color:#1f5f3b;margin-bottom:15px;}
+.ai-vak{background:#eef7f1;border-left:6px solid #1f5f3b;padding:15px;border-radius:12px;margin-top:15px;display:none;}
+.ai-vak pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:16px;line-height:1.5;margin:0;}
 </style>
 </head>
 
@@ -111,8 +113,14 @@ details summary.beheer-summary{font-size:22px;font-weight:bold;cursor:pointer;co
 <div id="momentenContainer"></div>
 <button onclick="opslaanSessie()">💾 Sessie Opslaan</button>
 <button onclick="laadSessie()">📂 Sessie Laden</button>
+<button onclick="analyseerMetAI()">🤖 Analyseer met AI</button>
 <button onclick="downloadAnalyse()">⬇ Download Analyse</button>
 <button onclick="wisAlles()">🗑 Wis Alles</button>
+
+<div id="aiAnalyseVak" class="ai-vak">
+<h3>🤖 AI Analyse</h3>
+<pre id="aiAnalyseTekst"></pre>
+</div>
 </div>
 
 </div>
@@ -565,10 +573,73 @@ function laadSessie(){
     toonMelding("📂 Sessie geladen");
 }
 
+function blobNaarBase64(blob){
+    return new Promise((resolve,reject)=>{
+        const reader=new FileReader();
+        reader.onloadend=()=>{
+            const base64=reader.result.split(",")[1];
+            resolve(base64);
+        };
+        reader.onerror=reject;
+        reader.readAsDataURL(blob);
+    });
+}
+
+async function analyseerMetAI(){
+    try{
+        if(!recordedChunks || recordedChunks.length===0){
+            toonMelding("⚠️ Neem eerst een leerlingvideo op");
+            return;
+        }
+
+        const blob=new Blob(recordedChunks,{type:"video/webm"});
+        const grootteMB=blob.size/(1024*1024);
+
+        if(grootteMB>18){
+            toonMelding("⚠️ Video is te groot. Maak een kortere opname.");
+            return;
+        }
+
+        toonMelding("🤖 AI analyse gestart");
+
+        const videoBase64=await blobNaarBase64(blob);
+
+        const response=await fetch("/api/analyse-video",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+                videoBase64:videoBase64,
+                mimeType:"video/webm",
+                speler:document.getElementById("spelerNaam").value,
+                niveau:document.getElementById("niveau").value,
+                techniek:document.getElementById("techniek").value
+            })
+        });
+
+        const data=await response.json();
+
+        if(!response.ok){
+            console.error(data);
+            toonMelding("❌ AI analyse mislukt");
+            return;
+        }
+
+        document.getElementById("aiAnalyseVak").style.display="block";
+        document.getElementById("aiAnalyseTekst").innerText=data.analyse || "Geen analyse ontvangen.";
+
+        toonMelding("✅ AI analyse klaar");
+    }
+    catch(error){
+        console.error(error);
+        toonMelding("❌ AI fout");
+    }
+}
+
 function downloadAnalyse(){
     const speler=document.getElementById("spelerNaam").value||"Speler";
     const niveau=document.getElementById("niveau").value||"Niveau niet gekozen";
     const techniek=document.getElementById("techniek").value||"Techniek";
+    const aiAnalyse=document.getElementById("aiAnalyseTekst")?.innerText || "";
 
     let tekst="PICKLEBALL VIDEO ANALYSE\n";
     tekst+="========================\n\n";
@@ -584,6 +655,12 @@ function downloadAnalyse(){
 
         tekst+="Moment "+i+": "+min+":"+sec+"\n";
         tekst+="Opmerking: "+opmerking+"\n\n";
+    }
+
+    if(aiAnalyse.trim()){
+        tekst+="\nAI ANALYSE\n";
+        tekst+="==========\n\n";
+        tekst+=aiAnalyse+"\n";
     }
 
     const blob=new Blob([tekst],{type:"text/plain"});
@@ -604,6 +681,8 @@ function wisAlles(){
     document.getElementById("niveau").value="";
     document.getElementById("techniek").value="";
     document.getElementById("nieuweSpeler").value="";
+    document.getElementById("aiAnalyseVak").style.display="none";
+    document.getElementById("aiAnalyseTekst").innerText="";
 
     for(let i=1;i<=4;i++){
         document.getElementById("min"+i).value=0;

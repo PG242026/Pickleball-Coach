@@ -26,6 +26,23 @@ body{font-family:Arial,Helvetica,sans-serif;background:#1f5f3b;margin:0;padding:
 
 <div id="popupAchtergrond" class="achtergrond" onclick="sluitAllePopups()"></div>
 <div id="handleidingPopup" class="popup"><h2>Pickleball Coach AI - Handleiding</h2><h3>1. Speler kiezen</h3><p>Open <b>Spelers beheren</b> om spelers toe te voegen of te verwijderen.</p><h3>2. Leerlingvideo opnemen of uploaden</h3><p>Je kunt direct opnemen met <b>Start Opname</b>, of een bestaande video vanaf telefoon / tablet uploaden.</p><h3>3. Automatische AI-momenten</h3><p>Klik op <b>Analyseer met AI</b>. De app leest tijdcodes uit de AI-analyse en maakt automatisch momenten aan.</p><h3>4. Handmatige momenten</h3><p>Klik op <b>Handmatig moment toevoegen</b> als je zelf extra momenten wilt maken.</p><br><button onclick="sluitAllePopups()">❌ Sluiten</button></div>
+  </div>
+
+<div id="taalPopup" class="popup">
+<h2>🌍 Kies taal</h2>
+
+<button onclick="setTaal('nl')">🇳🇱 Nederlands</button>
+<button onclick="setTaal('en')">🇬🇧 English</button>
+<button onclick="setTaal('de')">🇩🇪 Deutsch</button>
+<button onclick="setTaal('es')">🇪🇸 Español</button>
+<button onclick="setTaal('fr')">🇫🇷 Français</button>
+
+<br><br>
+
+<button onclick="sluitAllePopups()">❌ Sluiten</button>
+</div>
+
+<div id="feedbackPopup" class="popup">
 <div id="feedbackPopup" class="popup"><h2>Feedback sturen</h2><label>Naam</label><input type="text" id="feedbackNaam" placeholder="Je naam"><label>Soort feedback</label><select id="feedbackSoort"><option>Verbeteridee</option><option>Bug / foutmelding</option><option>Nieuwe functie</option><option>AI analyse feedback</option><option>Anders</option></select><label>Bericht</label><textarea id="feedbackBericht" rows="7" placeholder="Typ hier je feedback, idee of foutmelding"></textarea><button onclick="verstuurFeedback()">📧 Verstuur feedback</button><button onclick="sluitAllePopups()">❌ Sluiten</button></div>
 
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -34,6 +51,10 @@ let youtubePlayer=null,youtubeKlaar=false,mediaRecorder,recordedChunks=[],camera
 function toonMelding(t){const m=document.getElementById('melding');m.innerText=t;m.style.display='block';setTimeout(()=>m.style.display='none',2500)}
 function openHandleiding(){popupAchtergrond.style.display='block';handleidingPopup.style.display='block'}
 function openFeedback(){popupAchtergrond.style.display='block';feedbackPopup.style.display='block'}
+  function openTalen(){
+popupAchtergrond.style.display='block';
+taalPopup.style.display='block';
+}
 function sluitAllePopups(){popupAchtergrond.style.display='none';handleidingPopup.style.display='none';feedbackPopup.style.display='none'}
 function verstuurFeedback(){const naam=feedbackNaam.value||'Onbekend',soort=feedbackSoort.value,bericht=feedbackBericht.value;if(!bericht.trim()){toonMelding('⚠️ Typ eerst je feedback');return}const onderwerp=encodeURIComponent('Feedback Pickleball Coach AI - '+soort);const body=encodeURIComponent('Naam: '+naam+'\nSoort: '+soort+'\nDatum: '+new Date().toLocaleString('nl-NL')+'\n\nFeedback:\n'+bericht);window.location.href='mailto:hcvsabben@gmail.com?subject='+onderwerp+'&body='+body;toonMelding('📧 Mail wordt geopend')}
 function laadSpelers(){const o=localStorage.getItem('pickleballSpelers');if(o){try{spelers=JSON.parse(o)}catch(e){spelers=[]}}updateSpelerDropdown();updateSpelerOverzicht()}

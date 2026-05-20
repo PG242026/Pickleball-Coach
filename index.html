@@ -19,7 +19,80 @@ body{font-family:Arial,Helvetica,sans-serif;background:#1f5f3b;margin:0;padding:
 <div class="card onderaan"><h2>Hulp en contact</h2><button onclick="openHandleiding()">📘 Handleiding</button><button onclick="openTalen()">🌍 Language</button><button onclick="openFeedback()">💬 Feedback</button></div>
 </div>
 <div id="popupAchtergrond" class="achtergrond" onclick="sluitAllePopups()"></div>
-<div id="handleidingPopup" class="popup"><h2>Pickleball Coach AI - Handleiding</h2><h3>1. Speler kiezen</h3><p>Open <b>Spelers beheren</b> om spelers toe te voegen of te verwijderen.</p><h3>2. Spelersvideo opnemen of uploaden</h3><p>Je kunt direct opnemen met <b>Start Opname</b>, of een bestaande video vanaf telefoon / tablet uploaden.</p><h3>3. Automatische AI-momenten</h3><p>Klik op <b>Analyseer met AI</b>. De app leest tijdcodes uit de AI-analyse en maakt automatisch momenten aan.</p><h3>4. Handmatige momenten</h3><p>Klik op <b>Handmatig moment toevoegen</b> als je zelf extra momenten wilt maken.</p><br><button onclick="sluitAllePopups()">❌ Sluiten</button></div>
+<div id="handleidingPopup" class="popup">
+
+<div id="handleidingBlok">
+
+<h1>Pickleball Coach AI - Handleiding</h1>
+
+<div class="pinpoint">
+<h2>1. Speler kiezen of toevoegen</h2>
+<p>Open <strong>Spelers beheren</strong>. Voeg een speler toe of kies een bestaande speler uit de lijst.</p>
+</div>
+
+<div class="pinpoint">
+<h2>2. Niveau kiezen</h2>
+<p>Kies het niveau van de speler: <strong>Beginner</strong>, <strong>Gemiddeld</strong> of <strong>Gevorderd</strong>.</p>
+</div>
+
+<div class="pinpoint">
+<h2>3. Techniek of oefening invullen</h2>
+<p>Typ de techniek die je wilt analyseren, bijvoorbeeld: serve, dink, volley, third shot drop of footwork.</p>
+</div>
+
+<div class="pinpoint">
+<h2>4. Spelersvideo opnemen</h2>
+<p>Klik op <strong>Start Opname</strong>. Film de speler. Klik daarna op <strong>Stop Opname</strong>.</p>
+</div>
+
+<div class="pinpoint">
+<h2>5. Video uploaden</h2>
+<p>Je kunt ook een bestaande video uploaden vanaf telefoon, tablet of computer.</p>
+</div>
+
+<div class="pinpoint">
+<h2>6. Video bewaren</h2>
+<p>Geef de video een naam en klik op <strong>Bewaar video in lijst</strong>.</p>
+</div>
+
+<div class="pinpoint">
+<h2>7. YouTube voorbeeldvideo zoeken</h2>
+<p>Klik op <strong>Zoek YouTube voorbeeldvideo</strong>. De app zoekt automatisch passende pickleball video's.</p>
+</div>
+
+<div class="pinpoint">
+<h2>8. Side-by-side vergelijken</h2>
+<p>Links zie je de speler. Rechts zie je de YouTube-video om techniek te vergelijken.</p>
+</div>
+
+<div class="pinpoint">
+<h2>9. Pinpoints maken</h2>
+<p>Maak verbeterpunten met tijdstip, techniek en coachnotities.</p>
+</div>
+
+<div class="pinpoint">
+<h2>10. Analyse downloaden</h2>
+<p>Download analyses en sla ze op in iCloud, Google Drive, Dropbox of OneDrive.</p>
+</div>
+
+<div class="pinpoint">
+<h2>11. Handleiding printen</h2>
+<p>Klik op <strong>Print handleiding</strong> om de handleiding als PDF op te slaan of te printen.</p>
+</div>
+
+</div>
+
+<br>
+
+<button onclick="printHandleiding()">
+🖨 Print handleiding
+</button>
+
+<button onclick="sluitAllePopups()">
+❌ Sluiten
+</button>
+
+</div>
 <div id="taalPopup" class="popup"><h2>🌍 Kies taal</h2><div class="taal-knoppen"><button onclick="setTaal('nl')">🇳🇱 Nederlands</button><button onclick="setTaal('en')">🇬🇧 English</button><button onclick="setTaal('de')">🇩🇪 Deutsch</button><button onclick="setTaal('es')">🇪🇸 Español</button><button onclick="setTaal('fr')">🇫🇷 Français</button></div><br><button onclick="sluitAllePopups()">❌ Sluiten</button></div>
 <div id="feedbackPopup" class="popup"><h2>Feedback sturen</h2><label>Naam</label><input type="text" id="feedbackNaam" placeholder="Je naam"><label>Soort feedback</label><select id="feedbackSoort"><option>Verbeteridee</option><option>Bug / foutmelding</option><option>Nieuwe functie</option><option>AI analyse feedback</option><option>Anders</option></select><label>Bericht</label><textarea id="feedbackBericht" rows="7" placeholder="Typ hier je feedback, idee of foutmelding"></textarea><button onclick="verstuurFeedback()">📧 Verstuur feedback</button><button onclick="sluitAllePopups()">❌ Sluiten</button></div>
 <script src="https://www.youtube.com/iframe_api"></script>

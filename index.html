@@ -79,6 +79,84 @@ async function analyseerMetAI(){try{const blob=huidigeVideoBlob||recordedChunks[
 function downloadAnalyse(){const speler=spelerNaam.value||'Speler',tech=techniek.value||'Techniek',ai=aiAnalyseTekst?.innerText||'';let tekst='PICKLEBALL VIDEO ANALYSE\n========================\n\n';tekst+='Speler: '+speler+'\nNiveau: '+(niveau.value||'Niveau niet gekozen')+'\nTechniek / oefening: '+tech+'\nDatum: '+new Date().toLocaleString('nl-NL')+'\n\n';for(let i=1;i<=aantalMomenten;i++){tekst+='Moment '+i+': '+document.getElementById('min'+i).value.toString().padStart(2,'0')+':'+document.getElementById('sec'+i).value.toString().padStart(2,'0')+'\nOpmerking: '+document.getElementById('opmerking'+i).value+'\n\n'}if(ai.trim())tekst+='\nAI ANALYSE\n==========\n\n'+ai+'\n';const blob=new Blob([tekst],{type:'text/plain'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=speler.replaceAll(' ','_')+'_'+tech.replaceAll(' ','_')+'_analyse.txt';link.click();toonMelding('⬇ Analyse gedownload')}
 function wisAlles(){spelerNaam.value='';niveau.value='';techniek.value='';nieuweSpeler.value='';videoNaam.value='';uploadVideo.value='';aiAnalyseVak.style.display='none';aiAnalyseTekst.innerText='';momentenContainer.innerHTML='';aantalMomenten=0;voegMomentToe(false);wisLeerlingVideo();wisYoutubeVideo();localStorage.removeItem('pickleballSessie');toonMelding('✅ Hele pagina is gewist')}
 window.addEventListener('load',()=>{laadSpelers();laadVideoBibliotheek();maakMomenten();pasTaalToe()});
+  function printHandleiding() {
+
+    const inhoud =
+        document.getElementById("handleidingBlok").innerHTML;
+
+    const printVenster =
+        window.open("", "_blank");
+
+    printVenster.document.write(`
+        <html>
+
+        <head>
+
+            <title>Handleiding</title>
+
+            <style>
+
+                body{
+                    font-family:Arial;
+                    padding:30px;
+                    line-height:1.7;
+                }
+
+            </style>
+
+        </head>
+
+        <body>
+
+            ${inhoud}
+
+        </body>
+
+        </html>
+    `);
+
+    printVenster.document.close();
+
+    printVenster.print();
+}
 </script>
+  <div id="handleidingBlok" style="display:none;">
+
+    <h1>Handleiding Pickleball Coach App</h1>
+
+    <div class="pinpoint">
+        <strong>1. Speler invoeren</strong><br>
+        Vul eerst de naam van de speler in.
+    </div>
+
+    <div class="pinpoint">
+        <strong>2. Niveau kiezen</strong><br>
+        Kies Beginner, Gemiddeld of Gevorderd.
+    </div>
+
+    <div class="pinpoint">
+        <strong>3. Camera activeren</strong><br>
+        Start de camera en neem de speler op.
+    </div>
+
+    <div class="pinpoint">
+        <strong>4. Video vergelijken</strong><br>
+        Vergelijk de speler met een YouTube voorbeeldvideo.
+    </div>
+
+    <div class="pinpoint">
+        <strong>5. Pinpoints maken</strong><br>
+        Voeg verbeterpunten en markeringen toe.
+    </div>
+
+    <div class="pinpoint">
+        <strong>6. Analyse downloaden</strong><br>
+        Download video en analyse voor opslag in iCloud of Google Drive.
+    </div>
+
+</div>
+  <button onclick="printHandleiding()">
+🖨 Print handleiding
+</button>
 </body>
 </html>

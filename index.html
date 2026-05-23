@@ -23,8 +23,25 @@ body{font-family:Arial,Helvetica,sans-serif;background:#1f5f3b;margin:0;padding:
 <div class="card onderaan"><h2>Hulp en contact</h2><button onclick="openHandleiding()">📘 Handleiding</button><button onclick="openTalen()">🌍 Language</button><button onclick="openFeedback()">💬 Feedback</button></div>
 </div>
 <div id="popupAchtergrond" class="achtergrond" onclick="sluitAllePopups()"></div>
-<div id="handleidingPopup" class="popup"><h2>Pickleball Coach AI - Handleiding</h2><h3>1. Spelers beheren</h3><p>Open <b>Spelers beheren</b> om spelers toe te voegen, te bewerken of te verwijderen.</p><h3>2. Video opnemen of uploaden</h3><p>Gebruik <b>Start Opname</b> voor een nieuwe opname, of upload een bestaande video vanaf je telefoon of tablet.</p><h3>3. AI-analyse uitvoeren</h3><p>Klik op <b>Analyseer met AI</b>. De app leest automatisch tijdcodes uit de analyse en maakt momenten aan.</p><h3>4. Extra momenten toevoegen</h3><p>Gebruik <b>Handmatig moment toevoegen</b> om zelf aanvullende momenten te maken.</p><h3>5. Feedback bekijken</h3><p>Open een moment en bekijk de AI-feedback om direct verbeterpunten te zien.</p><br><button onclick="sluitAllePopups()">❌ Sluiten</button></div>
-<div id="taalPopup" class="popup"><h2>🌍 Kies taal</h2><div class="taal-knoppen"><button onclick="setTaal('nl')">🇳🇱 Nederlands</button><button onclick="setTaal('en')">🇬🇧 English</button><button onclick="setTaal('de')">🇩🇪 Deutsch</button><button onclick="setTaal('es')">🇪🇸 Español</button><button onclick="setTaal('fr')">🇫🇷 Français</button></div><br><button onclick="sluitAllePopups()">❌ Sluiten</button></div>
+<div id="handleidingPopup" class="popup">
+<h2>📘 Pickleball Coach AI - Handleiding</h2>
+<p>Handleiding wordt later toegevoegd.</p>
+<button onclick="sluitAllePopups()">❌ Sluiten</button>
+</div>
+
+<div id="taalPopup" class="popup">
+<h2>🌍 Kies taal</h2>
+
+<div class="taal-knoppen">
+<button onclick="setTaal('nl')">🇳🇱 Nederlands</button>
+<button onclick="setTaal('en')">🇬🇧 English</button>
+<button onclick="setTaal('de')">🇩🇪 Deutsch</button>
+<button onclick="setTaal('es')">🇪🇸 Español</button>
+<button onclick="setTaal('fr')">🇫🇷 Français</button>
+</div>
+<br>
+<button onclick="sluitAllePopups()">❌ Sluiten</button>
+</div>
 <div id="feedbackPopup" class="popup"><h2>Feedback sturen</h2><label>Naam</label><input type="text" id="feedbackNaam" placeholder="Je naam"><label>Soort feedback</label><select id="feedbackSoort"><option>Verbeteridee</option><option>Bug / foutmelding</option><option>Nieuwe functie</option><option>AI analyse feedback</option><option>Anders</option></select><label>Bericht</label><textarea id="feedbackBericht" rows="7" placeholder="Typ hier je feedback, idee of foutmelding"></textarea><button onclick="verstuurFeedback()">📧 Verstuur feedback</button><button onclick="sluitAllePopups()">❌ Sluiten</button></div>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>

@@ -18,7 +18,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#1f5f3b;margin:0;padding:
 <div class="app-header"><div class="app-logo" aria-label="Pickleball Coach AI logo"><svg viewBox="0 0 100 100" role="img"><defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#00b894"/><stop offset="1" stop-color="#b8e986"/></linearGradient></defs><rect x="6" y="6" width="88" height="88" rx="20" fill="#f8fbff"/><path d="M25 68 C35 30,55 28,65 60" fill="none" stroke="url(#g)" stroke-width="13" stroke-linecap="round"/><path d="M68 34 L68 70" stroke="url(#g)" stroke-width="13" stroke-linecap="round"/><circle cx="68" cy="21" r="10" fill="#a3e635"/><circle cx="64" cy="18" r="2" fill="#1f5f3b"/><circle cx="70" cy="18" r="2" fill="#1f5f3b"/><circle cx="64" cy="24" r="2" fill="#1f5f3b"/><circle cx="70" cy="24" r="2" fill="#1f5f3b"/></svg></div><h1>Pickleball Coach AI</h1></div>
 <div class="card"><details><summary class="beheer-summary">👥 Spelers beheren</summary><div style="margin-top:20px"><div style="display:flex;gap:10px;flex-wrap:wrap"><input type="text" id="nieuweSpeler" placeholder="Nieuwe speler toevoegen" style="flex:1;min-width:250px"><button onclick="voegSpelerToe()">➕ Voeg speler toe</button></div><div id="spelersOverzicht"></div></div></details></div>
 <div class="card"><label>Naam speler</label><select id="spelerNaam"><option value="">Kies speler</option></select><label>Niveau</label><select id="niveau"><option value="">Kies niveau</option><option>Beginner</option><option>Gemiddeld</option><option>Gevorderd</option></select><label>Techniek / Oefening</label><input type="text" id="techniek" placeholder="Typ hier zelf de oefening of techniek"></div>
-<div class="card"><h2>📺 Side-by-side Analyse</h2><div class="video-row"><div class="video-box"><h3>Spelers Video</h3><video id="leerlingVideo" controls playsinline></video><br><br><button onclick="startOpname()">🎥 Start Opname</button><button onclick="stopOpname()">⏹ Stop Opname</button><button onclick="wisLeerlingVideo()">🗑 Wis spelersvideo</button><hr><h3>📁 Spelers video's beheren</h3><label>Upload video vanaf telefoon / tablet</label><input type="file" id="uploadVideo" accept="video/*" onchange="uploadLeerlingVideo(event)"><label>Naam voor de video die je wilt opslaan</label><input type="text" id="videoNaam" placeholder="Bijvoorbeeld: Elly backhand 17 mei"><div class="bewaar-regel"><button onclick="bewaarHuidigeVideo()">💾 Bewaar video in lijst</button><span id="videoStatus" class="video-status">Nog geen video’s bewaard.</span></div><span class="klein uitleg-video">Video’s worden lokaal in deze browser opgeslagen. Gebruik korte clips voor beste werking.</span><br><div id="videoBibliotheek"></div></div><div class="video-box"><h3>YouTube Voorbeeld</h3><div id="youtubePlayer"></div><br><br><button onclick="zoekYoutubeVoorbeeld()">🔍 Zoek YouTube voorbeeldvideo</button><button onclick="plakYoutubeLink()">📎 Plak YouTube link</button><button onclick="wisYoutubeVideo()">🗑 Wis de video</button><button onclick="andereYoutubeVideo()">🔄 Zoek een ander</button></div></div><div class="sync-box"><h3>🔄 Sync-knoppen</h3><button onclick="startBeideVideos()">▶ Start beide video’s</button><button onclick="pauzeerBeideVideos()">⏸ Pauzeer beide video’s</button><button onclick="youtubeGelijkAanLeerling()">🔁 Zet YouTube gelijk met speler</button><button onclick="leerlingGelijkAanYoutube()">🔁 Zet speler gelijk met YouTube</button><button onclick="beideNaarBegin()">↩ Beide naar begin</button><br><br>
+<div class="card"><h2>📺 Side-by-side Analyse</h2><div class="video-row"><div class="video-box"><h3>Spelers Video</h3><video id="leerlingVideo" controls autoplay muted playsinline></video><br><br><button onclick="startOpname()">🎥 Start Opname</button><button onclick="stopOpname()">⏹ Stop Opname</button><button onclick="wisLeerlingVideo()">🗑 Wis spelersvideo</button><hr><h3>📁 Spelers video's beheren</h3><label>Upload video vanaf telefoon / tablet</label><input type="file" id="uploadVideo" accept="video/*" onchange="uploadLeerlingVideo(event)"><label>Naam voor de video die je wilt opslaan</label><input type="text" id="videoNaam" placeholder="Bijvoorbeeld: Elly backhand 17 mei"><div class="bewaar-regel"><button onclick="bewaarHuidigeVideo()">💾 Bewaar video in lijst</button><span id="videoStatus" class="video-status">Nog geen video’s bewaard.</span></div><span class="klein uitleg-video">Video’s worden lokaal in deze browser opgeslagen. Gebruik korte clips voor beste werking.</span><br><div id="videoBibliotheek"></div></div><div class="video-box"><h3>YouTube Voorbeeld</h3><div id="youtubePlayer"></div><br><br><button onclick="zoekYoutubeVoorbeeld()">🔍 Zoek YouTube voorbeeldvideo</button><button onclick="plakYoutubeLink()">📎 Plak YouTube link</button><button onclick="wisYoutubeVideo()">🗑 Wis de video</button><button onclick="andereYoutubeVideo()">🔄 Zoek een ander</button></div></div><div class="sync-box"><h3>🔄 Sync-knoppen</h3><button onclick="startBeideVideos()">▶ Start beide video’s</button><button onclick="pauzeerBeideVideos()">⏸ Pauzeer beide video’s</button><button onclick="youtubeGelijkAanLeerling()">🔁 Zet YouTube gelijk met speler</button><button onclick="leerlingGelijkAanYoutube()">🔁 Zet speler gelijk met YouTube</button><button onclick="beideNaarBegin()">↩ Beide naar begin</button><br><br>
 
 <button onclick="zetSnelheid(1)">▶ Normaal 1x</button>
 <button onclick="zetSnelheid(0.5)">🐢 Slowmotion 0.5x</button>
@@ -83,8 +83,48 @@ function vulTijdVoorMoment(x){const m=document.getElementById('min'+x),s=documen
 function maakAIMomenten(analyse){const regels=analyse.split('\n');const gevonden=[];const regex=/(\d{1,2}):(\d{2})/;for(const regel of regels){const match=regel.match(regex);if(match){const min=parseInt(match[1]);const sec=parseInt(match[2]);let tekst=regel.replace(/^[-•\s]*/,'').trim();if(!gevonden.some(m=>m.min===min&&m.sec===sec)){gevonden.push({min,sec,tekst})}}}if(gevonden.length===0){toonMelding('ℹ️ AI gaf geen tijdcodes terug');return}momentenContainer.innerHTML='';aantalMomenten=0;gevonden.slice(0,maxMomenten).forEach(m=>voegMomentToe(false,m.min,m.sec,m.tekst));toonMelding('✅ AI heeft '+Math.min(gevonden.length,maxMomenten)+' momenten aangemaakt')}
 function gebruikHuidigeTijd(n){const t=Math.floor(leerlingVideo.currentTime||0);document.getElementById('min'+n).value=Math.floor(t/60);document.getElementById('sec'+n).value=t%60;toonMelding('⏱ Tijd opgeslagen')}
 function springNaarMoment(n){const t=parseInt(document.getElementById('min'+n).value)*60+parseInt(document.getElementById('sec'+n).value);if(leerlingVideo.src){leerlingVideo.currentTime=t;leerlingVideo.play()}if(youtubeKlaar&&youtubePlayer){try{youtubePlayer.seekTo(t,true)}catch(e){}}toonMelding('▶ Naar moment '+n)}
-async function startOpname(){try{cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:true});recordedChunks=[];huidigeVideoBlob=null;const opties=MediaRecorder.isTypeSupported('video/webm')?{mimeType:'video/webm'}:{};mediaRecorder=new MediaRecorder(cameraStream,opties);mediaRecorder.ondataavailable=e=>{if(e.data.size>0)recordedChunks.push(e.data)};mediaRecorder.onstop=()=>{const blob=new Blob(recordedChunks,{type:'video/webm'}),url=URL.createObjectURL(blob);huidigeVideoBlob=blob;huidigeVideoType='video/webm';leerlingVideo.srcObject=null;leerlingVideo.src=url;leerlingVideo.load();toonMelding('✅ Opname klaar')};mediaRecorder.start();toonMelding('🎥 Opname gestart')}catch(e){toonMelding('❌ Camera geweigerd')}} 
-function stopOpname(){if(mediaRecorder&&mediaRecorder.state!=='inactive')mediaRecorder.stop();if(cameraStream){cameraStream.getTracks().forEach(t=>t.stop());cameraStream=null}}
+async function startOpname(){
+  try{
+    cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:true});
+
+    leerlingVideo.srcObject = cameraStream;
+    leerlingVideo.muted = true;
+    leerlingVideo.autoplay = true;
+    leerlingVideo.playsInline = true;
+    await leerlingVideo.play();
+
+    recordedChunks=[];
+    huidigeVideoBlob=null;
+
+    const opties=MediaRecorder.isTypeSupported('video/webm')?{mimeType:'video/webm'}:{};
+    mediaRecorder=new MediaRecorder(cameraStream,opties);
+
+    mediaRecorder.ondataavailable=e=>{if(e.data.size>0)recordedChunks.push(e.data)};
+    mediaRecorder.onstop=()=>{
+      const blob=new Blob(recordedChunks,{type:'video/webm'});
+      const url=URL.createObjectURL(blob);
+      huidigeVideoBlob=blob;
+      huidigeVideoType='video/webm';
+      leerlingVideo.srcObject=null;
+      leerlingVideo.src=url;
+      leerlingVideo.muted=false;
+      leerlingVideo.load();
+      toonMelding('✅ Opname klaar');
+    };
+
+    mediaRecorder.start();
+    toonMelding('🎥 Opname gestart');
+  }catch(e){
+    toonMelding('❌ Camera geweigerd');
+  }
+}
+function stopOpname(){
+  if(mediaRecorder&&mediaRecorder.state!=='inactive')mediaRecorder.stop();
+  if(cameraStream){
+    cameraStream.getTracks().forEach(t=>t.stop());
+    cameraStream=null;
+  }
+}
 function wisLeerlingVideo(){leerlingVideo.pause();leerlingVideo.removeAttribute('src');leerlingVideo.srcObject=null;leerlingVideo.load();recordedChunks=[];huidigeVideoBlob=null;if(cameraStream){cameraStream.getTracks().forEach(t=>t.stop());cameraStream=null}toonMelding('🗑 Spelersvideo gewist')}
 function onYouTubeIframeAPIReady(){youtubeKlaar=true}
 function extractYouTubeID(url){try{const t=url.trim();if(t.includes('youtube.com/shorts/'))return t.split('youtube.com/shorts/')[1].split('?')[0].split('&')[0].split('/')[0];if(t.includes('m.youtube.com/shorts/'))return t.split('m.youtube.com/shorts/')[1].split('?')[0].split('&')[0].split('/')[0];if(t.includes('youtu.be/'))return t.split('youtu.be/')[1].split('?')[0].split('&')[0].split('/')[0];if(t.includes('watch?v='))return t.split('watch?v=')[1].split('&')[0];if(t.includes('youtube.com/embed/'))return t.split('youtube.com/embed/')[1].split('?')[0].split('&')[0].split('/')[0];if(t.includes('youtube.com/live/'))return t.split('youtube.com/live/')[1].split('?')[0].split('&')[0].split('/')[0];return null}catch(e){return null}}

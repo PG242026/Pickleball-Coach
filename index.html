@@ -64,11 +64,39 @@ function zetTekst(sel,txt){const e=document.querySelector(sel);if(e)e.innerHTML=
 function zetPlaceholder(sel,txt){const e=document.querySelector(sel);if(e)e.placeholder=txt}
 function pasTaalToe(){const t=tr();zetTekst('.beheer-summary',t.players);zetPlaceholder('#nieuweSpeler',t.newPlayer);zetTekst('button[onclick="voegSpelerToe()"]',t.addPlayer);const labels=document.querySelectorAll('label');if(labels[0])labels[0].innerText=t.playerName;if(labels[1])labels[1].innerText=t.level;if(labels[2])labels[2].innerText=t.technique;if(labels[3])labels[3].innerText=t.upload;if(labels[4])labels[4].innerText=t.videoName;if(labels[5])labels[5].innerText=t.name;if(labels[6])labels[6].innerText=t.feedbackType;if(labels[7])labels[7].innerText=t.message;spelerNaam.options[0].text=t.choosePlayer;zetPlaceholder('#techniek',t.techPlaceholder);zetPlaceholder('#videoNaam',t.videoPlaceholder);zetPlaceholder('#feedbackNaam',t.name);zetPlaceholder('#feedbackBericht',t.message);const h2=document.querySelectorAll('h2');if(h2[0])h2[0].innerText=t.side;if(h2[1])h2[1].innerText=t.analysis;if(h2[2])h2[2].innerText=t.help;if(h2[3])h2[3].innerText='Pickleball Coach AI - '+t.guide.replace('📘 ','');if(h2[4])h2[4].innerText=t.chooseLanguage;if(h2[5])h2[5].innerText=t.feedbackTitle;const h3=document.querySelectorAll('h3');if(h3[0])h3[0].innerText=t.playerVideo;if(h3[1])h3[1].innerText=t.manageVideos;if(h3[2])h3[2].innerText=t.youtube;if(h3[3])h3[3].innerText=t.sync;if(h3[4])h3[4].innerText=t.aiAnalysis;zetTekst('button[onclick="startOpname()"]',t.start);zetTekst('button[onclick="stopOpname()"]',t.stop);zetTekst('button[onclick="wisLeerlingVideo()"]',t.clearVideo);zetTekst('button[onclick="bewaarHuidigeVideo()"]',t.saveVideo);zetTekst('.uitleg-video',t.videoHelp);zetTekst('button[onclick="zoekYoutubeVoorbeeld()"]',t.searchYT);zetTekst('button[onclick="plakYoutubeLink()"]',t.pasteYT);zetTekst('button[onclick="wisYoutubeVideo()"]',t.clearYT);zetTekst('button[onclick="andereYoutubeVideo()"]',t.otherYT);zetTekst('button[onclick="startBeideVideos()"]',t.startBoth);zetTekst('button[onclick="pauzeerBeideVideos()"]',t.pauseBoth);zetTekst('button[onclick="youtubeGelijkAanLeerling()"]',t.syncYT);zetTekst('button[onclick="leerlingGelijkAanYoutube()"]',t.syncPlayer);zetTekst('button[onclick="beideNaarBegin()"]',t.restart);zetTekst('.ai-melding',t.aiNote);zetTekst('button[onclick="voegMomentToe()"]',t.manualMoment);zetTekst('button[onclick="opslaanSessie()"]',t.saveSession);zetTekst('button[onclick="laadSessie()"]',t.loadSession);zetTekst('button[onclick="analyseerMetAI()"]',t.analyze);zetTekst('button[onclick="downloadAnalyse()"]',t.download);zetTekst('button[onclick="wisAlles()"]',t.clearAll);zetTekst('button[onclick="openHandleiding()"]',t.guide);zetTekst('button[onclick="openTaal()"]',t.language);zetTekst('button[onclick="openFeedback()"]',t.feedback);document.querySelectorAll('button[onclick="sluitAllePopups()"]').forEach(b=>b.innerText=t.close);zetTekst('button[onclick="verstuurFeedback()"]',t.sendFeedback);updateVideoBibliotheek()}
 function toonMelding(t){const m=document.getElementById('melding');m.innerText=t;m.style.display='block';setTimeout(()=>m.style.display='none',2500)}
-function openHandleiding(){sluitAllePopups();renderHandleiding();if(!popupAchtergrondEl||!handleidingPopupEl)return;popupAchtergrondEl.style.display='block';handleidingPopupEl.style.display='block'}
-function openFeedback(){sluitAllePopups();if(!popupAchtergrondEl||!feedbackPopupEl)return;popupAchtergrondEl.style.display='block';feedbackPopupEl.style.display='block'}
-function openTaal(){sluitAllePopups();if(!popupAchtergrondEl||!taalPopupEl)return;popupAchtergrondEl.style.display='block';taalPopupEl.style.display='block'}
+function sluitAllePopups(){
+  document.querySelectorAll('.popup').forEach(p=>p.style.display='none');
+  const bg=document.getElementById('popupAchtergrond');
+  if(bg)bg.style.display='none';
+}
+
+function openPopup(id){
+  sluitAllePopups();
+  const popup=document.getElementById(id);
+  const bg=document.getElementById('popupAchtergrond');
+  if(bg)bg.style.display='block';
+  if(popup)popup.style.display='block';
+}
+
+function openHandleiding(){
+  renderHandleiding();
+  openPopup('handleidingPopup');
+}
+
+function openTaal(){
+  openPopup('taalPopup');
+}
+
+function openFeedback(){
+  openPopup('feedbackPopup');
+}
+
 function openTalen(){openTaal()}
-function sluitAllePopups(){document.querySelectorAll('.popup').forEach(popup=>{popup.style.display='none'});if(popupAchtergrondEl)popupAchtergrondEl.style.display='none'}
+
+window.sluitAllePopups=sluitAllePopups;
+window.openHandleiding=openHandleiding;
+window.openTaal=openTaal;
+window.openFeedback=openFeedback;
 function setTaal(t){localStorage.setItem('pickleballTaal',t);pasTaalToe();toonMelding('🌍 '+(T[t]?.language||'Language')+' opgeslagen');sluitAllePopups()}
 function verstuurFeedback(){const naam=feedbackNaam.value||'Onbekend',soort=feedbackSoort.value,bericht=feedbackBericht.value;if(!bericht.trim()){toonMelding('⚠️ Typ eerst je feedback');return}const onderwerp=encodeURIComponent('Feedback Pickleball Coach AI - '+soort);const body=encodeURIComponent('Naam: '+naam+'\nSoort: '+soort+'\nDatum: '+new Date().toLocaleString('nl-NL')+'\n\nFeedback:\n'+bericht);window.location.href='mailto:hcvsabben@gmail.com?subject='+onderwerp+'&body='+body;toonMelding('📧 Mail wordt geopend')}
 function laadSpelers(){const o=localStorage.getItem('pickleballSpelers');if(o){try{spelers=JSON.parse(o)}catch(e){spelers=[]}}updateSpelerDropdown();updateSpelerOverzicht()}

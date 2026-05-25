@@ -75,13 +75,9 @@ const T={nl:{players:'👥 Spelers beheren',newPlayer:'Nieuwe speler toevoegen',
 
 const techniekInput=document.getElementById('techniek');
 function sluitTechniekToetsenbord(){
-  if(techniekInput){
-    techniekInput.blur();
-  }
-  if(document.body){
-    document.body.setAttribute('tabindex','-1');
-    document.body.focus();
-  }
+  const input=document.getElementById('techniek');
+  if(input) input.blur();
+  document.body.focus();
 }
 if(techniekInput){
   techniekInput.addEventListener('keydown',(e)=>{

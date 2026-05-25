@@ -4,6 +4,7 @@
   "private": true,
   "description": "Android wrapper app for Pickleball Coach Ai using Capacitor",
   "scripts": {
+    "cap:add:android": "npx cap add android",
     "cap:sync": "npx cap sync android",
     "cap:open": "npx cap open android",
     "android": "npm run cap:sync && npm run cap:open"

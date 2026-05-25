@@ -331,11 +331,9 @@ window.addEventListener('load', async () => {
   try {
     const swResponse = await fetch('/service-worker.js', { cache: 'no-store' });
     const swLive = swResponse.ok;
+
     if ('serviceWorker' in navigator && swLive) {
-      const existing = await navigator.serviceWorker.getRegistration('/');
-      if (!existing) {
-        await navigator.serviceWorker.register('/service-worker.js');
-      }
+      await navigator.serviceWorker.register('/service-worker.js');
       await navigator.serviceWorker.ready;
       setPwaStatus(pwaStatus.sw, 'Service worker actief', true);
     } else {

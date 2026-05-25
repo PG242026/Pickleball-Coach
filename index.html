@@ -23,10 +23,20 @@ body.camera-open .video-box{display:none}
 body.camera-open .video-box.player-box{display:block;width:100%}
 body.camera-open #leerlingVideo{width:100%;height:80vh;border-radius:0;object-fit:contain;background:black}
 
+.pwa-debug{position:fixed;right:14px;bottom:14px;z-index:100002;background:#0f172a;color:#e2e8f0;border:1px solid #334155;border-radius:12px;padding:10px 12px;min-width:250px;box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:14px;line-height:1.4}.pwa-debug h3{margin:0 0 8px;font-size:14px;color:#93c5fd}.pwa-debug ul{margin:0;padding-left:18px}.pwa-debug li{margin:4px 0}.pwa-ok{color:#86efac}.pwa-warn{color:#fca5a5}
+
 </style>
 </head>
 <body>
 <div id="melding" class="melding"></div>
+<div id="pwaDebugPane" class="pwa-debug" aria-live="polite">
+  <h3>🔧 PWA Debug (tijdelijk)</h3>
+  <ul>
+    <li id="pwaManifestStatus" class="pwa-warn">Manifest geladen: nee</li>
+    <li id="pwaSwStatus" class="pwa-warn">Service worker actief: nee</li>
+    <li id="pwaInstallStatus" class="pwa-warn">Install prompt beschikbaar: nee</li>
+  </ul>
+</div>
 <div class="container">
 <div class="app-header"><div class="app-logo" aria-label="Pickleball Coach AI logo"><svg viewBox="0 0 100 100" role="img"><defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#00b894"/><stop offset="1" stop-color="#b8e986"/></linearGradient></defs><rect x="6" y="6" width="88" height="88" rx="20" fill="#f8fbff"/><path d="M25 68 C35 30,55 28,65 60" fill="none" stroke="url(#g)" stroke-width="13" stroke-linecap="round"/><path d="M68 34 L68 70" stroke="url(#g)" stroke-width="13" stroke-linecap="round"/><circle cx="68" cy="21" r="10" fill="#a3e635"/><circle cx="64" cy="18" r="2" fill="#1f5f3b"/><circle cx="70" cy="18" r="2" fill="#1f5f3b"/><circle cx="64" cy="24" r="2" fill="#1f5f3b"/><circle cx="70" cy="24" r="2" fill="#1f5f3b"/></svg></div><h1>Pickleball Coach Ai</h1><button class="sluit-app-knop" onclick="sluitApp()">❌ Sluit app</button></div>
 <div class="card"><details><summary class="beheer-summary">👥 Spelers beheren</summary><div style="margin-top:20px"><div style="display:flex;gap:10px;flex-wrap:wrap"><input type="text" id="nieuweSpeler" placeholder="Nieuwe speler toevoegen" style="flex:1;min-width:250px"><button onclick="voegSpelerToe()">➕ Voeg speler toe</button></div><div id="spelersOverzicht"></div></div></details></div>
@@ -270,15 +280,49 @@ document.addEventListener('click',e=>{const b=e.target.closest('.help-icon');if(
 </script>
 
 <script>
+const pwaStatus = {
+  manifest: document.getElementById('pwaManifestStatus'),
+  sw: document.getElementById('pwaSwStatus'),
+  install: document.getElementById('pwaInstallStatus')
+};
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js').catch((error) => {
-      console.error('Service worker registratie mislukt:', error);
-    });
-  });
+function setPwaStatus(el, label, ok, detail = '') {
+  if (!el) return;
+  el.className = ok ? 'pwa-ok' : 'pwa-warn';
+  el.textContent = `${label}: ${ok ? 'ja' : 'nee'}${detail ? ` (${detail})` : ''}`;
 }
 
+window.addEventListener('beforeinstallprompt', () => {
+  setPwaStatus(pwaStatus.install, 'Install prompt beschikbaar', true);
+});
+
+window.addEventListener('load', async () => {
+  try {
+    const manifestResponse = await fetch('/manifest.json', { cache: 'no-store' });
+    setPwaStatus(pwaStatus.manifest, 'Manifest geladen', manifestResponse.ok, manifestResponse.status);
+  } catch (error) {
+    setPwaStatus(pwaStatus.manifest, 'Manifest geladen', false);
+    console.error('Manifest check mislukt:', error);
+  }
+
+  try {
+    const swResponse = await fetch('/service-worker.js', { cache: 'no-store' });
+    const swLive = swResponse.ok;
+    if ('serviceWorker' in navigator && swLive) {
+      const existing = await navigator.serviceWorker.getRegistration('/');
+      if (!existing) {
+        await navigator.serviceWorker.register('/service-worker.js');
+      }
+      await navigator.serviceWorker.ready;
+      setPwaStatus(pwaStatus.sw, 'Service worker actief', true);
+    } else {
+      setPwaStatus(pwaStatus.sw, 'Service worker actief', false, swResponse.status);
+    }
+  } catch (error) {
+    setPwaStatus(pwaStatus.sw, 'Service worker actief', false);
+    console.error('Service worker check/registratie mislukt:', error);
+  }
+});
 </script>
 
 <script type="module">

@@ -193,6 +193,9 @@ async function startOpname(){
       leerlingVideo.src=url;
       leerlingVideo.muted=false;
       leerlingVideo.load();
+      const resetNaarBegin=()=>{leerlingVideo.pause();leerlingVideo.currentTime=0};
+      leerlingVideo.addEventListener('loadedmetadata',resetNaarBegin,{once:true});
+      resetNaarBegin();
       toonMelding('✅ Opname klaar');
       bewaarHuidigeVideo(true);
     };
@@ -205,6 +208,8 @@ async function startOpname(){
   }
 }
 function stopOpname(){
+  leerlingVideo.pause();
+  leerlingVideo.currentTime=0;
   if(mediaRecorder&&mediaRecorder.state!=='inactive')mediaRecorder.stop();
   if(cameraStream){
     cameraStream.getTracks().forEach(t=>t.stop());

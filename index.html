@@ -371,7 +371,9 @@ import {
 let poseLandmarkerAI = null;
 let skeletonTrackingActief = false;
 let skeletonTrackingRaf = null;
-const skeletonLijnen = [[11,13],[13,15],[12,14],[14,16],[11,12],[11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28]];
+let skeletonNietHerkendFrames = 0;
+let skeletonWaarschuwingGetoond = false;
+const skeletonLijnen = [[11,12],[11,13],[13,15],[12,14],[14,16],[13,14],[15,16],[11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28],[27,28]];
 
 async function laadPoseLandmarkerAI() {
     if (poseLandmarkerAI) return poseLandmarkerAI;
@@ -496,7 +498,7 @@ window.analyseerMetMediaPipe = async function () {
     try {
         const video = document.getElementById("leerlingVideo");
 
-        if (!video || !video.src) {
+        if (!video || (!video.src && !video.srcObject)) {
             toonMelding("⚠️ Neem eerst een video op of upload een spelersvideo.");
             return;
         }
@@ -609,6 +611,8 @@ function tekenSkeletonFrame(landmarks) {
 
 function stopSkeletonTrackingIntern() {
     skeletonTrackingActief = false;
+    skeletonNietHerkendFrames = 0;
+    skeletonWaarschuwingGetoond = false;
     if (skeletonTrackingRaf) cancelAnimationFrame(skeletonTrackingRaf);
     skeletonTrackingRaf = null;
     const knop = document.getElementById("skeletonTrackingKnop");
@@ -633,7 +637,17 @@ function skeletonTrackingLoop() {
     if (video.readyState >= 2) {
         const resultaat = poseLandmarkerAI.detectForVideo(video, performance.now());
         if (resultaat && resultaat.landmarks && resultaat.landmarks.length > 0) {
+            skeletonNietHerkendFrames = 0;
+            skeletonWaarschuwingGetoond = false;
             tekenSkeletonFrame(resultaat.landmarks[0]);
+        } else {
+            skeletonNietHerkendFrames += 1;
+            const ctx = canvas.getContext("2d");
+            if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (skeletonNietHerkendFrames > 45 && !skeletonWaarschuwingGetoond) {
+                skeletonWaarschuwingGetoond = true;
+                toonMelding("⚠ Speler kon niet goed herkend worden");
+            }
         }
     }
     skeletonTrackingRaf = requestAnimationFrame(skeletonTrackingLoop);
@@ -645,7 +659,7 @@ window.toggleSkeletonTracking = async function () {
         return;
     }
     const video = document.getElementById("leerlingVideo");
-    if (!video || !video.src) {
+    if (!video || (!video.src && !video.srcObject)) {
         toonMelding("⚠ Kies eerst een spelersvideo");
         return;
     }
@@ -655,11 +669,13 @@ window.toggleSkeletonTracking = async function () {
         if (canvas) canvas.style.display = "block";
         const knop = document.getElementById("skeletonTrackingKnop");
         if (knop) knop.innerText = "⏹ Stop Skeleton Tracking";
+        skeletonNietHerkendFrames = 0;
+        skeletonWaarschuwingGetoond = false;
         skeletonTrackingActief = true;
         skeletonTrackingLoop();
     } catch (e) {
         stopSkeletonTrackingIntern();
-        toonMelding("⚠ Houding-analyse kon niet worden gestart");
+        toonMelding("⚠ Speler kon niet goed herkend worden");
     }
 };
 </script>

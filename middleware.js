@@ -16,6 +16,10 @@ const HEADER_LOGO_STYLE = `<style id="title-logo-mark-style">
 
 const FEEDBACK_SCRIPT = `<script id="feedback-close-after-send">
 (function(){
+  function verwijderFeedbackBevestiging(){
+    var bevestiging=document.getElementById('feedbackBevestiging');
+    if(bevestiging) bevestiging.remove();
+  }
   function closeFeedbackAfterSend(){
     var naamEl=document.getElementById('feedbackNaam');
     var soortEl=document.getElementById('feedbackSoort');
@@ -33,13 +37,11 @@ const FEEDBACK_SCRIPT = `<script id="feedback-close-after-send">
     var mailUrl='mailto:hcvsabben@gmail.com?subject='+onderwerp+'&body='+body;
     if(typeof toonMelding==='function') toonMelding('✅ Feedback klaargezet. Druk in je mailprogramma nog op verzenden.');
     if(popup){
-      var bevestiging=document.getElementById('feedbackBevestiging');
-      if(!bevestiging){
-        bevestiging=document.createElement('div');
-        bevestiging.id='feedbackBevestiging';
-        bevestiging.style.cssText='background:#eef7f1;border-left:6px solid #1f5f3b;color:#1f5f3b;padding:12px 14px;border-radius:10px;margin:10px 0 14px;font-weight:bold;';
-        popup.insertBefore(bevestiging,popup.querySelector('button'));
-      }
+      verwijderFeedbackBevestiging();
+      var bevestiging=document.createElement('div');
+      bevestiging.id='feedbackBevestiging';
+      bevestiging.style.cssText='background:#eef7f1;border-left:6px solid #1f5f3b;color:#1f5f3b;padding:12px 14px;border-radius:10px;margin:10px 0 14px;font-weight:bold;';
+      popup.insertBefore(bevestiging,popup.querySelector('button'));
       bevestiging.textContent='Bedankt, je feedback is klaargezet. Druk in je mailprogramma nog op verzenden.';
     }
     if(berichtEl) berichtEl.value='';
@@ -48,6 +50,11 @@ const FEEDBACK_SCRIPT = `<script id="feedback-close-after-send">
       if(typeof sluitAllePopups==='function') sluitAllePopups();
     }, 2600);
   }
+  var origineleOpenFeedback=window.openFeedback;
+  window.openFeedback=function(){
+    verwijderFeedbackBevestiging();
+    if(typeof origineleOpenFeedback==='function') return origineleOpenFeedback.apply(this, arguments);
+  };
   window.verstuurFeedback=closeFeedbackAfterSend;
 })();
 </script>`;

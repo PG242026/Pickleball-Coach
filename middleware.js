@@ -27,7 +27,7 @@ const NOTIFICATION_POSITION_STYLE = `<style id="notification-position-style">
 </style>`;
 
 const PRO_LAYOUT_STYLE = `<style id="pro-layout-clarity-style">
-.pro-later-badge{display:inline-flex;align-items:center;justify-content:center;margin-left:8px;padding:2px 8px;border-radius:999px;background:#f3ecff;color:#6e2bd8;font-size:11px;font-weight:800;letter-spacing:.03em;line-height:1.5;text-transform:uppercase}.premium-feature.trainer-club-feature summary .pro-later-badge,.sync-accordion summary .pro-later-badge{margin-left:auto;margin-right:8px}.premium-feature.trainer-club-feature .premium-body{display:grid;gap:12px}.premium-feature.trainer-club-feature .premium-body>label{margin-top:0}.youtube-sync-area{margin-top:14px!important;border:1px solid #d2e7db;border-radius:14px;background:#f7fcf9}.youtube-sync-area .sync-accordion{border:0!important;background:transparent!important}.video-analysis-sectie,.video-analyse-sectie{margin-top:12px!important}.video-analysis-accordion{border-color:#d2e7db!important}.video-analysis-accordion:not([open]) .video-analysis-paneel{display:none!important}.video-analysis-paneel{gap:12px!important}.analyse-controls,.sessie-sectie{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))!important;gap:10px!important}.analyse-controls .help-icon{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;justify-self:start!important}@media(max-width:700px){.analyse-controls,.sessie-sectie{grid-template-columns:1fr!important}.youtube-sync-area{margin-top:12px!important}}
+.pro-later-badge{display:inline-flex;align-items:center;justify-content:center;margin-left:8px;padding:2px 8px;border-radius:999px;background:#f3ecff;color:#6e2bd8;font-size:11px;font-weight:800;letter-spacing:.03em;line-height:1.5;text-transform:uppercase}.premium-feature.trainer-club-feature summary .pro-later-badge,.sync-accordion summary .pro-later-badge{margin-left:auto;margin-right:8px}.premium-feature.trainer-club-feature .premium-body{display:grid;gap:12px}.premium-feature.trainer-club-feature .premium-body>label{margin-top:0}.video-analysis-sectie,.video-analyse-sectie{margin-top:12px!important}.video-analysis-accordion{border-color:#d2e7db!important}.video-analysis-accordion:not([open]) .video-analysis-paneel{display:none!important}.video-analysis-paneel{gap:12px!important}.analyse-controls,.sessie-sectie{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))!important;gap:10px!important}.analyse-controls .help-icon{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;justify-self:start!important}.youtube-sync-area{position:relative;margin-top:26px!important;padding-top:14px!important;border:0!important;border-radius:0!important;background:transparent!important}.youtube-sync-area::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:#b7c7be}.youtube-sync-area .sync-accordion{border:1px solid #d2e7db!important;border-radius:14px!important;background:#f7fcf9!important;overflow:hidden!important}@media(min-width:760px){.video-row{align-items:flex-start!important}.video-box{min-width:0!important}.youtube-sync-area{margin-top:26px!important}}@media(max-width:700px){.analyse-controls,.sessie-sectie{grid-template-columns:1fr!important}.youtube-sync-area{margin-top:14px!important;padding-top:12px!important}.youtube-sync-area::before{background:#d2e7db}}
 </style>`;
 
 const FEEDBACK_SCRIPT = `<script id="feedback-close-after-send">
@@ -62,9 +62,7 @@ const FEEDBACK_SCRIPT = `<script id="feedback-close-after-send">
     }
     if(berichtEl) berichtEl.value='';
     setTimeout(function(){ window.location.href=mailUrl; }, 900);
-    setTimeout(function(){
-      if(typeof sluitAllePopups==='function') sluitAllePopups();
-    }, 2600);
+    setTimeout(function(){ if(typeof sluitAllePopups==='function') sluitAllePopups(); }, 2600);
   }
   var origineleOpenFeedback=window.openFeedback;
   window.openFeedback=function(){
@@ -80,9 +78,7 @@ const PLAYER_SCRUB_SCRIPT = `<script id="player-video-scrub-script">
   function formatTime(seconds){
     if(!Number.isFinite(seconds) || seconds < 0) seconds = 0;
     var total=Math.floor(seconds);
-    var mins=Math.floor(total/60);
-    var secs=String(total%60).padStart(2,'0');
-    return mins + ':' + secs;
+    return Math.floor(total/60) + ':' + String(total%60).padStart(2,'0');
   }
   function initPlayerScrub(){
     var video=document.getElementById('leerlingVideo');
@@ -104,9 +100,7 @@ const PLAYER_SCRUB_SCRIPT = `<script id="player-video-scrub-script">
       duration.textContent=formatTime(length);
       current.textContent=formatTime(now);
       slider.disabled=!length;
-      if(!dragging){
-        slider.value=length ? Math.round((now/length)*1000) : 0;
-      }
+      if(!dragging) slider.value=length ? Math.round((now/length)*1000) : 0;
     }
     slider.addEventListener('input', function(){
       var length=Number.isFinite(video.duration) ? video.duration : 0;
@@ -116,9 +110,7 @@ const PLAYER_SCRUB_SCRIPT = `<script id="player-video-scrub-script">
       current.textContent=formatTime(video.currentTime);
     });
     slider.addEventListener('change', function(){ dragging=false; update(); });
-    ['loadedmetadata','durationchange','timeupdate','seeked','emptied'].forEach(function(eventName){
-      video.addEventListener(eventName, update);
-    });
+    ['loadedmetadata','durationchange','timeupdate','seeked','emptied'].forEach(function(eventName){ video.addEventListener(eventName, update); });
     update();
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initPlayerScrub); else initPlayerScrub();
@@ -165,7 +157,7 @@ const PRO_LAYOUT_SCRIPT = `<script id="pro-layout-clarity-script">
     var analysis=document.querySelector('.video-analysis-accordion');
     if(analysis){
       addBadge(analysis.querySelector('summary'));
-      if(!analysis.dataset.userOpened){ analysis.removeAttribute('open'); }
+      if(!analysis.dataset.userOpened) analysis.removeAttribute('open');
       analysis.addEventListener('toggle', function(){ analysis.dataset.userOpened='1'; }, {once:true});
     }
     var syncBox=document.querySelector('.sync-box.in-manage-videos');
@@ -187,6 +179,24 @@ const PRO_LAYOUT_SCRIPT = `<script id="pro-layout-clarity-script">
 const TITLE_LOGO_MARK = `<span class="brand-title-logo" aria-hidden="true"><svg viewBox="0 0 128 128" focusable="false"><defs><linearGradient id="pcLogoA" x1="20" y1="108" x2="96" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#07999a"/><stop offset=".58" stop-color="#67c653"/><stop offset="1" stop-color="#b9e51b"/></linearGradient><linearGradient id="pcLogoB" x1="88" y1="108" x2="112" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5dbd4e"/><stop offset="1" stop-color="#b9e51b"/></linearGradient></defs><path d="M18 108C25 59 57 17 80 31c16 10 26 42 34 77" fill="none" stroke="url(#pcLogoA)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 101c18-9 31-21 45-33" fill="none" stroke="#4fbd5d" stroke-width="16" stroke-linecap="round" opacity=".95"/><path d="M106 48v58" fill="none" stroke="url(#pcLogoB)" stroke-width="16" stroke-linecap="round"/><circle cx="106" cy="27" r="13" fill="#aee018"/><circle cx="99" cy="24" r="2.2" fill="#eef7f1"/><circle cx="106" cy="19" r="2.2" fill="#eef7f1"/><circle cx="113" cy="24" r="2.2" fill="#eef7f1"/><circle cx="102" cy="33" r="2.2" fill="#eef7f1"/><circle cx="111" cy="34" r="2.2" fill="#eef7f1"/></svg></span>`;
 const TITLE_WITH_LOGO = `<h1 class="brand-title">Pickleball Coach${TITLE_LOGO_MARK}</h1>`;
 
+const HEAD_STYLES = [
+  CHEVRON_STYLE,
+  PLAYER_MANAGEMENT_STYLE,
+  VIDEO_ANALYSIS_LAYOUT_STYLE,
+  HEADER_LOGO_STYLE,
+  PLAYER_SCRUB_STYLE,
+  BUTTON_LAYOUT_STYLE,
+  NOTIFICATION_POSITION_STYLE,
+  PRO_LAYOUT_STYLE
+];
+
+const BODY_SCRIPTS = [
+  FEEDBACK_SCRIPT,
+  PLAYER_SCRUB_SCRIPT,
+  SKELETON_HELP_SCRIPT,
+  PRO_LAYOUT_SCRIPT
+];
+
 export const config = {
   matcher: ['/', '/index.html']
 };
@@ -196,52 +206,18 @@ export default async function middleware(request) {
   const response = await fetch(url, { cache: 'no-store' });
   let html = await response.text();
 
-  if (!html.includes('large-accordion-chevrons-middleware')) {
-    html = html.replace('</head>', `${CHEVRON_STYLE}\n</head>`);
+  for (const style of HEAD_STYLES) {
+    const id = style.match(/id="([^"]+)"/)?.[1];
+    if (id && !html.includes(id)) {
+      html = html.replace('</head>', `${style}\n</head>`);
+    }
   }
 
-  if (!html.includes('player-management-compact-style')) {
-    html = html.replace('</head>', `${PLAYER_MANAGEMENT_STYLE}\n</head>`);
-  }
-
-  if (!html.includes('video-analysis-layout-fix')) {
-    html = html.replace('</head>', `${VIDEO_ANALYSIS_LAYOUT_STYLE}\n</head>`);
-  }
-
-  if (!html.includes('title-logo-mark-style')) {
-    html = html.replace('</head>', `${HEADER_LOGO_STYLE}\n</head>`);
-  }
-
-  if (!html.includes('player-video-scrub-style')) {
-    html = html.replace('</head>', `${PLAYER_SCRUB_STYLE}\n</head>`);
-  }
-
-  if (!html.includes('button-layout-polish-style')) {
-    html = html.replace('</head>', `${BUTTON_LAYOUT_STYLE}\n</head>`);
-  }
-
-  if (!html.includes('notification-position-style')) {
-    html = html.replace('</head>', `${NOTIFICATION_POSITION_STYLE}\n</head>`);
-  }
-
-  if (!html.includes('pro-layout-clarity-style')) {
-    html = html.replace('</head>', `${PRO_LAYOUT_STYLE}\n</head>`);
-  }
-
-  if (!html.includes('feedback-close-after-send')) {
-    html = html.replace('</body>', `${FEEDBACK_SCRIPT}\n</body>`);
-  }
-
-  if (!html.includes('player-video-scrub-script')) {
-    html = html.replace('</body>', `${PLAYER_SCRUB_SCRIPT}\n</body>`);
-  }
-
-  if (!html.includes('skeleton-help-button-script')) {
-    html = html.replace('</body>', `${SKELETON_HELP_SCRIPT}\n</body>`);
-  }
-
-  if (!html.includes('pro-layout-clarity-script')) {
-    html = html.replace('</body>', `${PRO_LAYOUT_SCRIPT}\n</body>`);
+  for (const script of BODY_SCRIPTS) {
+    const id = script.match(/id="([^"]+)"/)?.[1];
+    if (id && !html.includes(id)) {
+      html = html.replace('</body>', `${script}\n</body>`);
+    }
   }
 
   if (!html.includes('<h1 class="brand-title">')) {

@@ -31,7 +31,7 @@ const PRO_LAYOUT_STYLE = `<style id="pro-layout-clarity-style">
 </style>`;
 
 const SESSION_ACTION_STYLE = `<style id="session-action-alignment-style">
-.analyse-controls,.sessie-sectie{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important}.analysis-aligned-button,.session-aligned-button{width:min(380px,calc(100vw - 42px))!important;max-width:100%!important;min-height:44px!important;display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;box-sizing:border-box!important;margin:0!important;padding-left:22px!important;padding-right:22px!important;white-space:nowrap!important;text-align:left!important}.session-action-stack{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important}.analysis-help-row,.session-help-row{display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;width:auto!important;max-width:100%!important}.analysis-help-row .help-icon,.session-help-row .help-icon{position:static!important;transform:none!important;flex:0 0 30px!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;margin:0!important;padding:0!important;border-radius:50%!important;box-sizing:border-box!important}@media(max-width:520px){.analysis-aligned-button,.session-aligned-button{width:min(380px,calc(100vw - 48px))!important;padding-left:18px!important;padding-right:18px!important}.analysis-help-row,.session-help-row{max-width:100%!important}}
+.analyse-controls,.sessie-sectie{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;width:100%!important}.analysis-aligned-button,.session-aligned-button{width:min(350px,100%)!important;max-width:100%!important;min-height:44px!important;display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;box-sizing:border-box!important;margin:0!important;padding-left:22px!important;padding-right:22px!important;white-space:nowrap!important;text-align:left!important}.analysis-help-row,.session-help-row{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important}.analysis-help-row .analysis-aligned-button,.session-help-row .session-aligned-button{width:min(350px,calc(100% - 42px))!important;flex:0 1 min(350px,calc(100% - 42px))!important}.session-action-stack{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;width:100%!important}.analysis-help-row .help-icon,.session-help-row .help-icon{position:static!important;transform:none!important;flex:0 0 30px!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;margin:0!important;padding:0!important;border-radius:50%!important;box-sizing:border-box!important}@media(max-width:520px){.analysis-aligned-button,.session-aligned-button{width:min(350px,100%)!important;padding-left:18px!important;padding-right:18px!important}.analysis-help-row .analysis-aligned-button,.session-help-row .session-aligned-button{width:calc(100% - 42px)!important;flex-basis:calc(100% - 42px)!important}}
 </style>`;
 
 const FEEDBACK_SCRIPT = `<script id="feedback-close-after-send">
@@ -146,59 +146,49 @@ const SESSION_ACTION_SCRIPT = `<script id="session-action-alignment-script">
     return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return text(button).indexOf(label) !== -1; });
   }
   function isHelp(el){ return !!(el && el.classList && el.classList.contains('help-icon') && text(el)==='?'); }
-  function nextElement(el){
-    var node=el ? el.nextSibling : null;
-    while(node && node.nodeType!==1) node=node.nextSibling;
-    return node;
-  }
-  function previousElement(el){
-    var node=el ? el.previousSibling : null;
-    while(node && node.nodeType!==1) node=node.previousSibling;
-    return node;
+  function collectLooseHelpBetween(startButton, stopButton){
+    var helps=[];
+    if(!startButton || !startButton.parentElement) return helps;
+    var container=startButton.parentElement;
+    var nodes=Array.prototype.slice.call(container.children);
+    var start=nodes.indexOf(startButton);
+    var stop=stopButton && stopButton.parentElement===container ? nodes.indexOf(stopButton) : nodes.length;
+    if(start<0) return helps;
+    for(var i=start+1;i<(stop<0?nodes.length:stop);i++){
+      if(isHelp(nodes[i])) helps.push(nodes[i]);
+    }
+    return helps;
   }
   function wrapWithHelp(button, help, rowClass){
-    if(!button || !help || button.closest('.analysis-help-row,.session-help-row')) return;
+    if(!button || !help) return;
+    var existing=button.closest('.analysis-help-row,.session-help-row');
+    if(existing){ existing.appendChild(help); return; }
     var row=document.createElement('div');
     row.className=rowClass;
     button.parentNode.insertBefore(row, button);
     row.appendChild(button);
     row.appendChild(help);
   }
-  function findNearbyHelp(button){
-    var after=nextElement(button);
-    if(isHelp(after)) return after;
-    var before=previousElement(button);
-    if(isHelp(before)) return before;
-    return null;
-  }
   function alignSessionActions(){
-    ['Analyseer met AI','Start Skeleton Tracking','Automatische houding-analyse'].forEach(function(label){
-      var button=findButton(label);
-      if(button) button.classList.add('analysis-aligned-button');
-    });
-    ['Handmatig moment toevoegen','Sessie Opslaan','Sessie Laden','Download Analyse'].forEach(function(label){
-      var button=findButton(label);
-      if(button) button.classList.add('session-aligned-button');
-    });
-    var firstSession=findButton('Sessie Opslaan') || findButton('Sessie Laden');
+    var analyse=findButton('Analyseer met AI');
+    var skeleton=findButton('Start Skeleton Tracking');
+    var posture=findButton('Automatische houding-analyse');
+    var manual=findButton('Handmatig moment toevoegen');
+    var save=findButton('Sessie Opslaan');
+    var load=findButton('Sessie Laden');
+    var download=findButton('Download Analyse');
+
+    [analyse,skeleton,posture].filter(Boolean).forEach(function(button){ button.classList.add('analysis-aligned-button'); });
+    [manual,save,load,download].filter(Boolean).forEach(function(button){ button.classList.add('session-aligned-button'); });
+    var firstSession=save || load;
     if(firstSession && firstSession.parentElement) firstSession.parentElement.classList.add('session-action-stack');
 
-    ['Analyseer met AI','Start Skeleton Tracking'].forEach(function(label){
-      var button=findButton(label);
-      wrapWithHelp(button, findNearbyHelp(button), 'analysis-help-row');
-    });
+    var analyseHelp=collectLooseHelpBetween(analyse, skeleton)[0];
+    var skeletonHelp=document.getElementById('skeletonTrackingHelpKnop') || collectLooseHelpBetween(skeleton, posture)[0];
+    var loadHelp=collectLooseHelpBetween(load, download)[0];
 
-    var load=findButton('Sessie Laden');
-    var loadHelp=findNearbyHelp(load);
-    if(!loadHelp && load){
-      var ordered=Array.prototype.slice.call(document.querySelectorAll('button,.help-icon'));
-      var loadIndex=ordered.indexOf(load);
-      for(var i=loadIndex+1;i<ordered.length;i++){
-        var candidate=ordered[i];
-        if(isHelp(candidate)){ loadHelp=candidate; break; }
-        if(candidate && candidate.tagName==='BUTTON' && text(candidate).indexOf('Download Analyse')!==-1) break;
-      }
-    }
+    wrapWithHelp(analyse, analyseHelp, 'analysis-help-row');
+    wrapWithHelp(skeleton, skeletonHelp, 'analysis-help-row');
     wrapWithHelp(load, loadHelp, 'session-help-row');
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', alignSessionActions); else alignSessionActions();

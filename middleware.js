@@ -14,6 +14,32 @@ const HEADER_LOGO_STYLE = `<style id="title-logo-mark-style">
 .brand-title{display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:normal}.brand-title-logo{width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;vertical-align:middle}.brand-title-logo svg{width:100%;height:100%;display:block}@media(max-width:600px){.brand-title{gap:7px}.brand-title-logo{width:34px;height:34px}}
 </style>`;
 
+const FEEDBACK_SCRIPT = `<script id="feedback-close-after-send">
+(function(){
+  function closeFeedbackAfterSend(){
+    var naamEl=document.getElementById('feedbackNaam');
+    var soortEl=document.getElementById('feedbackSoort');
+    var berichtEl=document.getElementById('feedbackBericht');
+    var bericht=berichtEl ? berichtEl.value : '';
+    if(!bericht.trim()){
+      if(typeof toonMelding==='function') toonMelding('⚠️ Typ eerst je feedback');
+      return;
+    }
+    var naam=(naamEl && naamEl.value) || 'Onbekend';
+    var soort=(soortEl && soortEl.value) || 'Feedback';
+    var onderwerp=encodeURIComponent('Feedback Pickleball Coach AI - '+soort);
+    var body=encodeURIComponent('Naam: '+naam+'\\nSoort: '+soort+'\\nDatum: '+new Date().toLocaleString('nl-NL')+'\\n\\nFeedback:\\n'+bericht);
+    if(typeof toonMelding==='function') toonMelding('✅ Feedback verstuurd');
+    if(berichtEl) berichtEl.value='';
+    setTimeout(function(){
+      if(typeof sluitAllePopups==='function') sluitAllePopups();
+    }, 700);
+    window.location.href='mailto:hcvsabben@gmail.com?subject='+onderwerp+'&body='+body;
+  }
+  window.verstuurFeedback=closeFeedbackAfterSend;
+})();
+</script>`;
+
 const TITLE_LOGO_MARK = `<span class="brand-title-logo" aria-hidden="true"><svg viewBox="0 0 128 128" focusable="false"><defs><linearGradient id="pcLogoA" x1="20" y1="108" x2="96" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#07999a"/><stop offset=".58" stop-color="#67c653"/><stop offset="1" stop-color="#b9e51b"/></linearGradient><linearGradient id="pcLogoB" x1="88" y1="108" x2="112" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5dbd4e"/><stop offset="1" stop-color="#b9e51b"/></linearGradient></defs><path d="M18 108C25 59 57 17 80 31c16 10 26 42 34 77" fill="none" stroke="url(#pcLogoA)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 101c18-9 31-21 45-33" fill="none" stroke="#4fbd5d" stroke-width="16" stroke-linecap="round" opacity=".95"/><path d="M106 48v58" fill="none" stroke="url(#pcLogoB)" stroke-width="16" stroke-linecap="round"/><circle cx="106" cy="27" r="13" fill="#aee018"/><circle cx="99" cy="24" r="2.2" fill="#eef7f1"/><circle cx="106" cy="19" r="2.2" fill="#eef7f1"/><circle cx="113" cy="24" r="2.2" fill="#eef7f1"/><circle cx="102" cy="33" r="2.2" fill="#eef7f1"/><circle cx="111" cy="34" r="2.2" fill="#eef7f1"/></svg></span>`;
 const TITLE_WITH_LOGO = `<h1 class="brand-title">Pickleball Coach${TITLE_LOGO_MARK}</h1>`;
 
@@ -40,6 +66,10 @@ export default async function middleware(request) {
 
   if (!html.includes('title-logo-mark-style')) {
     html = html.replace('</head>', `${HEADER_LOGO_STYLE}\n</head>`);
+  }
+
+  if (!html.includes('feedback-close-after-send')) {
+    html = html.replace('</body>', `${FEEDBACK_SCRIPT}\n</body>`);
   }
 
   if (!html.includes('<h1 class="brand-title">')) {

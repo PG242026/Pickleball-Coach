@@ -14,6 +14,10 @@ const HEADER_LOGO_STYLE = `<style id="title-logo-mark-style">
 .brand-title{display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:normal}.brand-title-logo{width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;vertical-align:middle}.brand-title-logo svg{width:100%;height:100%;display:block}@media(max-width:600px){.brand-title{gap:7px}.brand-title-logo{width:34px;height:34px}}
 </style>`;
 
+const PLAYER_SCRUB_STYLE = `<style id="player-video-scrub-style">
+.player-scrub-panel{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;margin:10px 0 4px;padding:10px 12px;border-radius:12px;background:#eef7f1;color:#1f5f3b;font-weight:bold}.player-scrub-time{font-variant-numeric:tabular-nums;font-size:15px;min-width:44px;text-align:center}.player-scrub-slider{width:100%;height:28px;margin:0!important;padding:0!important;accent-color:#1f5f3b;cursor:pointer}.player-scrub-slider:disabled{opacity:.55;cursor:not-allowed}@media(max-width:600px){.player-scrub-panel{grid-template-columns:1fr;gap:6px}.player-scrub-time{text-align:left}.player-scrub-time:last-child{text-align:right}}
+</style>`;
+
 const FEEDBACK_SCRIPT = `<script id="feedback-close-after-send">
 (function(){
   function verwijderFeedbackBevestiging(){
@@ -59,6 +63,56 @@ const FEEDBACK_SCRIPT = `<script id="feedback-close-after-send">
 })();
 </script>`;
 
+const PLAYER_SCRUB_SCRIPT = `<script id="player-video-scrub-script">
+(function(){
+  function formatTime(seconds){
+    if(!Number.isFinite(seconds) || seconds < 0) seconds = 0;
+    var total=Math.floor(seconds);
+    var mins=Math.floor(total/60);
+    var secs=String(total%60).padStart(2,'0');
+    return mins + ':' + secs;
+  }
+  function initPlayerScrub(){
+    var video=document.getElementById('leerlingVideo');
+    if(!video || document.getElementById('playerScrubPanel')) return;
+    var wrapper=video.closest('.video-wrapper');
+    if(!wrapper) return;
+    var panel=document.createElement('div');
+    panel.id='playerScrubPanel';
+    panel.className='player-scrub-panel hidden-during-recording';
+    panel.innerHTML='<span id="playerScrubCurrent" class="player-scrub-time">0:00</span><input id="playerScrubSlider" class="player-scrub-slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Spoel door de spelersvideo"><span id="playerScrubDuration" class="player-scrub-time">0:00</span>';
+    wrapper.insertAdjacentElement('afterend', panel);
+    var slider=panel.querySelector('#playerScrubSlider');
+    var current=panel.querySelector('#playerScrubCurrent');
+    var duration=panel.querySelector('#playerScrubDuration');
+    var dragging=false;
+    function update(){
+      var length=Number.isFinite(video.duration) ? video.duration : 0;
+      var now=Number.isFinite(video.currentTime) ? video.currentTime : 0;
+      duration.textContent=formatTime(length);
+      current.textContent=formatTime(now);
+      slider.disabled=!length;
+      if(!dragging){
+        slider.value=length ? Math.round((now/length)*1000) : 0;
+      }
+    }
+    slider.addEventListener('input', function(){
+      var length=Number.isFinite(video.duration) ? video.duration : 0;
+      if(!length) return;
+      dragging=true;
+      video.currentTime=(Number(slider.value)/1000)*length;
+      current.textContent=formatTime(video.currentTime);
+    });
+    slider.addEventListener('change', function(){ dragging=false; update(); });
+    ['loadedmetadata','durationchange','timeupdate','seeked','emptied'].forEach(function(eventName){
+      video.addEventListener(eventName, update);
+    });
+    update();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initPlayerScrub); else initPlayerScrub();
+})();
+</script>`;
+
 const TITLE_LOGO_MARK = `<span class="brand-title-logo" aria-hidden="true"><svg viewBox="0 0 128 128" focusable="false"><defs><linearGradient id="pcLogoA" x1="20" y1="108" x2="96" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#07999a"/><stop offset=".58" stop-color="#67c653"/><stop offset="1" stop-color="#b9e51b"/></linearGradient><linearGradient id="pcLogoB" x1="88" y1="108" x2="112" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5dbd4e"/><stop offset="1" stop-color="#b9e51b"/></linearGradient></defs><path d="M18 108C25 59 57 17 80 31c16 10 26 42 34 77" fill="none" stroke="url(#pcLogoA)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 101c18-9 31-21 45-33" fill="none" stroke="#4fbd5d" stroke-width="16" stroke-linecap="round" opacity=".95"/><path d="M106 48v58" fill="none" stroke="url(#pcLogoB)" stroke-width="16" stroke-linecap="round"/><circle cx="106" cy="27" r="13" fill="#aee018"/><circle cx="99" cy="24" r="2.2" fill="#eef7f1"/><circle cx="106" cy="19" r="2.2" fill="#eef7f1"/><circle cx="113" cy="24" r="2.2" fill="#eef7f1"/><circle cx="102" cy="33" r="2.2" fill="#eef7f1"/><circle cx="111" cy="34" r="2.2" fill="#eef7f1"/></svg></span>`;
 const TITLE_WITH_LOGO = `<h1 class="brand-title">Pickleball Coach${TITLE_LOGO_MARK}</h1>`;
 
@@ -87,8 +141,16 @@ export default async function middleware(request) {
     html = html.replace('</head>', `${HEADER_LOGO_STYLE}\n</head>`);
   }
 
+  if (!html.includes('player-video-scrub-style')) {
+    html = html.replace('</head>', `${PLAYER_SCRUB_STYLE}\n</head>`);
+  }
+
   if (!html.includes('feedback-close-after-send')) {
     html = html.replace('</body>', `${FEEDBACK_SCRIPT}\n</body>`);
+  }
+
+  if (!html.includes('player-video-scrub-script')) {
+    html = html.replace('</body>', `${PLAYER_SCRUB_SCRIPT}\n</body>`);
   }
 
   if (!html.includes('<h1 class="brand-title">')) {

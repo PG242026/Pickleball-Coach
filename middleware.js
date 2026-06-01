@@ -151,24 +151,24 @@ const SESSION_ACTION_SCRIPT = `<script id="session-action-alignment-script">
     buttons.forEach(function(button){ button.classList.add('session-aligned-button'); });
     var firstSession=findButton('Sessie Opslaan') || findButton('Sessie Laden');
     if(firstSession && firstSession.parentElement) firstSession.parentElement.classList.add('session-action-stack');
-    var download=findButton('Download Analyse');
-    if(!download || download.closest('.session-help-row')) return;
+    var load=findButton('Sessie Laden');
+    if(!load || load.closest('.session-help-row')) return;
     var ordered=Array.prototype.slice.call(document.querySelectorAll('button,.help-icon'));
-    var downloadIndex=ordered.indexOf(download);
+    var loadIndex=ordered.indexOf(load);
     var help=null;
-    for(var i=downloadIndex-1;i>=0;i--){
+    for(var i=loadIndex+1;i<ordered.length;i++){
       var candidate=ordered[i];
       if(candidate && candidate.classList && candidate.classList.contains('help-icon') && text(candidate)==='?' && candidate.id!=='skeletonTrackingHelpKnop'){
         help=candidate;
         break;
       }
-      if(candidate && candidate.tagName==='BUTTON' && text(candidate).indexOf('Sessie Laden')!==-1) break;
+      if(candidate && candidate.tagName==='BUTTON' && text(candidate).indexOf('Download Analyse')!==-1) break;
     }
     if(!help) return;
     var row=document.createElement('div');
     row.className='session-help-row';
-    download.parentNode.insertBefore(row, download);
-    row.appendChild(download);
+    load.parentNode.insertBefore(row, load);
+    row.appendChild(load);
     row.appendChild(help);
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', alignSessionActions); else alignSessionActions();

@@ -20,6 +20,7 @@ const FEEDBACK_SCRIPT = `<script id="feedback-close-after-send">
     var naamEl=document.getElementById('feedbackNaam');
     var soortEl=document.getElementById('feedbackSoort');
     var berichtEl=document.getElementById('feedbackBericht');
+    var popup=document.getElementById('feedbackPopup');
     var bericht=berichtEl ? berichtEl.value : '';
     if(!bericht.trim()){
       if(typeof toonMelding==='function') toonMelding('⚠️ Typ eerst je feedback');
@@ -29,12 +30,23 @@ const FEEDBACK_SCRIPT = `<script id="feedback-close-after-send">
     var soort=(soortEl && soortEl.value) || 'Feedback';
     var onderwerp=encodeURIComponent('Feedback Pickleball Coach AI - '+soort);
     var body=encodeURIComponent('Naam: '+naam+'\\nSoort: '+soort+'\\nDatum: '+new Date().toLocaleString('nl-NL')+'\\n\\nFeedback:\\n'+bericht);
-    if(typeof toonMelding==='function') toonMelding('✅ Feedback verstuurd');
+    var mailUrl='mailto:hcvsabben@gmail.com?subject='+onderwerp+'&body='+body;
+    if(typeof toonMelding==='function') toonMelding('✅ Feedback klaargezet. Druk in je mailprogramma nog op verzenden.');
+    if(popup){
+      var bevestiging=document.getElementById('feedbackBevestiging');
+      if(!bevestiging){
+        bevestiging=document.createElement('div');
+        bevestiging.id='feedbackBevestiging';
+        bevestiging.style.cssText='background:#eef7f1;border-left:6px solid #1f5f3b;color:#1f5f3b;padding:12px 14px;border-radius:10px;margin:10px 0 14px;font-weight:bold;';
+        popup.insertBefore(bevestiging,popup.querySelector('button'));
+      }
+      bevestiging.textContent='Bedankt, je feedback is klaargezet. Druk in je mailprogramma nog op verzenden.';
+    }
     if(berichtEl) berichtEl.value='';
+    setTimeout(function(){ window.location.href=mailUrl; }, 900);
     setTimeout(function(){
       if(typeof sluitAllePopups==='function') sluitAllePopups();
-    }, 700);
-    window.location.href='mailto:hcvsabben@gmail.com?subject='+onderwerp+'&body='+body;
+    }, 2600);
   }
   window.verstuurFeedback=closeFeedbackAfterSend;
 })();

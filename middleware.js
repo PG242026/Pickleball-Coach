@@ -18,6 +18,14 @@ const PLAYER_SCRUB_STYLE = `<style id="player-video-scrub-style">
 .player-scrub-panel{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;margin:10px 0 4px;padding:10px 12px;border-radius:12px;background:#eef7f1;color:#1f5f3b;font-weight:bold}.player-scrub-time{font-variant-numeric:tabular-nums;font-size:15px;min-width:44px;text-align:center}.player-scrub-slider{width:100%;height:28px;margin:0!important;padding:0!important;accent-color:#1f5f3b;cursor:pointer}.player-scrub-slider:disabled{opacity:.55;cursor:not-allowed}@media(max-width:600px){.player-scrub-panel{grid-template-columns:1fr;gap:6px}.player-scrub-time{text-align:left}.player-scrub-time:last-child{text-align:right}}
 </style>`;
 
+const BUTTON_LAYOUT_STYLE = `<style id="button-layout-polish-style">
+.knopgroep{gap:12px!important;align-items:center!important}.knopgroep button{margin:0!important;min-height:44px!important;border-radius:9px!important;white-space:nowrap!important}.player-box .hidden-during-recording>.knopgroep{display:flex!important;gap:12px!important;align-items:center!important;flex-wrap:wrap!important}.player-box .hidden-during-recording .knopgroep .help-icon{flex:0 0 42px!important;width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;padding:0!important;margin:0!important;border-radius:50%!important;background:#fff!important;color:#1f5f3b!important;border:2px solid #1f5f3b!important;line-height:1!important;box-sizing:border-box!important}.player-box .hidden-during-recording .knopgroep button:not(.help-icon){flex:0 1 auto!important}@media(max-width:520px){.player-box .hidden-during-recording .knopgroep button:not(.help-icon){flex:1 1 calc(50% - 12px)!important;min-width:145px!important}.player-box .hidden-during-recording .knopgroep .help-icon{order:2}.player-box .hidden-during-recording .knopgroep button[onclick="wisLeerlingVideo()"]{flex-basis:100%!important}}
+</style>`;
+
+const NOTIFICATION_POSITION_STYLE = `<style id="notification-position-style">
+.melding{top:18px!important;left:auto!important;right:156px!important;transform:none!important;max-width:min(360px,calc(100vw - 32px))!important;text-align:center!important;box-sizing:border-box!important}@media(max-width:760px){.melding{top:12px!important;left:16px!important;right:16px!important;max-width:none!important}}
+</style>`;
+
 const FEEDBACK_SCRIPT = `<script id="feedback-close-after-send">
 (function(){
   function verwijderFeedbackBevestiging(){
@@ -143,6 +151,14 @@ export default async function middleware(request) {
 
   if (!html.includes('player-video-scrub-style')) {
     html = html.replace('</head>', `${PLAYER_SCRUB_STYLE}\n</head>`);
+  }
+
+  if (!html.includes('button-layout-polish-style')) {
+    html = html.replace('</head>', `${BUTTON_LAYOUT_STYLE}\n</head>`);
+  }
+
+  if (!html.includes('notification-position-style')) {
+    html = html.replace('</head>', `${NOTIFICATION_POSITION_STYLE}\n</head>`);
   }
 
   if (!html.includes('feedback-close-after-send')) {

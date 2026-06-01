@@ -121,6 +121,24 @@ const PLAYER_SCRUB_SCRIPT = `<script id="player-video-scrub-script">
 })();
 </script>`;
 
+const SKELETON_HELP_SCRIPT = `<script id="skeleton-help-button-script">
+(function(){
+  function addSkeletonHelpButton(){
+    var skeletonButton=document.getElementById('skeletonTrackingKnop');
+    if(!skeletonButton || document.getElementById('skeletonTrackingHelpKnop')) return;
+    var help=document.createElement('button');
+    help.type='button';
+    help.id='skeletonTrackingHelpKnop';
+    help.className='help-icon';
+    help.setAttribute('aria-label','Help Start Skeleton Tracking');
+    help.setAttribute('data-help','Skeleton Tracking tekent een eenvoudig skelet over de spelersvideo. Zo kun je houding, balans en beweging beter bekijken tijdens de analyse.');
+    help.textContent='?';
+    skeletonButton.insertAdjacentElement('afterend', help);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', addSkeletonHelpButton); else addSkeletonHelpButton();
+})();
+</script>`;
+
 const TITLE_LOGO_MARK = `<span class="brand-title-logo" aria-hidden="true"><svg viewBox="0 0 128 128" focusable="false"><defs><linearGradient id="pcLogoA" x1="20" y1="108" x2="96" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#07999a"/><stop offset=".58" stop-color="#67c653"/><stop offset="1" stop-color="#b9e51b"/></linearGradient><linearGradient id="pcLogoB" x1="88" y1="108" x2="112" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5dbd4e"/><stop offset="1" stop-color="#b9e51b"/></linearGradient></defs><path d="M18 108C25 59 57 17 80 31c16 10 26 42 34 77" fill="none" stroke="url(#pcLogoA)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 101c18-9 31-21 45-33" fill="none" stroke="#4fbd5d" stroke-width="16" stroke-linecap="round" opacity=".95"/><path d="M106 48v58" fill="none" stroke="url(#pcLogoB)" stroke-width="16" stroke-linecap="round"/><circle cx="106" cy="27" r="13" fill="#aee018"/><circle cx="99" cy="24" r="2.2" fill="#eef7f1"/><circle cx="106" cy="19" r="2.2" fill="#eef7f1"/><circle cx="113" cy="24" r="2.2" fill="#eef7f1"/><circle cx="102" cy="33" r="2.2" fill="#eef7f1"/><circle cx="111" cy="34" r="2.2" fill="#eef7f1"/></svg></span>`;
 const TITLE_WITH_LOGO = `<h1 class="brand-title">Pickleball Coach${TITLE_LOGO_MARK}</h1>`;
 
@@ -167,6 +185,10 @@ export default async function middleware(request) {
 
   if (!html.includes('player-video-scrub-script')) {
     html = html.replace('</body>', `${PLAYER_SCRUB_SCRIPT}\n</body>`);
+  }
+
+  if (!html.includes('skeleton-help-button-script')) {
+    html = html.replace('</body>', `${SKELETON_HELP_SCRIPT}\n</body>`);
   }
 
   if (!html.includes('<h1 class="brand-title">')) {

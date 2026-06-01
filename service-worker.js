@@ -1,12 +1,31 @@
-const CACHE_NAME = 'pickleball-coach-ai-v31';
+const CACHE_NAME = 'pickleball-coach-ai-v32';
+const AI_CLIENT_SCRIPT = '<script src="/ai-backend-client.js?v=cache32"></script>';
 const APP_SHELL = [
   '/',
   '/index.html',
   '/styles.css',
   '/manifest.json',
+  '/ai-backend-client.js',
   '/icons/icon-192.png',
   '/icons/icon-512.png'
 ];
+
+function injectAiClient(html) {
+  if (html.includes('ai-backend-client.js')) return html;
+  return html.replace('</body>', AI_CLIENT_SCRIPT + '\n</body>');
+}
+
+async function htmlResponseWithAiClient(response) {
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  headers.set('content-type', 'text/html; charset=utf-8');
+
+  return new Response(injectAiClient(await response.text()), {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
+}
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -39,17 +58,17 @@ self.addEventListener('fetch', (event) => {
   if (isNavigationRequest || isIndexRequest) {
     event.respondWith(
       fetch(event.request)
-        .then((response) => {
+        .then(async (response) => {
           if (response && response.status === 200 && response.type === 'basic') {
             const responseToCache = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put('/index.html', responseToCache);
+            caches.open(CACHE_NAME).then(async (cache) => {
+              cache.put('/index.html', await htmlResponseWithAiClient(responseToCache));
               if (requestUrl.pathname === '/') {
-                cache.put('/', response.clone());
+                cache.put('/', await htmlResponseWithAiClient(response.clone()));
               }
             });
           }
-          return response;
+          return htmlResponseWithAiClient(response);
         })
         .catch(() => caches.match('/index.html'))
     );

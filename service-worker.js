@@ -60,11 +60,12 @@ self.addEventListener('fetch', (event) => {
       fetch(event.request)
         .then(async (response) => {
           if (response && response.status === 200 && response.type === 'basic') {
-            const responseToCache = response.clone();
+            const cacheIndexResponse = response.clone();
+            const cacheRootResponse = response.clone();
             caches.open(CACHE_NAME).then(async (cache) => {
-              cache.put('/index.html', await htmlResponseWithAiClient(responseToCache));
+              cache.put('/index.html', await htmlResponseWithAiClient(cacheIndexResponse));
               if (requestUrl.pathname === '/') {
-                cache.put('/', await htmlResponseWithAiClient(response.clone()));
+                cache.put('/', await htmlResponseWithAiClient(cacheRootResponse));
               }
             });
           }

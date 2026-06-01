@@ -2,6 +2,10 @@ const CHEVRON_STYLE = `<style id="large-accordion-chevrons-middleware">
 .accordion-chevron{flex:0 0 48px!important;width:48px!important;height:48px!important;margin-left:16px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;color:transparent!important;font-size:0!important;line-height:1!important;position:relative!important;transform:rotate(0deg);transform-origin:center;transition:transform .25s ease}.accordion-chevron::before{content:"";width:19px;height:19px;border-right:4px solid #1f5f3b;border-bottom:4px solid #1f5f3b;border-radius:2px;transform:rotate(45deg) translate(-2px,-2px);box-sizing:border-box}details[open]>.accordion-header .accordion-chevron{transform:rotate(180deg)}
 </style>`;
 
+const PLAYER_MANAGEMENT_STYLE = `<style id="player-management-compact-style">
+.container>.card:first-of-type{padding:0!important;border-radius:14px!important;margin-bottom:22px!important}.container>.card:first-of-type .beheer-summary{min-height:62px!important;margin:0!important;padding:8px 18px!important;font-size:22px!important}.container>.card:first-of-type details[open] .beheer-summary{border-bottom:1px solid #e4eee8}.container>.card:first-of-type details>div{padding:16px 18px 18px!important;margin-top:0!important}@media(max-width:600px){.container>.card:first-of-type .beheer-summary{min-height:56px!important;padding:7px 14px!important;font-size:20px!important}.container>.card:first-of-type{border-radius:12px!important}}
+</style>`;
+
 const VIDEO_ANALYSIS_LAYOUT_STYLE = `<style id="video-analysis-layout-fix">
 .premium-feature.trainer-club-feature[open]{overflow:visible!important}.premium-feature.trainer-club-feature[open] .premium-body{max-height:none!important;overflow:visible!important}.video-analysis-accordion[open] .video-analysis-paneel,.video-analysis-paneel{overflow:visible!important}.analyse-controls,.sessie-sectie{position:relative;z-index:1}
 </style>`;
@@ -24,6 +28,10 @@ export default async function middleware(request) {
 
   if (!html.includes('large-accordion-chevrons-middleware')) {
     html = html.replace('</head>', `${CHEVRON_STYLE}\n</head>`);
+  }
+
+  if (!html.includes('player-management-compact-style')) {
+    html = html.replace('</head>', `${PLAYER_MANAGEMENT_STYLE}\n</head>`);
   }
 
   if (!html.includes('video-analysis-layout-fix')) {

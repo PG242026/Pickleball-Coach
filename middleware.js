@@ -30,6 +30,10 @@ const PRO_LAYOUT_STYLE = `<style id="pro-layout-clarity-style">
 .pro-later-badge{display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;margin-left:0!important;margin-right:0!important;padding:2px 7px!important;border-radius:999px;background:#f3ecff;color:#6e2bd8;font-size:9px!important;font-weight:800;letter-spacing:.04em;line-height:1.2!important;text-transform:uppercase}.premium-feature.trainer-club-feature .premium-body{display:grid;gap:12px}.premium-feature.trainer-club-feature .premium-body>label{margin-top:0}.video-analysis-sectie,.video-analyse-sectie{margin-top:12px!important}.video-analysis-accordion{border-color:#d2e7db!important}.video-analysis-accordion:not([open]) .video-analysis-paneel{display:none!important}.video-analysis-paneel{gap:12px!important}.analyse-controls,.sessie-sectie{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))!important;gap:10px!important}.analyse-controls .help-icon{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;justify-self:start!important}.player-video-separator{margin:24px 0 12px!important;border:0!important;border-top:1px solid #b7c7be!important;height:0!important}.youtube-sync-area{position:relative;margin-top:24px!important;padding-top:12px!important;border:0!important;border-radius:0!important;background:transparent!important}.youtube-sync-area::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:#b7c7be}.youtube-sync-area .sync-accordion{border:1px solid #d2e7db!important;border-radius:12px!important;background:#f7fcf9!important;overflow:hidden!important}#manageVideosAccordion>.accordion-header,#manageVideosAccordion>summary,.youtube-sync-area .sync-accordion>.accordion-header,.youtube-sync-area .sync-accordion>summary{display:grid!important;grid-template-columns:minmax(0,1fr) auto 42px!important;column-gap:10px!important;align-items:center!important;min-height:76px!important;padding:18px 20px!important;box-sizing:border-box!important}#manageVideosTitle,.youtube-sync-area .accordion-title{font-family:inherit!important;font-size:20px!important;font-weight:700!important;line-height:1.2!important;color:#1f5f3b!important;letter-spacing:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;margin:0!important;padding:0!important;min-width:0!important}.premium-feature.trainer-club-feature summary .pro-later-badge,.sync-accordion summary .pro-later-badge{justify-self:end!important;align-self:center!important}.youtube-sync-area .accordion-chevron,#manageVideosAccordion .accordion-chevron{justify-self:end!important;align-self:center!important;margin-left:0!important;flex:0 0 42px!important;width:42px!important;height:42px!important}@media(min-width:760px){.video-row{align-items:flex-start!important}.video-box{min-width:0!important}}@media(max-width:700px){.analyse-controls,.sessie-sectie{grid-template-columns:1fr!important}.player-video-separator{margin:14px 0 12px!important}.youtube-sync-area{margin-top:14px!important;padding-top:12px!important}.youtube-sync-area::before{background:#d2e7db}#manageVideosAccordion>.accordion-header,#manageVideosAccordion>summary,.youtube-sync-area .sync-accordion>.accordion-header,.youtube-sync-area .sync-accordion>summary{min-height:66px!important;padding:15px 16px!important;grid-template-columns:minmax(0,1fr) auto 36px!important}#manageVideosTitle,.youtube-sync-area .accordion-title{font-size:18px!important}.pro-later-badge{font-size:8px!important;padding:2px 6px!important}}
 </style>`;
 
+const SESSION_ACTION_STYLE = `<style id="session-action-alignment-style">
+.session-aligned-button{width:276px!important;max-width:100%!important;min-height:44px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;margin:0!important}.session-action-stack{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important}.session-help-row{display:inline-flex!important;align-items:center!important;gap:8px!important;width:auto!important;max-width:100%!important}.session-help-row .help-icon{position:static!important;transform:none!important;flex:0 0 30px!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;margin:0!important;padding:0!important;border-radius:50%!important;box-sizing:border-box!important}@media(max-width:520px){.session-aligned-button{width:min(276px,calc(100vw - 48px))!important}.session-help-row{max-width:100%!important}}
+</style>`;
+
 const FEEDBACK_SCRIPT = `<script id="feedback-close-after-send">
 (function(){
   function verwijderFeedbackBevestiging(){
@@ -135,6 +139,42 @@ const SKELETON_HELP_SCRIPT = `<script id="skeleton-help-button-script">
 })();
 </script>`;
 
+const SESSION_ACTION_SCRIPT = `<script id="session-action-alignment-script">
+(function(){
+  function text(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim(); }
+  function findButton(label){
+    return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return text(button).indexOf(label) !== -1; });
+  }
+  function alignSessionActions(){
+    var labels=['Handmatig moment toevoegen','Sessie Opslaan','Sessie Laden','Download Analyse'];
+    var buttons=labels.map(findButton).filter(Boolean);
+    buttons.forEach(function(button){ button.classList.add('session-aligned-button'); });
+    var firstSession=findButton('Sessie Opslaan') || findButton('Sessie Laden');
+    if(firstSession && firstSession.parentElement) firstSession.parentElement.classList.add('session-action-stack');
+    var load=findButton('Sessie Laden');
+    if(!load || load.closest('.session-help-row')) return;
+    var ordered=Array.prototype.slice.call(document.querySelectorAll('button,.help-icon'));
+    var loadIndex=ordered.indexOf(load);
+    var help=null;
+    for(var i=loadIndex+1;i<ordered.length;i++){
+      var candidate=ordered[i];
+      if(candidate && candidate.classList && candidate.classList.contains('help-icon') && text(candidate)==='?' && candidate.id!=='skeletonTrackingHelpKnop'){
+        help=candidate;
+        break;
+      }
+      if(candidate && candidate.tagName==='BUTTON' && text(candidate).indexOf('Download Analyse')!==-1) break;
+    }
+    if(!help) return;
+    var row=document.createElement('div');
+    row.className='session-help-row';
+    load.parentNode.insertBefore(row, load);
+    row.appendChild(load);
+    row.appendChild(help);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', alignSessionActions); else alignSessionActions();
+})();
+</script>`;
+
 const PRO_LAYOUT_SCRIPT = `<script id="pro-layout-clarity-script">
 (function(){
   function addBadge(summary){
@@ -164,7 +204,7 @@ const PRO_LAYOUT_SCRIPT = `<script id="pro-layout-clarity-script">
     var youtubeBox=document.querySelector('#youtubePlayer') && document.querySelector('#youtubePlayer').closest('.video-box');
     if(syncBox && youtubeBox && !syncBox.dataset.movedToYoutube){
       var syncTitle=syncBox.querySelector('.accordion-title');
-      if(syncTitle) syncTitle.innerHTML='🎞️ Vergelijk & Afspelen';
+      if(syncTitle) syncTitle.innerHTML='🎬 Vergelijk & Afspelen';
       addBadge(syncBox.querySelector('summary'));
       syncBox.classList.add('youtube-sync-area');
       syncBox.dataset.movedToYoutube='1';
@@ -179,8 +219,8 @@ const PRO_LAYOUT_SCRIPT = `<script id="pro-layout-clarity-script">
 const TITLE_LOGO_MARK = `<span class="brand-title-logo" aria-hidden="true"><svg viewBox="0 0 128 128" focusable="false"><defs><linearGradient id="pcLogoA" x1="20" y1="108" x2="96" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#07999a"/><stop offset=".58" stop-color="#67c653"/><stop offset="1" stop-color="#b9e51b"/></linearGradient><linearGradient id="pcLogoB" x1="88" y1="108" x2="112" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5dbd4e"/><stop offset="1" stop-color="#b9e51b"/></linearGradient></defs><path d="M18 108C25 59 57 17 80 31c16 10 26 42 34 77" fill="none" stroke="url(#pcLogoA)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 101c18-9 31-21 45-33" fill="none" stroke="#4fbd5d" stroke-width="16" stroke-linecap="round" opacity=".95"/><path d="M106 48v58" fill="none" stroke="url(#pcLogoB)" stroke-width="16" stroke-linecap="round"/><circle cx="106" cy="27" r="13" fill="#aee018"/><circle cx="99" cy="24" r="2.2" fill="#eef7f1"/><circle cx="106" cy="19" r="2.2" fill="#eef7f1"/><circle cx="113" cy="24" r="2.2" fill="#eef7f1"/><circle cx="102" cy="33" r="2.2" fill="#eef7f1"/><circle cx="111" cy="34" r="2.2" fill="#eef7f1"/></svg></span>`;
 const TITLE_WITH_LOGO = `<h1 class="brand-title">Pickleball Coach${TITLE_LOGO_MARK}</h1>`;
 
-const HEAD_STYLES = [CHEVRON_STYLE,PLAYER_MANAGEMENT_STYLE,VIDEO_ANALYSIS_LAYOUT_STYLE,HEADER_LOGO_STYLE,PLAYER_SCRUB_STYLE,BUTTON_LAYOUT_STYLE,NOTIFICATION_POSITION_STYLE,PRO_LAYOUT_STYLE];
-const BODY_SCRIPTS = [FEEDBACK_SCRIPT,PLAYER_SCRUB_SCRIPT,SKELETON_HELP_SCRIPT,PRO_LAYOUT_SCRIPT];
+const HEAD_STYLES = [CHEVRON_STYLE,PLAYER_MANAGEMENT_STYLE,VIDEO_ANALYSIS_LAYOUT_STYLE,HEADER_LOGO_STYLE,PLAYER_SCRUB_STYLE,BUTTON_LAYOUT_STYLE,NOTIFICATION_POSITION_STYLE,PRO_LAYOUT_STYLE,SESSION_ACTION_STYLE];
+const BODY_SCRIPTS = [FEEDBACK_SCRIPT,PLAYER_SCRUB_SCRIPT,SKELETON_HELP_SCRIPT,SESSION_ACTION_SCRIPT,PRO_LAYOUT_SCRIPT];
 
 export const config = {
   matcher: ['/', '/index.html']

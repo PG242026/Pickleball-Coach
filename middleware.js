@@ -26,6 +26,10 @@ const NOTIFICATION_POSITION_STYLE = `<style id="notification-position-style">
 .melding{top:18px!important;left:auto!important;right:156px!important;transform:none!important;max-width:min(360px,calc(100vw - 32px))!important;text-align:center!important;box-sizing:border-box!important}@media(max-width:760px){.melding{top:12px!important;left:16px!important;right:16px!important;max-width:none!important}}
 </style>`;
 
+const PRO_LAYOUT_STYLE = `<style id="pro-layout-clarity-style">
+.pro-later-badge{display:inline-flex;align-items:center;justify-content:center;margin-left:8px;padding:2px 8px;border-radius:999px;background:#f3ecff;color:#6e2bd8;font-size:11px;font-weight:800;letter-spacing:.03em;line-height:1.5;text-transform:uppercase}.premium-feature.trainer-club-feature summary .pro-later-badge,.sync-accordion summary .pro-later-badge{margin-left:auto;margin-right:8px}.premium-feature.trainer-club-feature .premium-body{display:grid;gap:12px}.premium-feature.trainer-club-feature .premium-body>label{margin-top:0}.youtube-sync-area{margin-top:14px!important;border:1px solid #d2e7db;border-radius:14px;background:#f7fcf9}.youtube-sync-area .sync-accordion{border:0!important;background:transparent!important}.video-analysis-sectie,.video-analyse-sectie{margin-top:12px!important}.video-analysis-accordion{border-color:#d2e7db!important}.video-analysis-accordion:not([open]) .video-analysis-paneel{display:none!important}.video-analysis-paneel{gap:12px!important}.analyse-controls,.sessie-sectie{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))!important;gap:10px!important}.analyse-controls .help-icon{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;justify-self:start!important}@media(max-width:700px){.analyse-controls,.sessie-sectie{grid-template-columns:1fr!important}.youtube-sync-area{margin-top:12px!important}}
+</style>`;
+
 const FEEDBACK_SCRIPT = `<script id="feedback-close-after-send">
 (function(){
   function verwijderFeedbackBevestiging(){
@@ -121,6 +125,65 @@ const PLAYER_SCRUB_SCRIPT = `<script id="player-video-scrub-script">
 })();
 </script>`;
 
+const SKELETON_HELP_SCRIPT = `<script id="skeleton-help-button-script">
+(function(){
+  function addSkeletonHelpButton(){
+    var skeletonButton=document.getElementById('skeletonTrackingKnop');
+    if(!skeletonButton || document.getElementById('skeletonTrackingHelpKnop')) return;
+    var help=document.createElement('button');
+    help.type='button';
+    help.id='skeletonTrackingHelpKnop';
+    help.className='help-icon';
+    help.setAttribute('aria-label','Help Start Skeleton Tracking');
+    help.setAttribute('data-help','Skeleton Tracking tekent een eenvoudig skelet over de spelersvideo. Zo kun je houding, balans en beweging beter bekijken tijdens de analyse.');
+    help.textContent='?';
+    skeletonButton.insertAdjacentElement('afterend', help);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', addSkeletonHelpButton); else addSkeletonHelpButton();
+})();
+</script>`;
+
+const PRO_LAYOUT_SCRIPT = `<script id="pro-layout-clarity-script">
+(function(){
+  function addBadge(summary){
+    if(!summary || summary.querySelector('.pro-later-badge')) return;
+    var badge=document.createElement('span');
+    badge.className='pro-later-badge';
+    badge.textContent='PRO later';
+    var chevron=summary.querySelector('.accordion-chevron');
+    if(chevron) summary.insertBefore(badge, chevron); else summary.appendChild(badge);
+  }
+  function setTitle(selector, text){
+    var el=document.querySelector(selector);
+    if(el) el.innerHTML=text;
+  }
+  function applyProLayout(){
+    setTitle('#manageVideosTitle','📁 Video’s beheren');
+    setTitle('#videoAnalyseTitle','🎥 Analyse');
+    var manage=document.getElementById('manageVideosAccordion');
+    if(manage) addBadge(manage.querySelector('summary'));
+    var analysis=document.querySelector('.video-analysis-accordion');
+    if(analysis){
+      addBadge(analysis.querySelector('summary'));
+      if(!analysis.dataset.userOpened){ analysis.removeAttribute('open'); }
+      analysis.addEventListener('toggle', function(){ analysis.dataset.userOpened='1'; }, {once:true});
+    }
+    var syncBox=document.querySelector('.sync-box.in-manage-videos');
+    var youtubeBox=document.querySelector('#youtubePlayer') && document.querySelector('#youtubePlayer').closest('.video-box');
+    if(syncBox && youtubeBox && !syncBox.dataset.movedToYoutube){
+      var syncTitle=syncBox.querySelector('.accordion-title');
+      if(syncTitle) syncTitle.innerHTML='🎛 Vergelijk met YouTube';
+      addBadge(syncBox.querySelector('summary'));
+      syncBox.classList.add('youtube-sync-area');
+      syncBox.dataset.movedToYoutube='1';
+      var youtubeButtons=youtubeBox.querySelector('.knopgroep');
+      if(youtubeButtons) youtubeButtons.insertAdjacentElement('afterend', syncBox);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', applyProLayout); else applyProLayout();
+})();
+</script>`;
+
 const TITLE_LOGO_MARK = `<span class="brand-title-logo" aria-hidden="true"><svg viewBox="0 0 128 128" focusable="false"><defs><linearGradient id="pcLogoA" x1="20" y1="108" x2="96" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#07999a"/><stop offset=".58" stop-color="#67c653"/><stop offset="1" stop-color="#b9e51b"/></linearGradient><linearGradient id="pcLogoB" x1="88" y1="108" x2="112" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5dbd4e"/><stop offset="1" stop-color="#b9e51b"/></linearGradient></defs><path d="M18 108C25 59 57 17 80 31c16 10 26 42 34 77" fill="none" stroke="url(#pcLogoA)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 101c18-9 31-21 45-33" fill="none" stroke="#4fbd5d" stroke-width="16" stroke-linecap="round" opacity=".95"/><path d="M106 48v58" fill="none" stroke="url(#pcLogoB)" stroke-width="16" stroke-linecap="round"/><circle cx="106" cy="27" r="13" fill="#aee018"/><circle cx="99" cy="24" r="2.2" fill="#eef7f1"/><circle cx="106" cy="19" r="2.2" fill="#eef7f1"/><circle cx="113" cy="24" r="2.2" fill="#eef7f1"/><circle cx="102" cy="33" r="2.2" fill="#eef7f1"/><circle cx="111" cy="34" r="2.2" fill="#eef7f1"/></svg></span>`;
 const TITLE_WITH_LOGO = `<h1 class="brand-title">Pickleball Coach${TITLE_LOGO_MARK}</h1>`;
 
@@ -161,12 +224,24 @@ export default async function middleware(request) {
     html = html.replace('</head>', `${NOTIFICATION_POSITION_STYLE}\n</head>`);
   }
 
+  if (!html.includes('pro-layout-clarity-style')) {
+    html = html.replace('</head>', `${PRO_LAYOUT_STYLE}\n</head>`);
+  }
+
   if (!html.includes('feedback-close-after-send')) {
     html = html.replace('</body>', `${FEEDBACK_SCRIPT}\n</body>`);
   }
 
   if (!html.includes('player-video-scrub-script')) {
     html = html.replace('</body>', `${PLAYER_SCRUB_SCRIPT}\n</body>`);
+  }
+
+  if (!html.includes('skeleton-help-button-script')) {
+    html = html.replace('</body>', `${SKELETON_HELP_SCRIPT}\n</body>`);
+  }
+
+  if (!html.includes('pro-layout-clarity-script')) {
+    html = html.replace('</body>', `${PRO_LAYOUT_SCRIPT}\n</body>`);
   }
 
   if (!html.includes('<h1 class="brand-title">')) {

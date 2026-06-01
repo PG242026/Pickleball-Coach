@@ -164,7 +164,7 @@ const PRO_LAYOUT_SCRIPT = `<script id="pro-layout-clarity-script">
     var youtubeBox=document.querySelector('#youtubePlayer') && document.querySelector('#youtubePlayer').closest('.video-box');
     if(syncBox && youtubeBox && !syncBox.dataset.movedToYoutube){
       var syncTitle=syncBox.querySelector('.accordion-title');
-      if(syncTitle) syncTitle.innerHTML='🎛 Vergelijk met YouTube';
+      if(syncTitle) syncTitle.innerHTML='🎞️ Vergelijk met YouTube';
       addBadge(syncBox.querySelector('summary'));
       syncBox.classList.add('youtube-sync-area');
       syncBox.dataset.movedToYoutube='1';

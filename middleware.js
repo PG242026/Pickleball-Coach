@@ -2,6 +2,10 @@ const CHEVRON_STYLE = `<style id="large-accordion-chevrons-middleware">
 .accordion-chevron{flex:0 0 48px!important;width:48px!important;height:48px!important;margin-left:16px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;color:transparent!important;font-size:0!important;line-height:1!important;position:relative!important;transform:rotate(0deg);transform-origin:center;transition:transform .25s ease}.accordion-chevron::before{content:"";width:19px;height:19px;border-right:4px solid #1f5f3b;border-bottom:4px solid #1f5f3b;border-radius:2px;transform:rotate(45deg) translate(-2px,-2px);box-sizing:border-box}details[open]>.accordion-header .accordion-chevron{transform:rotate(180deg)}
 </style>`;
 
+const VIDEO_ANALYSIS_LAYOUT_STYLE = `<style id="video-analysis-layout-fix">
+.premium-feature.trainer-club-feature[open]{overflow:visible!important}.premium-feature.trainer-club-feature[open] .premium-body{max-height:none!important;overflow:visible!important}.video-analysis-accordion[open] .video-analysis-paneel,.video-analysis-paneel{overflow:visible!important}.analyse-controls,.sessie-sectie{position:relative;z-index:1}
+</style>`;
+
 const HEADER_LOGO_STYLE = `<style id="title-logo-mark-style">
 .brand-title{display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:normal}.brand-title-logo{width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;vertical-align:middle}.brand-title-logo svg{width:100%;height:100%;display:block}@media(max-width:600px){.brand-title{gap:7px}.brand-title-logo{width:34px;height:34px}}
 </style>`;
@@ -20,6 +24,10 @@ export default async function middleware(request) {
 
   if (!html.includes('large-accordion-chevrons-middleware')) {
     html = html.replace('</head>', `${CHEVRON_STYLE}\n</head>`);
+  }
+
+  if (!html.includes('video-analysis-layout-fix')) {
+    html = html.replace('</head>', `${VIDEO_ANALYSIS_LAYOUT_STYLE}\n</head>`);
   }
 
   if (!html.includes('title-logo-mark-style')) {

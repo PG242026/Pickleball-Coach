@@ -15,7 +15,6 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
 (function(){
   function text(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim(); }
   function findButton(label){ return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return text(button).indexOf(label) !== -1; }); }
-  function isHelp(el){ return !!(el && el.classList && el.classList.contains('help-icon') && text(el)==='?'); }
   function wrapWithHelp(button, help, rowClass){
     if(!button || !help) return null;
     var row=button.closest('.analysis-help-row,.session-help-row');
@@ -67,6 +66,7 @@ export default async function middleware(request) {
   const response = await fetch(url, { cache: 'no-store' });
   let html = await response.text();
   html = html.replace(/(<button onclick="analyseerMetAI\(\)">[\s\S]*?<\/button>)\s*(<button class="help-icon" data-help="[^"]*Analyseer met AI[^"]*" aria-label="Help Analyseer met AI">\?<\/button>)/, '<div class="analysis-help-row">$1$2</div>');
+  html = html.replace(/(<button onclick="laadSessie\(\)">[\s\S]*?<\/button>)\s*(<button class="help-icon" data-help="[^"]*Open opgeslagen video[^"]*" aria-label="Help Open opgeslagen video">\?<\/button>)/, '<div class="session-help-row">$1$2</div>');
   if (!html.includes('coach-layout-polish-style')) html = html.replace('</head>', `${LAYOUT_STYLE}\n</head>`);
   if (!html.includes('coach-layout-polish-script')) html = html.replace('</body>', `${LAYOUT_SCRIPT}\n</body>`);
   if (!html.includes('<h1 class="brand-title">')) html = html.replace(/<h1[^>]*>\s*Pickleball Coach\s*<\/h1>/, TITLE_WITH_LOGO);

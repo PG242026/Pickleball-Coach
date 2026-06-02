@@ -58,6 +58,7 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
 
 const BEGINNER_ACTION_SCRIPT = `<script id="beginner-action-messages-script">
 (function(){
+  function norm(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim(); }
   function heeftVideo(){
     var video=document.getElementById('leerlingVideo');
     return !!(video && (video.src || video.srcObject));
@@ -73,8 +74,33 @@ const BEGINNER_ACTION_SCRIPT = `<script id="beginner-action-messages-script">
     msg.className='button-local-message';
     msg.textContent=tekst;
     row.insertAdjacentElement('afterend', msg);
-    setTimeout(function(){ if(msg && msg.parentElement) msg.remove(); }, 6500);
+    setTimeout(function(){ if(msg && msg.parentElement) msg.remove(); }, 7000);
   }
+  function findButton(label){
+    return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return norm(button).indexOf(label)!==-1; });
+  }
+  function noVideoText(label){
+    if(label==='skeleton') return 'Neem eerst een spelersvideo op of upload een video. Daarna tekent Skeleton Tracking een groen skelet over de speler.';
+    return 'Neem eerst een spelersvideo op of upload een video. Daarna scant de app houding, balans en beweging.';
+  }
+  function interceptNoVideoClick(event){
+    var button=event.target && event.target.closest ? event.target.closest('button') : null;
+    if(!button || heeftVideo()) return;
+    var label=norm(button);
+    if(label.indexOf('Start Skeleton Tracking')!==-1){
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      localMessage(button, noVideoText('skeleton'));
+    }
+    if(label.indexOf('Automatische houding-analyse')!==-1){
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      localMessage(button, noVideoText('houding'));
+    }
+  }
+  document.addEventListener('click', interceptNoVideoClick, true);
   function wrapWhenReady(){
     if(window.__beginnerActionMessagesReady) return;
     if(typeof window.toggleSkeletonTracking!=='function' || typeof window.analyseerMetMediaPipe!=='function'){
@@ -85,20 +111,20 @@ const BEGINNER_ACTION_SCRIPT = `<script id="beginner-action-messages-script">
     var origineleSkeleton=window.toggleSkeletonTracking;
     var origineleHouding=window.analyseerMetMediaPipe;
     window.toggleSkeletonTracking=async function(){
-      var knop=document.getElementById('skeletonTrackingKnop');
+      var knop=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking');
       var stopt=knop && /Stop/i.test(knop.textContent||'');
       if(stopt){ return origineleSkeleton.apply(this, arguments); }
       if(!heeftVideo()){
-        localMessage(knop, 'Neem eerst een spelersvideo op of upload een video. Daarna tekent Skeleton Tracking een groen skelet over de speler.');
+        localMessage(knop, noVideoText('skeleton'));
         return;
       }
       localMessage(knop, 'Skeleton Tracking gestart: de app probeert een groen skelet over de speler te tekenen.');
       return origineleSkeleton.apply(this, arguments);
     };
     window.analyseerMetMediaPipe=async function(){
-      var knop=Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return (button.textContent||'').indexOf('Automatische houding-analyse')!==-1; });
+      var knop=findButton('Automatische houding-analyse');
       if(!heeftVideo()){
-        localMessage(knop, 'Neem eerst een spelersvideo op of upload een video. Daarna scant de app houding, balans en beweging.');
+        localMessage(knop, noVideoText('houding'));
         return;
       }
       localMessage(knop, 'Automatische houding-analyse gestart: de app scant de video en zoekt houding-momenten en tips.');

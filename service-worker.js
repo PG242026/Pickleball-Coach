@@ -1,8 +1,36 @@
-const CACHE_NAME = 'pickleball-coach-ai-v34';
-const AI_CLIENT_SCRIPT = '<script src="/ai-backend-client.js?v=cache34"></script>';
+const CACHE_NAME = 'pickleball-coach-ai-v41';
+const AI_CLIENT_SCRIPT = '<script src="/ai-backend-client.js?v=cache41"></script>';
 const CHEVRON_STYLE = `<style id="large-accordion-chevrons">
 .accordion-chevron{flex:0 0 48px!important;width:48px!important;height:48px!important;margin-left:16px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;color:transparent!important;font-size:0!important;line-height:1!important;position:relative!important;transform:rotate(0deg);transform-origin:center;transition:transform .25s ease}.accordion-chevron::before{content:"";width:19px;height:19px;border-right:4px solid #1f5f3b;border-bottom:4px solid #1f5f3b;border-radius:2px;transform:rotate(45deg) translate(-2px,-2px);box-sizing:border-box}details[open]>.accordion-header .accordion-chevron{transform:rotate(180deg)}
 </style>`;
+const YOUTUBE_LAYOUT_FIX = `<style id="youtube-compare-layout-fix">
+.youtube-panel-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0 0}.youtube-panel-actions button{margin:0;min-height:46px;padding:13px 18px;display:inline-flex;align-items:center;justify-content:center}.youtube-compare-panel{display:block;width:100%;box-sizing:border-box;clear:both;margin-top:10px;background:#eef7f1;padding:14px;border-radius:15px;border:1px solid #d2e7db}.youtube-compare-panel .sync-accordion{background:#f7fcf9}.youtube-compare-panel+.video-analyse-sectie{width:100%;box-sizing:border-box}
+</style>
+<script id="youtube-compare-layout-script">
+(function(){
+  function fixYoutubeComparePanel(){
+    var title=document.getElementById('youtubeVideoTitle');
+    var youtubeBox=title&&title.closest('.video-box');
+    if(!youtubeBox)return;
+    var actionRow=youtubeBox.querySelector('.knopgroep,.youtube-panel-actions');
+    if(!actionRow)return;
+    actionRow.classList.add('youtube-panel-actions');
+    var compare=document.querySelector('.in-youtube-panel')||document.querySelector('.in-manage-videos')||document.querySelector('.sync-box');
+    var analysis=document.querySelector('.video-analyse-sectie');
+    if(compare){
+      compare.classList.add('youtube-compare-panel','in-youtube-panel');
+      compare.classList.remove('in-manage-videos','sync-box');
+      actionRow.insertAdjacentElement('afterend',compare);
+    }
+    if(analysis&&compare){
+      compare.insertAdjacentElement('afterend',analysis);
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fixYoutubeComparePanel);
+  else fixYoutubeComparePanel();
+  window.addEventListener('load',fixYoutubeComparePanel);
+})();
+</script>`;
 const APP_SHELL = [
   '/',
   '/index.html',
@@ -20,6 +48,9 @@ function injectAiClient(html) {
   }
   if (!next.includes('large-accordion-chevrons')) {
     next = next.replace('</head>', CHEVRON_STYLE + '\n</head>');
+  }
+  if (!next.includes('youtube-compare-layout-script')) {
+    next = next.replace('</body>', YOUTUBE_LAYOUT_FIX + '\n</body>');
   }
   return next;
 }

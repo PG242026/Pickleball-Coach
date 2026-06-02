@@ -56,6 +56,41 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
 })();
 </script>`;
 
+const BEGINNER_ACTION_SCRIPT = `<script id="beginner-action-messages-script">
+(function(){
+  function heeftVideo(){
+    var video=document.getElementById('leerlingVideo');
+    return !!(video && (video.src || video.srcObject));
+  }
+  function melding(tekst){ if(typeof window.toonMelding==='function') window.toonMelding(tekst); }
+  function wrapWhenReady(){
+    if(window.__beginnerActionMessagesReady) return;
+    if(typeof window.toggleSkeletonTracking!=='function' || typeof window.analyseerMetMediaPipe!=='function'){
+      setTimeout(wrapWhenReady, 250);
+      return;
+    }
+    window.__beginnerActionMessagesReady=true;
+    var origineleSkeleton=window.toggleSkeletonTracking;
+    var origineleHouding=window.analyseerMetMediaPipe;
+    window.toggleSkeletonTracking=async function(){
+      var knop=document.getElementById('skeletonTrackingKnop');
+      var stopt=knop && /Stop/i.test(knop.textContent||'');
+      if(stopt){ melding('⏹ Skeleton Tracking gestopt'); return origineleSkeleton.apply(this, arguments); }
+      if(!heeftVideo()) melding('⚠️ Kies eerst een spelersvideo. Skeleton Tracking tekent daarna een groen skelet over de speler.');
+      else melding('🧍 Skeleton Tracking gestart: de app probeert een groen skelet over de speler te tekenen.');
+      return origineleSkeleton.apply(this, arguments);
+    };
+    window.analyseerMetMediaPipe=async function(){
+      if(!heeftVideo()) melding('⚠️ Neem eerst een video op of upload een spelersvideo. Daarna kan de app de houding analyseren.');
+      else melding('🧍 Automatische houding-analyse gestart: de app scant de video en zoekt houding-momenten en tips.');
+      return origineleHouding.apply(this, arguments);
+    };
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', wrapWhenReady); else wrapWhenReady();
+  [500,1000,2000,4000].forEach(function(ms){ setTimeout(wrapWhenReady, ms); });
+})();
+</script>`;
+
 const TITLE_LOGO_MARK = `<span class="brand-title-logo" aria-hidden="true"><svg viewBox="0 0 128 128" focusable="false"><defs><linearGradient id="pcLogoA" x1="20" y1="108" x2="96" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#07999a"/><stop offset=".58" stop-color="#67c653"/><stop offset="1" stop-color="#b9e51b"/></linearGradient><linearGradient id="pcLogoB" x1="88" y1="108" x2="112" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5dbd4e"/><stop offset="1" stop-color="#b9e51b"/></linearGradient></defs><path d="M18 108C25 59 57 17 80 31c16 10 26 42 34 77" fill="none" stroke="url(#pcLogoA)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 101c18-9 31-21 45-33" fill="none" stroke="#4fbd5d" stroke-width="16" stroke-linecap="round" opacity=".95"/><path d="M106 48v58" fill="none" stroke="url(#pcLogoB)" stroke-width="16" stroke-linecap="round"/><circle cx="106" cy="27" r="13" fill="#aee018"/><circle cx="99" cy="24" r="2.2" fill="#eef7f1"/><circle cx="106" cy="19" r="2.2" fill="#eef7f1"/><circle cx="113" cy="24" r="2.2" fill="#eef7f1"/><circle cx="102" cy="33" r="2.2" fill="#eef7f1"/><circle cx="111" cy="34" r="2.2" fill="#eef7f1"/></svg></span>`;
 const TITLE_WITH_LOGO = `<h1 class="brand-title">Pickleball Coach${TITLE_LOGO_MARK}</h1>`;
 
@@ -71,6 +106,7 @@ export default async function middleware(request) {
   html = html.replace(/(<button onclick="laadSessie\(\)">[\s\S]*?<\/button>)\s*(<button class="help-icon" data-help="[^"]*Open opgeslagen video[^"]*" aria-label="Help Open opgeslagen video">\?<\/button>)/, '<div class="session-help-row">$1$2</div>');
   if (!html.includes('coach-layout-polish-style')) html = html.replace('</head>', `${LAYOUT_STYLE}\n</head>`);
   if (!html.includes('coach-layout-polish-script')) html = html.replace('</body>', `${LAYOUT_SCRIPT}\n</body>`);
+  if (!html.includes('beginner-action-messages-script')) html = html.replace('</body>', `${BEGINNER_ACTION_SCRIPT}\n</body>`);
   if (!html.includes('<h1 class="brand-title">')) html = html.replace(/<h1[^>]*>\s*Pickleball Coach\s*<\/h1>/, TITLE_WITH_LOGO);
   return new Response(html, { status: response.ok ? 200 : response.status, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-cache, no-store, must-revalidate' } });
 }

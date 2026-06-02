@@ -22,9 +22,9 @@ body{font-family:Arial,Helvetica,sans-serif;background:#1f5f3b;color:white;min-h
     if(doorgaan)return;
     doorgaan=true;
     status.textContent='Klaar. App opnieuw openen...';
-    location.replace('/?v=herstel-v45');
+    location.replace('/?v=herstel-v46');
   }
-  setTimeout(openApp,4500);
+  setTimeout(openApp,7000);
   (async function(){
     try{
       status.textContent='Oude app-versie verwijderen...';
@@ -38,9 +38,12 @@ body{font-family:Arial,Helvetica,sans-serif;background:#1f5f3b;color:white;min-h
       }
       status.textContent='Nieuwe app-versie laden...';
       if('serviceWorker' in navigator){
-        navigator.serviceWorker.register('/service-worker.js?v=force-v45',{scope:'/'}).catch(()=>{});
+        const reg=await navigator.serviceWorker.register('/service-worker.js?v=force-v46',{scope:'/'});
+        if(reg.installing || reg.waiting){
+          await new Promise(resolve=>setTimeout(resolve,2500));
+        }
       }
-      setTimeout(openApp,900);
+      openApp();
     }catch(e){
       openApp();
     }

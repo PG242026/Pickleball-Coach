@@ -10,7 +10,7 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
 </head>
 <body>
 <div id="status">Pickleball Coach laden...</div>
-<iframe id="appFrame" src="/index.html?coach=v9"></iframe>
+<iframe id="appFrame" src="/index.html?coach=v10"></iframe>
 <script>
 (function(){
   const frame=document.getElementById('appFrame');
@@ -35,6 +35,34 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
       pair.appendChild(prev);
       pair.appendChild(help);
     });
+  }
+
+  function closePopups(doc){
+    doc.querySelectorAll('.popup').forEach(function(popup){popup.style.display='none';});
+    const bg=doc.getElementById('popupAchtergrond');
+    if(bg)bg.style.display='none';
+  }
+
+  function openPopup(doc,id){
+    closePopups(doc);
+    const bg=doc.getElementById('popupAchtergrond');
+    const popup=doc.getElementById(id);
+    if(bg)bg.style.display='block';
+    if(popup)popup.style.display='block';
+  }
+
+  function installButtonClick(doc){
+    if(doc.defaultView.__coachButtonClickInstalled)return;
+    doc.defaultView.__coachButtonClickInstalled=true;
+    doc.addEventListener('click',function(event){
+      const button=event.target.closest&&event.target.closest('button');
+      if(!button)return;
+      const action=button.getAttribute('onclick')||'';
+      if(action.indexOf('openHandleiding')!==-1){event.preventDefault();event.stopPropagation();openPopup(doc,'handleidingPopup');return;}
+      if(action.indexOf('openTaal')!==-1){event.preventDefault();event.stopPropagation();openPopup(doc,'taalPopup');return;}
+      if(action.indexOf('openFeedback')!==-1){event.preventDefault();event.stopPropagation();openPopup(doc,'feedbackPopup');return;}
+      if(action.indexOf('sluitAllePopups')!==-1){event.preventDefault();event.stopPropagation();closePopups(doc);}
+    },true);
   }
 
   function installHelpClick(doc){
@@ -65,6 +93,7 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
     if(!doc)return false;
     injectStyle(doc);
     installHelpClick(doc);
+    installButtonClick(doc);
     const debug=doc.getElementById('pwaDebugPane');
     if(debug)debug.style.display='none';
 

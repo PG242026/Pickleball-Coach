@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pickleball Coach herstellen</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;background:#1f5f3b;color:white;min-height:100vh;margin:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;box-sizing:border-box}main{max-width:560px}h1{font-size:30px;margin:0 0 12px}p{font-size:18px;line-height:1.5}.status{background:white;color:#1f5f3b;border-radius:14px;padding:14px 16px;margin-top:18px;font-weight:bold}
+</style>
+</head>
+<body>
+<main>
+<h1>Pickleball Coach wordt hersteld</h1>
+<p>De oude browser-cache wordt verwijderd. Daarna opent de app automatisch opnieuw.</p>
+<div id="status" class="status">Bezig...</div>
+</main>
+<script>
+(async function(){
+  const status=document.getElementById('status');
+  try{
+    if('serviceWorker' in navigator){
+      const regs=await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(reg=>reg.unregister()));
+    }
+    if('caches' in window){
+      const keys=await caches.keys();
+      await Promise.all(keys.map(key=>caches.delete(key)));
+    }
+    status.textContent='Cache leeg. App opnieuw openen...';
+  }catch(e){
+    status.textContent='App opnieuw openen...';
+  }
+  setTimeout(()=>{
+    location.replace('/?v=na-cache-reset-v43');
+  },900);
+})();
+</script>
+</body>
+</html>

@@ -10,7 +10,7 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
 </head>
 <body>
 <div id="status">Pickleball Coach laden...</div>
-<iframe id="appFrame" src="/index.html?coach=v3"></iframe>
+<iframe id="appFrame" src="/index.html?coach=v4"></iframe>
 <script>
 (function(){
   const frame=document.getElementById('appFrame');
@@ -20,7 +20,7 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
     if(doc.getElementById('coach-youtube-compare-fix'))return;
     const style=doc.createElement('style');
     style.id='coach-youtube-compare-fix';
-    style.textContent='.pwa-debug{display:none!important}.youtube-panel-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0 0}.youtube-panel-actions button{margin:0;min-height:46px;padding:13px 18px;display:inline-flex;align-items:center;justify-content:center}.youtube-compare-panel{display:block!important;width:100%;box-sizing:border-box;clear:both;margin-top:10px;background:#eef7f1;padding:14px;border-radius:15px;border:1px solid #d2e7db}.youtube-compare-panel .sync-accordion{background:#f7fcf9}.youtube-compare-panel details{display:block!important}.youtube-compare-panel details>.sync-paneel{display:block!important;max-height:none!important;overflow:visible!important;padding:4px 14px 14px!important}.youtube-compare-panel .sync-groep{display:grid!important;grid-template-columns:1fr!important;gap:10px!important;margin-top:10px!important}.youtube-compare-panel .sync-groep button{display:flex!important;width:100%!important;margin:0!important;justify-content:flex-start!important;text-align:left!important}.youtube-compare-panel+.video-analyse-sectie{width:100%;box-sizing:border-box;margin-top:14px}';
+    style.textContent='.pwa-debug{display:none!important}.youtube-panel-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0 0}.youtube-panel-actions button{margin:0;min-height:46px;padding:13px 18px;display:inline-flex;align-items:center;justify-content:center}.youtube-compare-panel{display:block!important;width:100%;box-sizing:border-box;clear:both;margin-top:10px;background:#eef7f1;padding:14px;border-radius:15px;border:1px solid #d2e7db}.youtube-compare-panel .sync-accordion{background:#f7fcf9}.youtube-compare-panel details{display:block!important}.youtube-compare-panel details>.sync-paneel{display:block!important;max-height:none!important;overflow:visible!important;padding:4px 14px 14px!important}.youtube-compare-panel .sync-groep{display:grid!important;grid-template-columns:1fr!important;gap:10px!important;margin-top:10px!important}.youtube-compare-panel .sync-groep button{display:flex!important;width:100%!important;margin:0!important;justify-content:flex-start!important;text-align:left!important}.video-analyse-sectie{width:100%;box-sizing:border-box;margin-top:14px}';
     doc.head.appendChild(style);
   }
 
@@ -30,14 +30,15 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
     injectStyle(doc);
     const debug=doc.getElementById('pwaDebugPane');
     if(debug)debug.style.display='none';
+
     const title=doc.getElementById('youtubeVideoTitle');
     const youtubeBox=title&&title.closest('.video-box');
     if(!youtubeBox)return false;
     const actionRow=youtubeBox.querySelector('.knopgroep,.youtube-panel-actions');
     if(!actionRow)return false;
     actionRow.classList.add('youtube-panel-actions');
+
     const compare=doc.querySelector('.in-youtube-panel')||doc.querySelector('.in-manage-videos')||doc.querySelector('.sync-box');
-    const analysis=doc.querySelector('.video-analyse-sectie');
     if(compare){
       compare.classList.add('youtube-compare-panel','in-youtube-panel');
       compare.classList.remove('in-manage-videos','sync-box');
@@ -54,9 +55,18 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
         paneel.style.padding='4px 14px 14px';
       }
     }
-    if(analysis&&compare){
-      compare.insertAdjacentElement('afterend',analysis);
+
+    const analysis=doc.querySelector('.video-analyse-sectie');
+    const manageBody=doc.querySelector('#manageVideosAccordion .premium-body');
+    const videoLibrary=doc.getElementById('videoBibliotheek');
+    if(analysis&&manageBody){
+      if(videoLibrary&&videoLibrary.parentElement===manageBody){
+        manageBody.insertBefore(analysis,videoLibrary);
+      }else{
+        manageBody.appendChild(analysis);
+      }
     }
+
     status.style.display='none';
     return !!compare;
   }

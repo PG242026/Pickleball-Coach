@@ -1,5 +1,5 @@
-const CACHE_NAME = 'pickleball-coach-ai-v41';
-const AI_CLIENT_SCRIPT = '<script src="/ai-backend-client.js?v=cache41"></script>';
+const CACHE_NAME = 'pickleball-coach-ai-v42';
+const AI_CLIENT_SCRIPT = '<script src="/ai-backend-client.js?v=cache42"></script>';
 const CHEVRON_STYLE = `<style id="large-accordion-chevrons">
 .accordion-chevron{flex:0 0 48px!important;width:48px!important;height:48px!important;margin-left:16px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;color:transparent!important;font-size:0!important;line-height:1!important;position:relative!important;transform:rotate(0deg);transform-origin:center;transition:transform .25s ease}.accordion-chevron::before{content:"";width:19px;height:19px;border-right:4px solid #1f5f3b;border-bottom:4px solid #1f5f3b;border-radius:2px;transform:rotate(45deg) translate(-2px,-2px);box-sizing:border-box}details[open]>.accordion-header .accordion-chevron{transform:rotate(180deg)}
 </style>`;
@@ -84,7 +84,12 @@ self.addEventListener('activate', (event) => {
           }
         })
       )
-    ).then(() => self.clients.claim())
+    )
+      .then(() => self.clients.claim())
+      .then(() => self.clients.matchAll({ type: 'window', includeUncontrolled: true }))
+      .then((clients) => Promise.all(
+        clients.map((client) => client.navigate(client.url))
+      ))
   );
 });
 

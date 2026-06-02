@@ -10,7 +10,7 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
 </head>
 <body>
 <div id="status">Pickleball Coach laden...</div>
-<iframe id="appFrame" src="/index.html?coach=v13"></iframe>
+<iframe id="appFrame" src="/index.html?coach=v14"></iframe>
 <script>
 (function(){
   const frame=document.getElementById('appFrame');
@@ -61,15 +61,6 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
     if(popup)popup.style.display='block';
   }
 
-  function setLanguage(doc,lang){
-    localStorage.setItem('pickleballTaal',lang);
-    try{frame.contentWindow.localStorage.setItem('pickleballTaal',lang);}catch(e){}
-    if(typeof frame.contentWindow.pasTaalToe==='function')try{frame.contentWindow.pasTaalToe();}catch(e){}
-    if(typeof frame.contentWindow.renderHandleiding==='function')try{frame.contentWindow.renderHandleiding();}catch(e){}
-    showMessage('🌍 Taal opgeslagen');
-    closePopups(doc);
-  }
-
   function showMessage(text){
     if(typeof frame.contentWindow.toonMelding==='function'){
       try{frame.contentWindow.toonMelding(text);return;}catch(e){}
@@ -77,6 +68,30 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
     status.textContent=text;
     status.style.display='block';
     setTimeout(function(){status.style.display='none';},3500);
+  }
+
+  function setLanguage(doc,lang){
+    localStorage.setItem('pickleballTaal',lang);
+    try{frame.contentWindow.localStorage.setItem('pickleballTaal',lang);}catch(e){}
+    if(typeof frame.contentWindow.pasTaalToe==='function')try{frame.contentWindow.pasTaalToe();}catch(e){}
+    if(typeof frame.contentWindow.renderHandleiding==='function')try{frame.contentWindow.renderHandleiding();}catch(e){}
+    closePopups(doc);
+    showMessage('🌍 Taal opgeslagen');
+    setTimeout(function(){
+      try{frame.contentWindow.location.replace('/index.html?coach=v14&taal='+encodeURIComponent(lang)+'&t='+Date.now());}catch(e){frame.src='/index.html?coach=v14&taal='+encodeURIComponent(lang)+'&t='+Date.now();}
+    },350);
+  }
+
+  function languageFromButton(button,action){
+    const m=action.match(/setTaal\('([^']+)'\)/);
+    if(m)return m[1];
+    const text=(button.textContent||'').toLowerCase();
+    if(text.indexOf('nederlands')!==-1)return 'nl';
+    if(text.indexOf('english')!==-1)return 'en';
+    if(text.indexOf('deutsch')!==-1)return 'de';
+    if(text.indexOf('español')!==-1||text.indexOf('espanol')!==-1)return 'es';
+    if(text.indexOf('français')!==-1||text.indexOf('francais')!==-1)return 'fr';
+    return '';
   }
 
   function showPendingFeedbackThanks(){
@@ -96,10 +111,7 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
     const naam=(naamEl&&naamEl.value)||'Onbekend';
     const soort=(soortEl&&soortEl.value)||'Feedback';
     const bericht=(berichtEl&&berichtEl.value)||'';
-    if(!bericht.trim()){
-      showMessage('⚠️ Typ eerst je feedback');
-      return;
-    }
+    if(!bericht.trim()){showMessage('⚠️ Typ eerst je feedback');return;}
     const subject=encodeURIComponent('Feedback Pickleball Coach AI - '+soort);
     const body=encodeURIComponent('Naam: '+naam+'\nSoort: '+soort+'\nDatum: '+new Date().toLocaleString('nl-NL')+'\n\nFeedback:\n'+bericht);
     if(naamEl)naamEl.value='';
@@ -117,10 +129,11 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
       const button=event.target.closest&&event.target.closest('button');
       if(!button)return;
       const action=button.getAttribute('onclick')||'';
+      const lang=languageFromButton(button,action);
+      if(lang){event.preventDefault();event.stopPropagation();setLanguage(doc,lang);return;}
       if(action.indexOf('openHandleiding')!==-1){event.preventDefault();event.stopPropagation();openPopup(doc,'handleidingPopup');return;}
       if(action.indexOf('openTaal')!==-1){event.preventDefault();event.stopPropagation();openPopup(doc,'taalPopup');return;}
       if(action.indexOf('openFeedback')!==-1){event.preventDefault();event.stopPropagation();openPopup(doc,'feedbackPopup');return;}
-      if(action.indexOf('setTaal')!==-1){event.preventDefault();event.stopPropagation();const m=action.match(/setTaal\('([^']+)'\)/);if(m)setLanguage(doc,m[1]);return;}
       if(action.indexOf('verstuurFeedback')!==-1){event.preventDefault();event.stopPropagation();sendFeedback(doc);return;}
       if(action.indexOf('sluitAllePopups')!==-1){event.preventDefault();event.stopPropagation();closePopups(doc);}
     },true);

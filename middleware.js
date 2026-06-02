@@ -32,6 +32,15 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
     help.dataset.boundToButton='1';
     return row;
   }
+  function ensureAiHelp(){
+    var ai=findButton('Analyseer met Ai') || findButton('Analyseer met AI');
+    if(!ai) return;
+    var help=Array.prototype.find.call(document.querySelectorAll('button.help-icon'), function(button){
+      var label=(button.getAttribute('aria-label') || '') + ' ' + (button.dataset && button.dataset.help || '');
+      return /Analyseer met A[iI]/.test(label);
+    });
+    if(help) wrapWithHelp(ai, help, 'analysis-help-row');
+  }
   function ensureSkeletonHelp(){
     var skeleton=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking');
     if(!skeleton) return;
@@ -54,10 +63,11 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
     var panel=document.createElement('div'); panel.id='playerScrubPanel'; panel.className='player-scrub-panel hidden-during-recording'; panel.innerHTML='<span id="playerScrubCurrent" class="player-scrub-time">0:00</span><input id="playerScrubSlider" class="player-scrub-slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Spoel door de spelersvideo"><span id="playerScrubDuration" class="player-scrub-time">0:00</span>'; wrapper.insertAdjacentElement('afterend', panel);
   }
   function alignButtons(){
+    normalizeAiLabels();
     ['Analyseer met Ai','Analyseer met AI','Start Skeleton Tracking','Automatische houding-analyse'].forEach(function(label){ var b=findButton(label); if(b) b.classList.add('analysis-aligned-button'); });
     ['Handmatig moment toevoegen','Sessie Opslaan','Sessie Laden','Download Analyse'].forEach(function(label){ var b=findButton(label); if(b) b.classList.add('session-aligned-button'); });
     var save=findButton('Sessie Opslaan'); if(save && save.parentElement) save.parentElement.classList.add('session-action-stack');
-    ensureSkeletonHelp(); normalizeAiLabels();
+    ensureAiHelp(); ensureSkeletonHelp();
   }
   function applyAll(){ applyProLayout(); initPlayerScrub(); alignButtons(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', applyAll); else applyAll();
@@ -127,8 +137,8 @@ export default async function middleware(request) {
   const response = await fetch(url, { cache: 'no-store' });
   let html = await response.text();
   html = html.replace(/<div class="ai-melding">[\s\S]*?<\/div>\s*/, '');
-  html = html.replace(/(<button class="help-icon" data-help=")[^"]*Analyseer met AI[^"]*(" aria-label="Help Analyseer met AI">\?<\/button>)/, '$1Analyseer met Ai maakt automatisch momenten aan op basis van Ai-tijdcodes en geeft techniek-tips bij de video.$2');
-  html = html.replace(/(<button onclick="analyseerMetAI\(\)">[\s\S]*?<\/button>)\s*(<button class="help-icon" data-help="[^"]*Analyseer met AI[^"]*" aria-label="Help Analyseer met AI">\?<\/button>)/, '<div class="analysis-help-row">$1$2</div>');
+  html = html.replace(/(<button class="help-icon" data-help=")[^"]*Analyseer met A[iI][^"]*(" aria-label="Help Analyseer met A[iI]">\?<\/button>)/, '$1Analyseer met Ai maakt automatisch momenten aan op basis van Ai-tijdcodes en geeft techniek-tips bij de video.$2');
+  html = html.replace(/(<button onclick="analyseerMetAI\(\)">[\s\S]*?<\/button>)\s*(<button class="help-icon" data-help="[^"]*Analyseer met A[iI][^"]*" aria-label="Help Analyseer met A[iI]">\?<\/button>)/, '<div class="analysis-help-row">$1$2</div>');
   html = html.replace(/(<button onclick="laadSessie\(\)">[\s\S]*?<\/button>)\s*(<button class="help-icon" data-help="[^"]*Open opgeslagen video[^"]*" aria-label="Help Open opgeslagen video">\?<\/button>)/, '<div class="session-help-row">$1$2</div>');
   html = html.replace(/onclick="analyseerMetAI\(\)"/g, 'onclick="if(!window.coachGuardVideoAction||window.coachGuardVideoAction(this,\'ai\')) analyseerMetAI()"');
   html = html.replace(/onclick="toggleSkeletonTracking\(\)"/g, 'onclick="if(!window.coachGuardVideoAction||window.coachGuardVideoAction(this,\'skeleton\')) toggleSkeletonTracking()"');

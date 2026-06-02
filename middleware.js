@@ -2,8 +2,8 @@ const LAYOUT_STYLE = `<style id="coach-layout-polish-style">
 .brand-title{display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:normal}.brand-title-logo{width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;vertical-align:middle}.brand-title-logo svg{width:100%;height:100%;display:block}
 .accordion-chevron{flex:0 0 48px!important;width:48px!important;height:48px!important;margin-left:16px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;color:transparent!important;font-size:0!important;line-height:1!important;position:relative!important;transform:rotate(0deg);transform-origin:center;transition:transform .25s ease}.accordion-chevron::before{content:"";width:19px;height:19px;border-right:4px solid #1f5f3b;border-bottom:4px solid #1f5f3b;border-radius:2px;transform:rotate(45deg) translate(-2px,-2px);box-sizing:border-box}details[open]>.accordion-header .accordion-chevron{transform:rotate(180deg)}
 .container>.card:first-of-type{padding:0!important;border-radius:10px!important;margin-bottom:14px!important}.container>.card:first-of-type .beheer-summary{min-height:46px!important;margin:0!important;padding:4px 14px!important;font-size:21px!important;line-height:1.2!important}.container>.card:first-of-type details>div{padding:10px 14px 12px!important;margin-top:0!important}.container>.card:first-of-type input{padding:9px 11px!important;margin-top:5px!important;margin-bottom:8px!important;font-size:16px!important}.container>.card:first-of-type button{min-height:38px!important;padding:8px 12px!important;font-size:15px!important}
-.premium-feature.trainer-club-feature[open]{overflow:visible!important}.premium-feature.trainer-club-feature[open] .premium-body{max-height:none!important;overflow:visible!important;display:grid;gap:12px}.video-analysis-sectie,.video-analyse-sectie{margin-top:12px!important}.video-analysis-accordion{border-color:#d2e7db!important}.video-analysis-accordion:not([open]) .video-analysis-paneel{display:none!important}.video-analysis-paneel{gap:12px!important;overflow:visible!important}
-.pro-later-badge{display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;margin-left:0!important;margin-right:0!important;padding:2px 7px!important;border-radius:999px!important;background:#f3ecff!important;color:#6e2bd8!important;font-size:9px!important;font-weight:800!important;letter-spacing:.04em!important;line-height:1.2!important;text-transform:uppercase!important}.player-video-separator{margin:24px 0 12px!important;border:0!important;border-top:1px solid #b7c7be!important;height:0!important}.youtube-sync-area{position:relative;margin-top:24px!important;padding-top:12px!important;border:0!important;border-radius:0!important;background:transparent!important}.youtube-sync-area::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:#b7c7be}.youtube-sync-area .sync-accordion{border:1px solid #d2e7db!important;border-radius:12px!important;background:#f7fcf9!important;overflow:hidden!important}
+.premium-feature.trainer-club-feature[open]{overflow:visible!important}.premium-feature.trainer-club-feature[open] .premium-body{max-height:none!important;overflow:visible!important;display:grid;gap:12px}.video-analysis-sectie,.video-analyse-sectie{margin-top:12px!important}.video-analysis-accordion{border-color:#d2e7db!important}.video-analysis-accordion:not([open]) .video-analysis-paneel{display:none!important}.video-analysis-paneel{gap:12px!important;overflow:visible!important}.player-video-separator{margin:24px 0 12px!important;border:0!important;border-top:1px solid #b7c7be!important;height:0!important}
+.pro-later-badge{display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;margin-left:0!important;margin-right:0!important;padding:2px 7px!important;border-radius:999px!important;background:#f3ecff!important;color:#6e2bd8!important;font-size:9px!important;font-weight:800!important;letter-spacing:.04em!important;line-height:1.2!important;text-transform:uppercase!important}.youtube-sync-area{position:relative;margin-top:24px!important;padding-top:12px!important;border:0!important;border-radius:0!important;background:transparent!important}.youtube-sync-area::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:#b7c7be}.youtube-sync-area .sync-accordion{border:1px solid #d2e7db!important;border-radius:12px!important;background:#f7fcf9!important;overflow:hidden!important}
 #manageVideosAccordion>.accordion-header,#manageVideosAccordion>summary,.youtube-sync-area .sync-accordion>.accordion-header,.youtube-sync-area .sync-accordion>summary{display:grid!important;grid-template-columns:minmax(0,1fr) auto 42px!important;column-gap:10px!important;align-items:center!important;min-height:76px!important;padding:18px 20px!important;box-sizing:border-box!important}#manageVideosTitle,.youtube-sync-area .accordion-title{font-family:inherit!important;font-size:20px!important;font-weight:700!important;line-height:1.2!important;color:#1f5f3b!important;letter-spacing:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;margin:0!important;padding:0!important;min-width:0!important}.premium-feature.trainer-club-feature summary .pro-later-badge,.sync-accordion summary .pro-later-badge{justify-self:end!important;align-self:center!important}
 .knopgroep{gap:12px!important;align-items:center!important}.knopgroep button{margin:0!important;min-height:44px!important;border-radius:9px!important;white-space:nowrap!important}.player-box .knopgroep.hidden-during-recording{display:flex!important;gap:12px!important;align-items:center!important;flex-wrap:wrap!important;overflow:visible!important}.player-box .knopgroep.hidden-during-recording .help-icon{position:static!important;transform:none!important;flex:0 0 42px!important;width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;padding:0!important;margin:0!important;border-radius:50%!important;background:#fff!important;color:#1f5f3b!important;border:2px solid #1f5f3b!important;line-height:1!important;box-sizing:border-box!important}
 .analyse-controls,.sessie-sectie{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;width:100%!important;max-width:100%!important;overflow:visible!important}.analysis-aligned-button,.session-aligned-button{width:auto!important;max-width:calc(100vw - 74px)!important;min-height:44px!important;display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;box-sizing:border-box!important;margin:0!important;padding-left:18px!important;padding-right:18px!important;white-space:nowrap!important;text-align:left!important;flex:0 0 auto!important}.analysis-help-row,.session-help-row{display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;width:auto!important;max-width:100%!important;box-sizing:border-box!important;overflow:visible!important;flex-wrap:nowrap!important}.analysis-help-row .help-icon,.session-help-row .help-icon{position:static!important;transform:none!important;flex:0 0 30px!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;margin:0!important;padding:0!important;border-radius:50%!important;box-sizing:border-box!important;background:#fff!important;color:#1f5f3b!important;border:2px solid #1f5f3b!important}.session-action-stack{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;width:100%!important}
@@ -16,19 +16,19 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
   function cleanText(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim(); }
   function findButton(label){ return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return cleanText(button).indexOf(label) !== -1; }); }
   function isHelp(el){ return !!(el && el.classList && el.classList.contains('help-icon') && cleanText(el)==='?'); }
-  function findHelpByNeedle(needle){ return Array.prototype.find.call(document.querySelectorAll('.help-icon'), function(help){ return !help.dataset.boundToButton && ((help.getAttribute('data-help') || '') + ' ' + (help.getAttribute('aria-label') || '')).indexOf(needle) !== -1; }); }
-  function findLooseHelpAfter(button, stopButton){
-    if(!button || !button.parentElement) return null;
-    var parent=button.parentElement;
-    var nodes=Array.prototype.slice.call(parent.children);
+  function firstFreeHelpAfterInPage(button, stopButton){
+    if(!button) return null;
+    var nodes=Array.prototype.slice.call(document.querySelectorAll('button,.help-icon'));
     var start=nodes.indexOf(button);
-    var stop=stopButton && stopButton.parentElement===parent ? nodes.indexOf(stopButton) : nodes.length;
+    var stop=stopButton ? nodes.indexOf(stopButton) : -1;
     if(start<0) return null;
-    for(var i=start+1;i<(stop<0?nodes.length:stop);i++){ if(isHelp(nodes[i]) && !nodes[i].dataset.boundToButton) return nodes[i]; }
-    var next=button.nextElementSibling;
-    if(isHelp(next) && !next.dataset.boundToButton) return next;
+    for(var i=start+1;i<nodes.length;i++){
+      if(stop>start && i>=stop) break;
+      if(isHelp(nodes[i]) && !nodes[i].dataset.boundToButton) return nodes[i];
+    }
     return null;
   }
+  function findHelpByNeedle(needle){ return Array.prototype.find.call(document.querySelectorAll('.help-icon'), function(help){ return !help.dataset.boundToButton && ((help.getAttribute('data-help') || '') + ' ' + (help.getAttribute('aria-label') || '')).indexOf(needle) !== -1; }); }
   function wrapWithHelp(button, help, rowClass){
     if(!button || !help) return;
     var existing=button.closest('.analysis-help-row,.session-help-row');
@@ -43,7 +43,7 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
   function addSkeletonHelpButton(){
     var skeletonButton=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking');
     if(!skeletonButton) return null;
-    var help=document.getElementById('skeletonTrackingHelpKnop') || findHelpByNeedle('Skeleton Tracking') || findLooseHelpAfter(skeletonButton, findButton('Automatische houding-analyse'));
+    var help=document.getElementById('skeletonTrackingHelpKnop') || findHelpByNeedle('Skeleton Tracking') || firstFreeHelpAfterInPage(skeletonButton, findButton('Automatische houding-analyse'));
     if(!help){
       help=document.createElement('button');
       help.type='button';
@@ -117,16 +117,16 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
     [analyse,skeleton,posture].filter(Boolean).forEach(function(button){ button.classList.add('analysis-aligned-button'); });
     [manual,save,load,download].filter(Boolean).forEach(function(button){ button.classList.add('session-aligned-button'); });
     if(save && save.parentElement) save.parentElement.classList.add('session-action-stack');
-    var analyseHelp=findHelpByNeedle('Analyseer met AI') || findHelpByNeedle('automatisch techniek') || findLooseHelpAfter(analyse, skeleton);
+    var analyseHelp=findHelpByNeedle('Analyseer met AI') || findHelpByNeedle('automatisch techniek') || firstFreeHelpAfterInPage(analyse, skeleton);
     var skeletonHelp=addSkeletonHelpButton();
-    var loadHelp=findHelpByNeedle('Open opgeslagen') || findHelpByNeedle('Sessie') || findLooseHelpAfter(load, download);
+    var loadHelp=findHelpByNeedle('Open opgeslagen') || findHelpByNeedle('Sessie') || firstFreeHelpAfterInPage(load, download);
     wrapWithHelp(analyse, analyseHelp, 'analysis-help-row');
     wrapWithHelp(skeleton, skeletonHelp, 'analysis-help-row');
     wrapWithHelp(load, loadHelp, 'session-help-row');
   }
   function applyAll(){ applyProLayout(); initPlayerScrub(); alignButtonsAndHelp(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', applyAll); else applyAll();
-  [50,150,400,900,1600,2600,4200].forEach(function(ms){ setTimeout(applyAll, ms); });
+  [50,150,400,900,1600,2600,4200,6500].forEach(function(ms){ setTimeout(applyAll, ms); });
 })();
 </script>`;
 

@@ -13,116 +13,10 @@ const LAYOUT_STYLE = `<style id="coach-layout-polish-style">
 
 const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
 (function(){
-  function cleanText(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim(); }
-  function findButton(label){ return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return cleanText(button).indexOf(label) !== -1; }); }
-  function isHelp(el){ return !!(el && el.classList && el.classList.contains('help-icon') && cleanText(el)==='?'); }
-  function findHelpByNeedle(needle){ return Array.prototype.find.call(document.querySelectorAll('.help-icon'), function(help){ return !help.dataset.boundToButton && ((help.getAttribute('data-help') || '') + ' ' + (help.getAttribute('aria-label') || '')).indexOf(needle) !== -1; }); }
-  function wrapWithHelp(button, help, rowClass){
-    if(!button || !help) return;
-    var existing=button.closest('.analysis-help-row,.session-help-row');
-    if(existing){ if(help.parentElement!==existing) existing.appendChild(help); help.dataset.boundToButton='1'; return; }
-    var row=document.createElement('div');
-    row.className=rowClass;
-    button.parentNode.insertBefore(row, button);
-    row.appendChild(button);
-    row.appendChild(help);
-    help.dataset.boundToButton='1';
-  }
-  function addSkeletonHelpButton(){
-    var skeletonButton=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking');
-    if(!skeletonButton) return null;
-    var help=document.getElementById('skeletonTrackingHelpKnop') || findHelpByNeedle('Skeleton Tracking');
-    if(!help){
-      help=document.createElement('button');
-      help.type='button';
-      help.id='skeletonTrackingHelpKnop';
-      help.className='help-icon';
-      help.setAttribute('aria-label','Help Start Skeleton Tracking');
-      help.setAttribute('data-help','Skeleton Tracking tekent een eenvoudig skelet over de spelersvideo. Zo kun je houding, balans en beweging beter bekijken tijdens de analyse.');
-      help.textContent='?';
-      skeletonButton.insertAdjacentElement('afterend', help);
-    }
-    return help;
-  }
-  function addBadge(summary){
-    if(!summary || summary.querySelector('.pro-later-badge')) return;
-    var badge=document.createElement('span');
-    badge.className='pro-later-badge';
-    badge.textContent='PRO later';
-    var chevron=summary.querySelector('.accordion-chevron');
-    if(chevron) summary.insertBefore(badge, chevron); else summary.appendChild(badge);
-  }
-  function setTitle(selector, value){ var el=document.querySelector(selector); if(el) el.innerHTML=value; }
-  function applyProLayout(){
-    setTitle('#manageVideosTitle','📁 Spelers video’s beheren');
-    setTitle('#videoAnalyseTitle','🎥 Analyse');
-    var manage=document.getElementById('manageVideosAccordion');
-    if(manage) addBadge(manage.querySelector('summary'));
-    var analysis=document.querySelector('.video-analysis-accordion');
-    if(analysis){ addBadge(analysis.querySelector('summary')); if(!analysis.dataset.userOpened) analysis.removeAttribute('open'); analysis.addEventListener('toggle', function(){ analysis.dataset.userOpened='1'; }, {once:true}); }
-    var syncBox=document.querySelector('.sync-box.in-manage-videos');
-    var youtubeBox=document.querySelector('#youtubePlayer') && document.querySelector('#youtubePlayer').closest('.video-box');
-    if(syncBox && youtubeBox && !syncBox.dataset.movedToYoutube){
-      var syncTitle=syncBox.querySelector('.accordion-title');
-      if(syncTitle) syncTitle.innerHTML='🎬 Vergelijk & Afspelen';
-      addBadge(syncBox.querySelector('summary'));
-      syncBox.classList.add('youtube-sync-area');
-      syncBox.dataset.movedToYoutube='1';
-      var youtubeButtons=youtubeBox.querySelector('.knopgroep');
-      if(youtubeButtons) youtubeButtons.insertAdjacentElement('afterend', syncBox);
-    }
-  }
-  function initPlayerScrub(){
-    var video=document.getElementById('leerlingVideo');
-    if(!video || document.getElementById('playerScrubPanel')) return;
-    var wrapper=video.closest('.video-wrapper');
-    if(!wrapper) return;
-    var panel=document.createElement('div');
-    panel.id='playerScrubPanel';
-    panel.className='player-scrub-panel hidden-during-recording';
-    panel.innerHTML='<span id="playerScrubCurrent" class="player-scrub-time">0:00</span><input id="playerScrubSlider" class="player-scrub-slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Spoel door de spelersvideo"><span id="playerScrubDuration" class="player-scrub-time">0:00</span>';
-    wrapper.insertAdjacentElement('afterend', panel);
-    var slider=panel.querySelector('#playerScrubSlider');
-    var current=panel.querySelector('#playerScrubCurrent');
-    var duration=panel.querySelector('#playerScrubDuration');
-    var dragging=false;
-    function formatTime(seconds){ if(!Number.isFinite(seconds) || seconds<0) seconds=0; var total=Math.floor(seconds); return Math.floor(total/60)+':'+String(total%60).padStart(2,'0'); }
-    function update(){ var length=Number.isFinite(video.duration) ? video.duration : 0; var now=Number.isFinite(video.currentTime) ? video.currentTime : 0; duration.textContent=formatTime(length); current.textContent=formatTime(now); slider.disabled=!length; if(!dragging) slider.value=length ? Math.round((now/length)*1000) : 0; }
-    slider.addEventListener('input', function(){ var length=Number.isFinite(video.duration) ? video.duration : 0; if(!length) return; dragging=true; video.currentTime=(Number(slider.value)/1000)*length; current.textContent=formatTime(video.currentTime); });
-    slider.addEventListener('change', function(){ dragging=false; update(); });
-    ['loadedmetadata','durationchange','timeupdate','seeked','emptied'].forEach(function(eventName){ video.addEventListener(eventName, update); });
-    update();
-  }
-  function alignButtonsAndHelp(){
-    var analyse=findButton('Analyseer met AI');
-    var skeleton=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking');
-    var posture=findButton('Automatische houding-analyse');
-    var manual=findButton('Handmatig moment toevoegen');
-    var save=findButton('Sessie Opslaan');
-    var load=findButton('Sessie Laden');
-    var download=findButton('Download Analyse');
-    [analyse,skeleton,posture].filter(Boolean).forEach(function(button){ button.classList.add('analysis-aligned-button'); });
-    [manual,save,load,download].filter(Boolean).forEach(function(button){ button.classList.add('session-aligned-button'); });
-    if(save && save.parentElement) save.parentElement.classList.add('session-action-stack');
-    var analyseHelp=findHelpByNeedle('Analyseer met AI') || findHelpByNeedle('automatisch techniek');
-    var skeletonHelp=addSkeletonHelpButton();
-    var loadHelp=findHelpByNeedle('Open opgeslagen') || findHelpByNeedle('Sessie');
-    wrapWithHelp(analyse, analyseHelp, 'analysis-help-row');
-    wrapWithHelp(skeleton, skeletonHelp, 'analysis-help-row');
-    wrapWithHelp(load, loadHelp, 'session-help-row');
-  }
-  function applyAll(){ applyProLayout(); initPlayerScrub(); alignButtonsAndHelp(); }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', applyAll); else applyAll();
-  [50,150,400,900,1600].forEach(function(ms){ setTimeout(applyAll, ms); });
-})();
-</script>`;
-
-const FORCE_ANALYSE_HELP_SCRIPT = `<script id="force-analyse-help-script">
-(function(){
   function text(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim(); }
   function findButton(label){ return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return text(button).indexOf(label) !== -1; }); }
   function isHelp(el){ return !!(el && el.classList && el.classList.contains('help-icon') && text(el)==='?'); }
-  function ensureRow(button, help, rowClass){
+  function wrapWithHelp(button, help, rowClass){
     if(!button || !help) return null;
     var row=button.closest('.analysis-help-row,.session-help-row');
     if(!row){ row=document.createElement('div'); row.className=rowClass; button.parentNode.insertBefore(row, button); row.appendChild(button); }
@@ -130,81 +24,84 @@ const FORCE_ANALYSE_HELP_SCRIPT = `<script id="force-analyse-help-script">
     help.dataset.boundToButton='1';
     return row;
   }
-  function nearestHelpBelow(button, avoidRow){
-    if(!button) return null;
-    var b=button.getBoundingClientRect();
-    var helps=Array.prototype.filter.call(document.querySelectorAll('.help-icon'), function(help){ return isHelp(help) && help.parentElement!==avoidRow; });
-    helps.sort(function(a,c){
-      var ar=a.getBoundingClientRect(), cr=c.getBoundingClientRect();
-      var ad=Math.abs(ar.top-b.bottom)*3 + Math.abs(ar.left-b.left);
-      var cd=Math.abs(cr.top-b.bottom)*3 + Math.abs(cr.left-b.left);
-      return ad-cd;
-    });
-    return helps[0] || null;
-  }
-  function forceAnalyseHelp(){
+  function ensureAnalyseHelp(){
     var analyse=findButton('Analyseer met AI');
-    var skeleton=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking');
     if(!analyse) return;
-    var skeletonRow=skeleton && skeleton.closest('.analysis-help-row');
-    var analyseRow=analyse.closest('.analysis-help-row');
-    var analyseHelp=analyseRow && Array.prototype.find.call(analyseRow.querySelectorAll('.help-icon'), isHelp);
-    if(!analyseHelp) analyseHelp=nearestHelpBelow(analyse, skeletonRow);
-    if(!analyseHelp && skeletonRow){
-      var skeletonHelps=Array.prototype.filter.call(skeletonRow.querySelectorAll('.help-icon'), isHelp);
-      if(skeletonHelps.length>1) analyseHelp=skeletonHelps[0];
+    var help=document.getElementById('analyseAiHelpKnop');
+    if(!help){
+      help=document.createElement('button');
+      help.type='button';
+      help.id='analyseAiHelpKnop';
+      help.className='help-icon';
+      help.textContent='?';
+      help.setAttribute('aria-label','Help Analyseer met AI');
+      help.setAttribute('data-help','Analyseer met AI maakt automatisch momenten aan op basis van AI-tijdcodes.');
     }
-    ensureRow(analyse, analyseHelp, 'analysis-help-row');
-    if(skeleton){
-      var skeletonHelp=document.getElementById('skeletonTrackingHelpKnop') || Array.prototype.find.call(document.querySelectorAll('.help-icon'), function(help){ return isHelp(help) && ((help.getAttribute('data-help')||'').indexOf('Skeleton Tracking')!==-1 || (help.getAttribute('aria-label')||'').indexOf('Skeleton')!==-1); });
-      if(!skeletonHelp){
-        skeletonHelp=document.createElement('button');
-        skeletonHelp.type='button';
-        skeletonHelp.id='skeletonTrackingHelpKnop';
-        skeletonHelp.className='help-icon';
-        skeletonHelp.setAttribute('aria-label','Help Start Skeleton Tracking');
-        skeletonHelp.setAttribute('data-help','Skeleton Tracking tekent een eenvoudig skelet over de spelersvideo.');
-        skeletonHelp.textContent='?';
-      }
-      var row=ensureRow(skeleton, skeletonHelp, 'analysis-help-row');
-      Array.prototype.slice.call(row.querySelectorAll('.help-icon')).forEach(function(help){ if(help!==skeletonHelp) help.remove(); });
-    }
+    var row=wrapWithHelp(analyse, help, 'analysis-help-row');
+    var ar=analyse.getBoundingClientRect();
+    var sr=(document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking') || analyse).getBoundingClientRect();
+    Array.prototype.slice.call(document.querySelectorAll('.help-icon')).forEach(function(other){
+      if(other===help || !isHelp(other) || other.closest('.analysis-help-row,.session-help-row')) return;
+      var r=other.getBoundingClientRect();
+      if(r.top>=ar.bottom-4 && r.top<=sr.top+8 && r.left<=ar.left+60){ other.style.display='none'; other.dataset.hiddenAnalyseOrphan='1'; }
+    });
   }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', forceAnalyseHelp); else forceAnalyseHelp();
-  [100,300,700,1200,2200,4200,7000].forEach(function(ms){ setTimeout(forceAnalyseHelp, ms); });
+  function ensureSkeletonHelp(){
+    var skeleton=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking');
+    if(!skeleton) return;
+    var help=document.getElementById('skeletonTrackingHelpKnop');
+    if(!help){
+      help=document.createElement('button');
+      help.type='button';
+      help.id='skeletonTrackingHelpKnop';
+      help.className='help-icon';
+      help.textContent='?';
+      help.setAttribute('aria-label','Help Start Skeleton Tracking');
+      help.setAttribute('data-help','Skeleton Tracking tekent een eenvoudig skelet over de spelersvideo.');
+    }
+    var row=wrapWithHelp(skeleton, help, 'analysis-help-row');
+    Array.prototype.slice.call(row.querySelectorAll('.help-icon')).forEach(function(other){ if(other!==help) other.remove(); });
+  }
+  function setTitle(selector, value){ var el=document.querySelector(selector); if(el) el.innerHTML=value; }
+  function addBadge(summary){ if(!summary || summary.querySelector('.pro-later-badge')) return; var badge=document.createElement('span'); badge.className='pro-later-badge'; badge.textContent='PRO later'; var chevron=summary.querySelector('.accordion-chevron'); if(chevron) summary.insertBefore(badge, chevron); else summary.appendChild(badge); }
+  function applyProLayout(){
+    setTitle('#manageVideosTitle','📁 Spelers video’s beheren');
+    setTitle('#videoAnalyseTitle','🎥 Analyse');
+    var manage=document.getElementById('manageVideosAccordion'); if(manage) addBadge(manage.querySelector('summary'));
+    var analysis=document.querySelector('.video-analysis-accordion'); if(analysis){ addBadge(analysis.querySelector('summary')); if(!analysis.dataset.userOpened) analysis.removeAttribute('open'); analysis.addEventListener('toggle', function(){ analysis.dataset.userOpened='1'; }, {once:true}); }
+    var syncBox=document.querySelector('.sync-box.in-manage-videos');
+    var youtubeBox=document.querySelector('#youtubePlayer') && document.querySelector('#youtubePlayer').closest('.video-box');
+    if(syncBox && youtubeBox && !syncBox.dataset.movedToYoutube){ var syncTitle=syncBox.querySelector('.accordion-title'); if(syncTitle) syncTitle.innerHTML='🎬 Vergelijk & Afspelen'; addBadge(syncBox.querySelector('summary')); syncBox.classList.add('youtube-sync-area'); syncBox.dataset.movedToYoutube='1'; var youtubeButtons=youtubeBox.querySelector('.knopgroep'); if(youtubeButtons) youtubeButtons.insertAdjacentElement('afterend', syncBox); }
+  }
+  function initPlayerScrub(){
+    var video=document.getElementById('leerlingVideo'); if(!video || document.getElementById('playerScrubPanel')) return;
+    var wrapper=video.closest('.video-wrapper'); if(!wrapper) return;
+    var panel=document.createElement('div'); panel.id='playerScrubPanel'; panel.className='player-scrub-panel hidden-during-recording';
+    panel.innerHTML='<span id="playerScrubCurrent" class="player-scrub-time">0:00</span><input id="playerScrubSlider" class="player-scrub-slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Spoel door de spelersvideo"><span id="playerScrubDuration" class="player-scrub-time">0:00</span>';
+    wrapper.insertAdjacentElement('afterend', panel);
+  }
+  function alignButtons(){
+    ['Analyseer met AI','Start Skeleton Tracking','Automatische houding-analyse'].forEach(function(label){ var b=findButton(label); if(b) b.classList.add('analysis-aligned-button'); });
+    ['Handmatig moment toevoegen','Sessie Opslaan','Sessie Laden','Download Analyse'].forEach(function(label){ var b=findButton(label); if(b) b.classList.add('session-aligned-button'); });
+    var save=findButton('Sessie Opslaan'); if(save && save.parentElement) save.parentElement.classList.add('session-action-stack');
+  }
+  function applyAll(){ applyProLayout(); initPlayerScrub(); alignButtons(); ensureAnalyseHelp(); ensureSkeletonHelp(); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', applyAll); else applyAll();
+  [50,150,400,900,1600,2600,4200,7000].forEach(function(ms){ setTimeout(applyAll, ms); });
 })();
 </script>`;
 
 const TITLE_LOGO_MARK = `<span class="brand-title-logo" aria-hidden="true"><svg viewBox="0 0 128 128" focusable="false"><defs><linearGradient id="pcLogoA" x1="20" y1="108" x2="96" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#07999a"/><stop offset=".58" stop-color="#67c653"/><stop offset="1" stop-color="#b9e51b"/></linearGradient><linearGradient id="pcLogoB" x1="88" y1="108" x2="112" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5dbd4e"/><stop offset="1" stop-color="#b9e51b"/></linearGradient></defs><path d="M18 108C25 59 57 17 80 31c16 10 26 42 34 77" fill="none" stroke="url(#pcLogoA)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 101c18-9 31-21 45-33" fill="none" stroke="#4fbd5d" stroke-width="16" stroke-linecap="round" opacity=".95"/><path d="M106 48v58" fill="none" stroke="url(#pcLogoB)" stroke-width="16" stroke-linecap="round"/><circle cx="106" cy="27" r="13" fill="#aee018"/><circle cx="99" cy="24" r="2.2" fill="#eef7f1"/><circle cx="106" cy="19" r="2.2" fill="#eef7f1"/><circle cx="113" cy="24" r="2.2" fill="#eef7f1"/><circle cx="102" cy="33" r="2.2" fill="#eef7f1"/><circle cx="111" cy="34" r="2.2" fill="#eef7f1"/></svg></span>`;
 const TITLE_WITH_LOGO = `<h1 class="brand-title">Pickleball Coach${TITLE_LOGO_MARK}</h1>`;
 
-export const config = {
-  matcher: ['/', '/index.html']
-};
+export const config = { matcher: ['/', '/index.html'] };
 
 export default async function middleware(request) {
   const url = new URL('/index.html', request.url);
   const response = await fetch(url, { cache: 'no-store' });
   let html = await response.text();
-
-  if (!html.includes('coach-layout-polish-style')) {
-    html = html.replace('</head>', `${LAYOUT_STYLE}\n</head>`);
-  }
-  if (!html.includes('coach-layout-polish-script')) {
-    html = html.replace('</body>', `${LAYOUT_SCRIPT}\n</body>`);
-  }
-  if (!html.includes('force-analyse-help-script')) {
-    html = html.replace('</body>', `${FORCE_ANALYSE_HELP_SCRIPT}\n</body>`);
-  }
-  if (!html.includes('<h1 class="brand-title">')) {
-    html = html.replace(/<h1[^>]*>\s*Pickleball Coach\s*<\/h1>/, TITLE_WITH_LOGO);
-  }
-
-  return new Response(html, {
-    status: response.ok ? 200 : response.status,
-    headers: {
-      'content-type': 'text/html; charset=utf-8',
-      'cache-control': 'no-cache, no-store, must-revalidate'
-    }
-  });
+  if (!html.includes('coach-layout-polish-style')) html = html.replace('</head>', `${LAYOUT_STYLE}\n</head>`);
+  if (!html.includes('coach-layout-polish-script')) html = html.replace('</body>', `${LAYOUT_SCRIPT}\n</body>`);
+  if (!html.includes('<h1 class="brand-title">')) html = html.replace(/<h1[^>]*>\s*Pickleball Coach\s*<\/h1>/, TITLE_WITH_LOGO);
+  return new Response(html, { status: response.ok ? 200 : response.status, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-cache, no-store, must-revalidate' } });
 }

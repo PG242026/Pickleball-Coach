@@ -16,18 +16,6 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
   function cleanText(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim(); }
   function findButton(label){ return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return cleanText(button).indexOf(label) !== -1; }); }
   function isHelp(el){ return !!(el && el.classList && el.classList.contains('help-icon') && cleanText(el)==='?'); }
-  function firstFreeHelpAfterInPage(button, stopButton){
-    if(!button) return null;
-    var nodes=Array.prototype.slice.call(document.querySelectorAll('button,.help-icon'));
-    var start=nodes.indexOf(button);
-    var stop=stopButton ? nodes.indexOf(stopButton) : -1;
-    if(start<0) return null;
-    for(var i=start+1;i<nodes.length;i++){
-      if(stop>start && i>=stop) break;
-      if(isHelp(nodes[i]) && !nodes[i].dataset.boundToButton) return nodes[i];
-    }
-    return null;
-  }
   function findHelpByNeedle(needle){ return Array.prototype.find.call(document.querySelectorAll('.help-icon'), function(help){ return !help.dataset.boundToButton && ((help.getAttribute('data-help') || '') + ' ' + (help.getAttribute('aria-label') || '')).indexOf(needle) !== -1; }); }
   function wrapWithHelp(button, help, rowClass){
     if(!button || !help) return;
@@ -43,7 +31,7 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
   function addSkeletonHelpButton(){
     var skeletonButton=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking');
     if(!skeletonButton) return null;
-    var help=document.getElementById('skeletonTrackingHelpKnop') || findHelpByNeedle('Skeleton Tracking') || firstFreeHelpAfterInPage(skeletonButton, findButton('Automatische houding-analyse'));
+    var help=document.getElementById('skeletonTrackingHelpKnop') || findHelpByNeedle('Skeleton Tracking');
     if(!help){
       help=document.createElement('button');
       help.type='button';
@@ -106,7 +94,6 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
     update();
   }
   function alignButtonsAndHelp(){
-    document.querySelectorAll('.analysis-help-row .help-icon,.session-help-row .help-icon').forEach(function(help){ help.dataset.boundToButton='1'; });
     var analyse=findButton('Analyseer met AI');
     var skeleton=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking');
     var posture=findButton('Automatische houding-analyse');
@@ -117,16 +104,74 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
     [analyse,skeleton,posture].filter(Boolean).forEach(function(button){ button.classList.add('analysis-aligned-button'); });
     [manual,save,load,download].filter(Boolean).forEach(function(button){ button.classList.add('session-aligned-button'); });
     if(save && save.parentElement) save.parentElement.classList.add('session-action-stack');
-    var analyseHelp=findHelpByNeedle('Analyseer met AI') || findHelpByNeedle('automatisch techniek') || firstFreeHelpAfterInPage(analyse, skeleton);
+    var analyseHelp=findHelpByNeedle('Analyseer met AI') || findHelpByNeedle('automatisch techniek');
     var skeletonHelp=addSkeletonHelpButton();
-    var loadHelp=findHelpByNeedle('Open opgeslagen') || findHelpByNeedle('Sessie') || firstFreeHelpAfterInPage(load, download);
+    var loadHelp=findHelpByNeedle('Open opgeslagen') || findHelpByNeedle('Sessie');
     wrapWithHelp(analyse, analyseHelp, 'analysis-help-row');
     wrapWithHelp(skeleton, skeletonHelp, 'analysis-help-row');
     wrapWithHelp(load, loadHelp, 'session-help-row');
   }
   function applyAll(){ applyProLayout(); initPlayerScrub(); alignButtonsAndHelp(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', applyAll); else applyAll();
-  [50,150,400,900,1600,2600,4200,6500].forEach(function(ms){ setTimeout(applyAll, ms); });
+  [50,150,400,900,1600].forEach(function(ms){ setTimeout(applyAll, ms); });
+})();
+</script>`;
+
+const FORCE_ANALYSE_HELP_SCRIPT = `<script id="force-analyse-help-script">
+(function(){
+  function text(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim(); }
+  function findButton(label){ return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return text(button).indexOf(label) !== -1; }); }
+  function isHelp(el){ return !!(el && el.classList && el.classList.contains('help-icon') && text(el)==='?'); }
+  function ensureRow(button, help, rowClass){
+    if(!button || !help) return null;
+    var row=button.closest('.analysis-help-row,.session-help-row');
+    if(!row){ row=document.createElement('div'); row.className=rowClass; button.parentNode.insertBefore(row, button); row.appendChild(button); }
+    if(help.parentElement!==row) row.appendChild(help);
+    help.dataset.boundToButton='1';
+    return row;
+  }
+  function nearestHelpBelow(button, avoidRow){
+    if(!button) return null;
+    var b=button.getBoundingClientRect();
+    var helps=Array.prototype.filter.call(document.querySelectorAll('.help-icon'), function(help){ return isHelp(help) && help.parentElement!==avoidRow; });
+    helps.sort(function(a,c){
+      var ar=a.getBoundingClientRect(), cr=c.getBoundingClientRect();
+      var ad=Math.abs(ar.top-b.bottom)*3 + Math.abs(ar.left-b.left);
+      var cd=Math.abs(cr.top-b.bottom)*3 + Math.abs(cr.left-b.left);
+      return ad-cd;
+    });
+    return helps[0] || null;
+  }
+  function forceAnalyseHelp(){
+    var analyse=findButton('Analyseer met AI');
+    var skeleton=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking');
+    if(!analyse) return;
+    var skeletonRow=skeleton && skeleton.closest('.analysis-help-row');
+    var analyseRow=analyse.closest('.analysis-help-row');
+    var analyseHelp=analyseRow && Array.prototype.find.call(analyseRow.querySelectorAll('.help-icon'), isHelp);
+    if(!analyseHelp) analyseHelp=nearestHelpBelow(analyse, skeletonRow);
+    if(!analyseHelp && skeletonRow){
+      var skeletonHelps=Array.prototype.filter.call(skeletonRow.querySelectorAll('.help-icon'), isHelp);
+      if(skeletonHelps.length>1) analyseHelp=skeletonHelps[0];
+    }
+    ensureRow(analyse, analyseHelp, 'analysis-help-row');
+    if(skeleton){
+      var skeletonHelp=document.getElementById('skeletonTrackingHelpKnop') || Array.prototype.find.call(document.querySelectorAll('.help-icon'), function(help){ return isHelp(help) && ((help.getAttribute('data-help')||'').indexOf('Skeleton Tracking')!==-1 || (help.getAttribute('aria-label')||'').indexOf('Skeleton')!==-1); });
+      if(!skeletonHelp){
+        skeletonHelp=document.createElement('button');
+        skeletonHelp.type='button';
+        skeletonHelp.id='skeletonTrackingHelpKnop';
+        skeletonHelp.className='help-icon';
+        skeletonHelp.setAttribute('aria-label','Help Start Skeleton Tracking');
+        skeletonHelp.setAttribute('data-help','Skeleton Tracking tekent een eenvoudig skelet over de spelersvideo.');
+        skeletonHelp.textContent='?';
+      }
+      var row=ensureRow(skeleton, skeletonHelp, 'analysis-help-row');
+      Array.prototype.slice.call(row.querySelectorAll('.help-icon')).forEach(function(help){ if(help!==skeletonHelp) help.remove(); });
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', forceAnalyseHelp); else forceAnalyseHelp();
+  [100,300,700,1200,2200,4200,7000].forEach(function(ms){ setTimeout(forceAnalyseHelp, ms); });
 })();
 </script>`;
 
@@ -147,6 +192,9 @@ export default async function middleware(request) {
   }
   if (!html.includes('coach-layout-polish-script')) {
     html = html.replace('</body>', `${LAYOUT_SCRIPT}\n</body>`);
+  }
+  if (!html.includes('force-analyse-help-script')) {
+    html = html.replace('</body>', `${FORCE_ANALYSE_HELP_SCRIPT}\n</body>`);
   }
   if (!html.includes('<h1 class="brand-title">')) {
     html = html.replace(/<h1[^>]*>\s*Pickleball Coach\s*<\/h1>/, TITLE_WITH_LOGO);

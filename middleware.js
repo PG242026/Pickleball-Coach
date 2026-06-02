@@ -65,6 +65,8 @@ export default async function middleware(request) {
   const url = new URL('/index.html', request.url);
   const response = await fetch(url, { cache: 'no-store' });
   let html = await response.text();
+  html = html.replace(/<div class="ai-melding">[\s\S]*?<\/div>\s*/, '');
+  html = html.replace(/(<button class="help-icon" data-help=")[^"]*Analyseer met AI[^"]*(" aria-label="Help Analyseer met AI">\?<\/button>)/, '$1Analyseer met AI maakt automatisch momenten aan op basis van AI-tijdcodes en geeft techniek-tips bij de video.$2');
   html = html.replace(/(<button onclick="analyseerMetAI\(\)">[\s\S]*?<\/button>)\s*(<button class="help-icon" data-help="[^"]*Analyseer met AI[^"]*" aria-label="Help Analyseer met AI">\?<\/button>)/, '<div class="analysis-help-row">$1$2</div>');
   html = html.replace(/(<button onclick="laadSessie\(\)">[\s\S]*?<\/button>)\s*(<button class="help-icon" data-help="[^"]*Open opgeslagen video[^"]*" aria-label="Help Open opgeslagen video">\?<\/button>)/, '<div class="session-help-row">$1$2</div>');
   if (!html.includes('coach-layout-polish-style')) html = html.replace('</head>', `${LAYOUT_STYLE}\n</head>`);

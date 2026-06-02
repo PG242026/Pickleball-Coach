@@ -24,70 +24,36 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
     help.dataset.boundToButton='1';
     return row;
   }
-  function ensureAnalyseHelp(){
-    var analyse=findButton('Analyseer met AI');
-    if(!analyse) return;
-    var help=document.getElementById('analyseAiHelpKnop');
-    if(!help){
-      help=document.createElement('button');
-      help.type='button';
-      help.id='analyseAiHelpKnop';
-      help.className='help-icon';
-      help.textContent='?';
-      help.setAttribute('aria-label','Help Analyseer met AI');
-      help.setAttribute('data-help','Analyseer met AI maakt automatisch momenten aan op basis van AI-tijdcodes.');
-    }
-    var row=wrapWithHelp(analyse, help, 'analysis-help-row');
-    var ar=analyse.getBoundingClientRect();
-    var sr=(document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking') || analyse).getBoundingClientRect();
-    Array.prototype.slice.call(document.querySelectorAll('.help-icon')).forEach(function(other){
-      if(other===help || !isHelp(other) || other.closest('.analysis-help-row,.session-help-row')) return;
-      var r=other.getBoundingClientRect();
-      if(r.top>=ar.bottom-4 && r.top<=sr.top+8 && r.left<=ar.left+60){ other.style.display='none'; other.dataset.hiddenAnalyseOrphan='1'; }
-    });
-  }
   function ensureSkeletonHelp(){
     var skeleton=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking');
     if(!skeleton) return;
     var help=document.getElementById('skeletonTrackingHelpKnop');
-    if(!help){
-      help=document.createElement('button');
-      help.type='button';
-      help.id='skeletonTrackingHelpKnop';
-      help.className='help-icon';
-      help.textContent='?';
-      help.setAttribute('aria-label','Help Start Skeleton Tracking');
-      help.setAttribute('data-help','Skeleton Tracking tekent een eenvoudig skelet over de spelersvideo.');
-    }
+    if(!help){ help=document.createElement('button'); help.type='button'; help.id='skeletonTrackingHelpKnop'; help.className='help-icon'; help.textContent='?'; help.setAttribute('aria-label','Help Start Skeleton Tracking'); help.setAttribute('data-help','Skeleton Tracking tekent een eenvoudig skelet over de spelersvideo.'); }
     var row=wrapWithHelp(skeleton, help, 'analysis-help-row');
     Array.prototype.slice.call(row.querySelectorAll('.help-icon')).forEach(function(other){ if(other!==help) other.remove(); });
   }
   function setTitle(selector, value){ var el=document.querySelector(selector); if(el) el.innerHTML=value; }
   function addBadge(summary){ if(!summary || summary.querySelector('.pro-later-badge')) return; var badge=document.createElement('span'); badge.className='pro-later-badge'; badge.textContent='PRO later'; var chevron=summary.querySelector('.accordion-chevron'); if(chevron) summary.insertBefore(badge, chevron); else summary.appendChild(badge); }
   function applyProLayout(){
-    setTitle('#manageVideosTitle','📁 Spelers video’s beheren');
-    setTitle('#videoAnalyseTitle','🎥 Analyse');
+    setTitle('#manageVideosTitle','📁 Spelers video’s beheren'); setTitle('#videoAnalyseTitle','🎥 Analyse');
     var manage=document.getElementById('manageVideosAccordion'); if(manage) addBadge(manage.querySelector('summary'));
     var analysis=document.querySelector('.video-analysis-accordion'); if(analysis){ addBadge(analysis.querySelector('summary')); if(!analysis.dataset.userOpened) analysis.removeAttribute('open'); analysis.addEventListener('toggle', function(){ analysis.dataset.userOpened='1'; }, {once:true}); }
-    var syncBox=document.querySelector('.sync-box.in-manage-videos');
-    var youtubeBox=document.querySelector('#youtubePlayer') && document.querySelector('#youtubePlayer').closest('.video-box');
+    var syncBox=document.querySelector('.sync-box.in-manage-videos'); var youtubeBox=document.querySelector('#youtubePlayer') && document.querySelector('#youtubePlayer').closest('.video-box');
     if(syncBox && youtubeBox && !syncBox.dataset.movedToYoutube){ var syncTitle=syncBox.querySelector('.accordion-title'); if(syncTitle) syncTitle.innerHTML='🎬 Vergelijk & Afspelen'; addBadge(syncBox.querySelector('summary')); syncBox.classList.add('youtube-sync-area'); syncBox.dataset.movedToYoutube='1'; var youtubeButtons=youtubeBox.querySelector('.knopgroep'); if(youtubeButtons) youtubeButtons.insertAdjacentElement('afterend', syncBox); }
   }
   function initPlayerScrub(){
-    var video=document.getElementById('leerlingVideo'); if(!video || document.getElementById('playerScrubPanel')) return;
-    var wrapper=video.closest('.video-wrapper'); if(!wrapper) return;
-    var panel=document.createElement('div'); panel.id='playerScrubPanel'; panel.className='player-scrub-panel hidden-during-recording';
-    panel.innerHTML='<span id="playerScrubCurrent" class="player-scrub-time">0:00</span><input id="playerScrubSlider" class="player-scrub-slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Spoel door de spelersvideo"><span id="playerScrubDuration" class="player-scrub-time">0:00</span>';
-    wrapper.insertAdjacentElement('afterend', panel);
+    var video=document.getElementById('leerlingVideo'); if(!video || document.getElementById('playerScrubPanel')) return; var wrapper=video.closest('.video-wrapper'); if(!wrapper) return;
+    var panel=document.createElement('div'); panel.id='playerScrubPanel'; panel.className='player-scrub-panel hidden-during-recording'; panel.innerHTML='<span id="playerScrubCurrent" class="player-scrub-time">0:00</span><input id="playerScrubSlider" class="player-scrub-slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Spoel door de spelersvideo"><span id="playerScrubDuration" class="player-scrub-time">0:00</span>'; wrapper.insertAdjacentElement('afterend', panel);
   }
   function alignButtons(){
     ['Analyseer met AI','Start Skeleton Tracking','Automatische houding-analyse'].forEach(function(label){ var b=findButton(label); if(b) b.classList.add('analysis-aligned-button'); });
     ['Handmatig moment toevoegen','Sessie Opslaan','Sessie Laden','Download Analyse'].forEach(function(label){ var b=findButton(label); if(b) b.classList.add('session-aligned-button'); });
     var save=findButton('Sessie Opslaan'); if(save && save.parentElement) save.parentElement.classList.add('session-action-stack');
+    ensureSkeletonHelp();
   }
-  function applyAll(){ applyProLayout(); initPlayerScrub(); alignButtons(); ensureAnalyseHelp(); ensureSkeletonHelp(); }
+  function applyAll(){ applyProLayout(); initPlayerScrub(); alignButtons(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', applyAll); else applyAll();
-  [50,150,400,900,1600,2600,4200,7000].forEach(function(ms){ setTimeout(applyAll, ms); });
+  [50,150,400,900,1600,2600,4200].forEach(function(ms){ setTimeout(applyAll, ms); });
 })();
 </script>`;
 
@@ -100,6 +66,7 @@ export default async function middleware(request) {
   const url = new URL('/index.html', request.url);
   const response = await fetch(url, { cache: 'no-store' });
   let html = await response.text();
+  html = html.replace(/(<button onclick="analyseerMetAI\(\)">[\s\S]*?<\/button>)\s*(<button class="help-icon" data-help="[^"]*Analyseer met AI[^"]*" aria-label="Help Analyseer met AI">\?<\/button>)/, '<div class="analysis-help-row">$1$2</div>');
   if (!html.includes('coach-layout-polish-style')) html = html.replace('</head>', `${LAYOUT_STYLE}\n</head>`);
   if (!html.includes('coach-layout-polish-script')) html = html.replace('</body>', `${LAYOUT_SCRIPT}\n</body>`);
   if (!html.includes('<h1 class="brand-title">')) html = html.replace(/<h1[^>]*>\s*Pickleball Coach\s*<\/h1>/, TITLE_WITH_LOGO);

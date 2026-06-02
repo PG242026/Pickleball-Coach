@@ -1,76 +1,27 @@
 const LAYOUT_STYLE = `<style id="coach-layout-polish-style">
-.brand-title{display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:normal}.brand-title-logo{width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}.brand-title-logo svg{width:100%;height:100%;display:block}
-.accordion-chevron{flex:0 0 36px!important;width:36px!important;height:36px!important;margin-left:10px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;color:transparent!important;font-size:0!important;line-height:1!important;position:relative!important;transform:rotate(0deg);transform-origin:center;transition:transform .25s ease}.accordion-chevron::before{content:"";width:15px;height:15px;border-right:3px solid #1f5f3b;border-bottom:3px solid #1f5f3b;border-radius:2px;transform:rotate(45deg) translate(-1px,-1px);box-sizing:border-box}details[open]>.accordion-header .accordion-chevron{transform:rotate(180deg)}
-.container>.card:first-of-type{padding:0!important;border-radius:10px!important;margin:0 0 12px!important;box-shadow:0 2px 8px rgba(0,0,0,.14)!important;overflow:hidden!important}.container>.card:first-of-type .beheer-summary{min-height:50px!important;margin:0!important;padding:0 14px!important;font-size:20px!important;line-height:1.15!important;display:flex!important;align-items:center!important;box-sizing:border-box!important}.container>.card:first-of-type details>div{padding:8px 12px 10px!important;margin-top:0!important}.container>.card:first-of-type input{padding:8px 10px!important;margin-top:4px!important;margin-bottom:7px!important;font-size:15px!important}.container>.card:first-of-type button{min-height:36px!important;padding:7px 11px!important;font-size:14px!important;border-radius:8px!important}
-.premium-feature.trainer-club-feature[open]{overflow:visible!important}.premium-feature.trainer-club-feature[open] .premium-body{max-height:none!important;overflow:visible!important;display:grid;gap:12px}.video-analysis-sectie,.video-analyse-sectie{margin-top:12px!important}.video-analysis-accordion{border-color:#d2e7db!important}.video-analysis-accordion:not([open]) .video-analysis-paneel{display:none!important}.video-analysis-paneel{gap:12px!important;overflow:visible!important}.player-video-separator{margin:24px 0 12px!important;border:0!important;border-top:1px solid #b7c7be!important;height:0!important}
-.pro-later-badge{display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;padding:2px 7px!important;border-radius:999px!important;background:#f3ecff!important;color:#6e2bd8!important;font-size:9px!important;font-weight:800!important;letter-spacing:.04em!important;line-height:1.2!important;text-transform:uppercase!important}.youtube-sync-area{position:relative;margin-top:24px!important;padding-top:12px!important;border:0!important;border-radius:0!important;background:transparent!important}.youtube-sync-area::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:#b7c7be}.youtube-sync-area .sync-accordion{border:1px solid #d2e7db!important;border-radius:12px!important;background:#f7fcf9!important;overflow:hidden!important}
-#manageVideosAccordion>.accordion-header,#manageVideosAccordion>summary,.youtube-sync-area .sync-accordion>.accordion-header,.youtube-sync-area .sync-accordion>summary{display:grid!important;grid-template-columns:minmax(0,1fr) auto 36px!important;column-gap:10px!important;align-items:center!important;min-height:66px!important;padding:15px 16px!important;box-sizing:border-box!important}#manageVideosTitle,.youtube-sync-area .accordion-title{font-family:inherit!important;font-size:18px!important;font-weight:700!important;line-height:1.2!important;color:#1f5f3b!important;letter-spacing:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;margin:0!important;padding:0!important;min-width:0!important}.premium-feature.trainer-club-feature summary .pro-later-badge,.sync-accordion summary .pro-later-badge{justify-self:end!important;align-self:center!important}
-.knopgroep{gap:12px!important;align-items:center!important}.knopgroep button{margin:0!important;min-height:44px!important;border-radius:9px!important;white-space:nowrap!important}.player-box .knopgroep.hidden-during-recording{display:flex!important;gap:12px!important;align-items:center!important;flex-wrap:wrap!important;overflow:visible!important}.player-box .knopgroep.hidden-during-recording .help-icon{position:static!important;transform:none!important;flex:0 0 42px!important;width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;padding:0!important;margin:0!important;border-radius:50%!important;background:#fff!important;color:#1f5f3b!important;border:2px solid #1f5f3b!important;line-height:1!important;box-sizing:border-box!important}
-.bewaar-regel{display:flex!important;gap:10px!important;align-items:center!important;flex-wrap:wrap!important}.bewaar-regel button:not(.help-icon){margin:0!important;min-height:42px!important}.bewaar-regel .help-icon{position:static!important;transform:none!important;flex:0 0 30px!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;margin:0!important;padding:0!important;border-radius:50%!important;background:#fff!important;color:#1f5f3b!important;border:2px solid #1f5f3b!important;line-height:1!important;box-sizing:border-box!important}.download-video-bestand-knop{background:#17482d!important}.storage-choice-note{display:none!important}
-.analyse-controls,.sessie-sectie{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;width:100%!important;max-width:100%!important;overflow:visible!important}.analysis-aligned-button,.session-aligned-button{width:auto!important;max-width:calc(100vw - 74px)!important;min-height:44px!important;display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;box-sizing:border-box!important;margin:0!important;padding-left:18px!important;padding-right:18px!important;white-space:nowrap!important;text-align:left!important;flex:0 0 auto!important}.analysis-help-row,.session-help-row{display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;width:auto!important;max-width:100%!important;box-sizing:border-box!important;overflow:visible!important;flex-wrap:nowrap!important}.analysis-help-row .help-icon,.session-help-row .help-icon{position:static!important;transform:none!important;flex:0 0 30px!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;margin:0!important;padding:0!important;border-radius:50%!important;box-sizing:border-box!important;background:#fff!important;color:#1f5f3b!important;border:2px solid #1f5f3b!important}.session-action-stack{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;width:100%!important}.button-local-message,.storage-inline-help{max-width:min(360px,calc(100vw - 40px))!important;margin:4px 0 2px!important;padding:10px 12px!important;border-left:5px solid #d6a800!important;border-radius:10px!important;background:#fff8d8!important;color:#1f5f3b!important;font-size:15px!important;font-weight:700!important;line-height:1.35!important;box-shadow:0 2px 8px rgba(0,0,0,.12)!important;box-sizing:border-box!important}
-.player-scrub-panel{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;margin:10px 0 4px;padding:10px 12px;border-radius:12px;background:#eef7f1;color:#1f5f3b;font-weight:bold}.player-scrub-time{font-variant-numeric:tabular-nums;font-size:15px;min-width:44px;text-align:center}.player-scrub-slider{width:100%;height:28px;margin:0!important;padding:0!important;accent-color:#1f5f3b;cursor:pointer}.melding{top:18px!important;left:auto!important;right:156px!important;transform:none!important;max-width:min(360px,calc(100vw - 32px))!important;text-align:center!important;box-sizing:border-box!important}
-@media(max-width:760px){.melding{top:12px!important;left:16px!important;right:16px!important;max-width:none!important}}@media(max-width:700px){.brand-title{gap:7px}.brand-title-logo{width:34px;height:34px}.container>.card:first-of-type .beheer-summary{min-height:48px!important;padding:0 12px!important;font-size:18px!important}.container>.card:first-of-type{border-radius:9px!important;margin-bottom:10px!important}.player-video-separator{margin:14px 0 12px!important}.youtube-sync-area{margin-top:14px!important}#manageVideosAccordion>.accordion-header,#manageVideosAccordion>summary,.youtube-sync-area .sync-accordion>.accordion-header,.youtube-sync-area .sync-accordion>summary{min-height:62px!important;padding:13px 14px!important}#manageVideosTitle,.youtube-sync-area .accordion-title{font-size:17px!important}.pro-later-badge{font-size:8px!important;padding:2px 6px!important}.player-scrub-panel{grid-template-columns:1fr;gap:6px}.button-local-message,.storage-inline-help{font-size:14px!important;padding:9px 10px!important}.bewaar-regel{align-items:center!important}.bewaar-regel button:not(.help-icon){width:100%!important;justify-content:flex-start!important;text-align:left!important}.bewaar-regel .help-icon{width:30px!important;min-width:30px!important;flex-basis:30px!important}}
+.brand-title{display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:normal}.brand-title-logo{width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}.brand-title-logo svg{width:100%;height:100%;display:block}.accordion-chevron{flex:0 0 36px!important;width:36px!important;height:36px!important;margin-left:10px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;color:transparent!important;font-size:0!important;line-height:1!important;position:relative!important;transform:rotate(0deg);transform-origin:center;transition:transform .25s ease}.accordion-chevron::before{content:"";width:15px;height:15px;border-right:3px solid #1f5f3b;border-bottom:3px solid #1f5f3b;border-radius:2px;transform:rotate(45deg) translate(-1px,-1px);box-sizing:border-box}details[open]>.accordion-header .accordion-chevron{transform:rotate(180deg)}
+.container>.card:first-of-type{padding:0!important;border-radius:10px!important;margin:0 0 12px!important;box-shadow:0 2px 8px rgba(0,0,0,.14)!important;overflow:hidden!important}.container>.card:first-of-type .beheer-summary{min-height:50px!important;margin:0!important;padding:0 14px!important;font-size:20px!important;line-height:1.15!important;display:flex!important;align-items:center!important;box-sizing:border-box!important}.container>.card:first-of-type details>div{padding:8px 12px 10px!important;margin-top:0!important}.container>.card:first-of-type input{padding:8px 10px!important;margin-top:4px!important;margin-bottom:7px!important;font-size:15px!important}.container>.card:first-of-type button{min-height:36px!important;padding:7px 11px!important;font-size:14px!important;border-radius:8px!important}.premium-feature.trainer-club-feature[open]{overflow:visible!important}.premium-feature.trainer-club-feature[open] .premium-body{max-height:none!important;overflow:visible!important;display:grid;gap:12px}.video-analysis-sectie,.video-analyse-sectie{margin-top:12px!important}.video-analysis-accordion{border-color:#d2e7db!important}.video-analysis-accordion:not([open]) .video-analysis-paneel{display:none!important}.video-analysis-paneel{gap:12px!important;overflow:visible!important}.player-video-separator{margin:24px 0 12px!important;border:0!important;border-top:1px solid #b7c7be!important;height:0!important}.pro-later-badge{display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;padding:2px 7px!important;border-radius:999px!important;background:#f3ecff!important;color:#6e2bd8!important;font-size:9px!important;font-weight:800!important;letter-spacing:.04em!important;line-height:1.2!important;text-transform:uppercase!important}.youtube-sync-area{position:relative;margin-top:24px!important;padding-top:12px!important;border:0!important;border-radius:0!important;background:transparent!important}.youtube-sync-area::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:#b7c7be}.youtube-sync-area .sync-accordion{border:1px solid #d2e7db!important;border-radius:12px!important;background:#f7fcf9!important;overflow:hidden!important}
+#manageVideosAccordion>.accordion-header,#manageVideosAccordion>summary,.youtube-sync-area .sync-accordion>.accordion-header,.youtube-sync-area .sync-accordion>summary{display:grid!important;grid-template-columns:minmax(0,1fr) auto 36px!important;column-gap:10px!important;align-items:center!important;min-height:66px!important;padding:15px 16px!important;box-sizing:border-box!important}#manageVideosTitle,.youtube-sync-area .accordion-title{font-family:inherit!important;font-size:18px!important;font-weight:700!important;line-height:1.2!important;color:#1f5f3b!important;letter-spacing:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;margin:0!important;padding:0!important;min-width:0!important}.premium-feature.trainer-club-feature summary .pro-later-badge,.sync-accordion summary .pro-later-badge{justify-self:end!important;align-self:center!important}.knopgroep{gap:12px!important;align-items:center!important}.knopgroep button{margin:0!important;min-height:44px!important;border-radius:9px!important;white-space:nowrap!important}.player-box .knopgroep.hidden-during-recording{display:flex!important;gap:12px!important;align-items:center!important;flex-wrap:wrap!important;overflow:visible!important}.player-box .knopgroep.hidden-during-recording .help-icon{position:static!important;transform:none!important;flex:0 0 42px!important;width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;padding:0!important;margin:0!important;border-radius:50%!important;background:#fff!important;color:#1f5f3b!important;border:2px solid #1f5f3b!important;line-height:1!important;box-sizing:border-box!important}
+.bewaar-regel{display:flex!important;gap:10px!important;align-items:center!important;flex-wrap:wrap!important}.bewaar-regel button:not(.help-icon){margin:0!important;min-height:42px!important}.bewaar-regel .help-icon{position:static!important;transform:none!important;flex:0 0 30px!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;margin:0!important;padding:0!important;border-radius:50%!important;background:#fff!important;color:#1f5f3b!important;border:2px solid #1f5f3b!important;line-height:1!important;box-sizing:border-box!important}.download-video-bestand-knop{background:#17482d!important}.storage-choice-note{display:none!important}.upload-loaded-note,.button-local-message,.storage-inline-help{max-width:min(380px,calc(100vw - 40px))!important;margin:6px 0 2px!important;padding:10px 12px!important;border-left:5px solid #d6a800!important;border-radius:10px!important;background:#fff8d8!important;color:#1f5f3b!important;font-size:15px!important;font-weight:700!important;line-height:1.35!important;box-shadow:0 2px 8px rgba(0,0,0,.12)!important;box-sizing:border-box!important}
+.analyse-controls,.sessie-sectie{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;width:100%!important;max-width:100%!important;overflow:visible!important}.analysis-aligned-button,.session-aligned-button{width:auto!important;max-width:calc(100vw - 74px)!important;min-height:44px!important;display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;box-sizing:border-box!important;margin:0!important;padding-left:18px!important;padding-right:18px!important;white-space:nowrap!important;text-align:left!important;flex:0 0 auto!important}.analysis-help-row,.session-help-row{display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;width:auto!important;max-width:100%!important;box-sizing:border-box!important;overflow:visible!important;flex-wrap:nowrap!important}.analysis-help-row .help-icon,.session-help-row .help-icon{position:static!important;transform:none!important;flex:0 0 30px!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;margin:0!important;padding:0!important;border-radius:50%!important;box-sizing:border-box!important;background:#fff!important;color:#1f5f3b!important;border:2px solid #1f5f3b!important}.session-action-stack{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;width:100%!important}.player-scrub-panel{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;margin:10px 0 4px;padding:10px 12px;border-radius:12px;background:#eef7f1;color:#1f5f3b;font-weight:bold}.player-scrub-time{font-variant-numeric:tabular-nums;font-size:15px;min-width:44px;text-align:center}.player-scrub-slider{width:100%;height:28px;margin:0!important;padding:0!important;accent-color:#1f5f3b;cursor:pointer}.melding{top:18px!important;left:auto!important;right:156px!important;transform:none!important;max-width:min(360px,calc(100vw - 32px))!important;text-align:center!important;box-sizing:border-box!important}
+@media(max-width:760px){.melding{top:12px!important;left:16px!important;right:16px!important;max-width:none!important}}@media(max-width:700px){.brand-title{gap:7px}.brand-title-logo{width:34px;height:34px}.container>.card:first-of-type .beheer-summary{min-height:48px!important;padding:0 12px!important;font-size:18px!important}.container>.card:first-of-type{border-radius:9px!important;margin-bottom:10px!important}.player-video-separator{margin:14px 0 12px!important}.youtube-sync-area{margin-top:14px!important}#manageVideosAccordion>.accordion-header,#manageVideosAccordion>summary,.youtube-sync-area .sync-accordion>.accordion-header,.youtube-sync-area .sync-accordion>summary{min-height:62px!important;padding:13px 14px!important}#manageVideosTitle,.youtube-sync-area .accordion-title{font-size:17px!important}.pro-later-badge{font-size:8px!important;padding:2px 6px!important}.player-scrub-panel{grid-template-columns:1fr;gap:6px}.button-local-message,.storage-inline-help,.upload-loaded-note{font-size:14px!important;padding:9px 10px!important}.bewaar-regel{align-items:center!important}.bewaar-regel button:not(.help-icon){width:100%!important;justify-content:flex-start!important;text-align:left!important}.bewaar-regel .help-icon{width:30px!important;min-width:30px!important;flex-basis:30px!important}}
 </style>`;
 
 const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
 (function(){
   function text(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim(); }
   function findButton(label){ return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return text(button).indexOf(label) !== -1; }); }
-  function normalizeAiLabels(){
-    Array.prototype.slice.call(document.querySelectorAll('button,.help-icon,#aiAnalyseVak h3')).forEach(function(el){
-      if(el.textContent && el.textContent.indexOf('Analyseer met AI')!==-1) el.textContent=el.textContent.replace(/Analyseer met AI/g,'Analyseer met Ai');
-      if(el.getAttribute && el.getAttribute('aria-label')) el.setAttribute('aria-label', el.getAttribute('aria-label').replace(/Analyseer met AI/g,'Analyseer met Ai'));
-      if(el.dataset && el.dataset.help) el.dataset.help=el.dataset.help.replace(/Analyseer met AI/g,'Analyseer met Ai');
-    });
-  }
-  function wrapWithHelp(button, help, rowClass){
-    if(!button || !help) return null;
-    var row=button.closest('.analysis-help-row,.session-help-row');
-    if(!row){ row=document.createElement('div'); row.className=rowClass; button.parentNode.insertBefore(row, button); row.appendChild(button); }
-    if(help.parentElement!==row) row.appendChild(help);
-    help.dataset.boundToButton='1';
-    return row;
-  }
-  function ensureAiHelp(){
-    var ai=findButton('Analyseer met Ai') || findButton('Analyseer met AI');
-    if(!ai) return;
-    var help=Array.prototype.find.call(document.querySelectorAll('button.help-icon'), function(button){
-      var label=(button.getAttribute('aria-label') || '') + ' ' + (button.dataset && button.dataset.help || '');
-      return /Analyseer met A[iI]/.test(label);
-    });
-    if(help) wrapWithHelp(ai, help, 'analysis-help-row');
-  }
-  function ensureSkeletonHelp(){
-    var skeleton=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking');
-    if(!skeleton) return;
-    var help=document.getElementById('skeletonTrackingHelpKnop');
-    if(!help){ help=document.createElement('button'); help.type='button'; help.id='skeletonTrackingHelpKnop'; help.className='help-icon'; help.textContent='?'; help.setAttribute('aria-label','Help Start Skeleton Tracking'); help.setAttribute('data-help','Skeleton Tracking tekent een eenvoudig skelet over de spelersvideo.'); }
-    var row=wrapWithHelp(skeleton, help, 'analysis-help-row');
-    Array.prototype.slice.call(row.querySelectorAll('.help-icon')).forEach(function(other){ if(other!==help) other.remove(); });
-  }
+  function normalizeAiLabels(){ Array.prototype.slice.call(document.querySelectorAll('button,.help-icon,#aiAnalyseVak h3')).forEach(function(el){ if(el.textContent && el.textContent.indexOf('Analyseer met AI')!==-1) el.textContent=el.textContent.replace(/Analyseer met AI/g,'Analyseer met Ai'); if(el.getAttribute && el.getAttribute('aria-label')) el.setAttribute('aria-label', el.getAttribute('aria-label').replace(/Analyseer met AI/g,'Analyseer met Ai')); if(el.dataset && el.dataset.help) el.dataset.help=el.dataset.help.replace(/Analyseer met AI/g,'Analyseer met Ai'); }); }
+  function wrapWithHelp(button, help, rowClass){ if(!button || !help) return null; var row=button.closest('.analysis-help-row,.session-help-row'); if(!row){ row=document.createElement('div'); row.className=rowClass; button.parentNode.insertBefore(row, button); row.appendChild(button); } if(help.parentElement!==row) row.appendChild(help); help.dataset.boundToButton='1'; return row; }
+  function ensureAiHelp(){ var ai=findButton('Analyseer met Ai') || findButton('Analyseer met AI'); if(!ai) return; var help=Array.prototype.find.call(document.querySelectorAll('button.help-icon'), function(button){ var label=(button.getAttribute('aria-label') || '') + ' ' + (button.dataset && button.dataset.help || ''); return /Analyseer met A[iI]/.test(label); }); if(help) wrapWithHelp(ai, help, 'analysis-help-row'); }
+  function ensureSkeletonHelp(){ var skeleton=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking'); if(!skeleton) return; var help=document.getElementById('skeletonTrackingHelpKnop'); if(!help){ help=document.createElement('button'); help.type='button'; help.id='skeletonTrackingHelpKnop'; help.className='help-icon'; help.textContent='?'; help.setAttribute('aria-label','Help Start Skeleton Tracking'); help.setAttribute('data-help','Skeleton Tracking tekent een eenvoudig skelet over de spelersvideo.'); } var row=wrapWithHelp(skeleton, help, 'analysis-help-row'); Array.prototype.slice.call(row.querySelectorAll('.help-icon')).forEach(function(other){ if(other!==help) other.remove(); }); }
   function setTitle(selector, value){ var el=document.querySelector(selector); if(el) el.innerHTML=value; }
   function addBadge(summary){ if(!summary || summary.querySelector('.pro-later-badge')) return; var badge=document.createElement('span'); badge.className='pro-later-badge'; badge.textContent='PRO later'; var chevron=summary.querySelector('.accordion-chevron'); if(chevron) summary.insertBefore(badge, chevron); else summary.appendChild(badge); }
-  function applyProLayout(){
-    setTitle('#manageVideosTitle','📁 Spelers video’s beheren'); setTitle('#videoAnalyseTitle','🎥 Analyse');
-    var manage=document.getElementById('manageVideosAccordion'); if(manage) addBadge(manage.querySelector('summary'));
-    var analysis=document.querySelector('.video-analysis-accordion'); if(analysis){ addBadge(analysis.querySelector('summary')); if(!analysis.dataset.userOpened) analysis.removeAttribute('open'); analysis.addEventListener('toggle', function(){ analysis.dataset.userOpened='1'; }, {once:true}); }
-    var syncBox=document.querySelector('.sync-box.in-manage-videos'); var youtubeBox=document.querySelector('#youtubePlayer') && document.querySelector('#youtubePlayer').closest('.video-box');
-    if(syncBox && youtubeBox && !syncBox.dataset.movedToYoutube){ var syncTitle=syncBox.querySelector('.accordion-title'); if(syncTitle) syncTitle.innerHTML='🎬 Vergelijk & Afspelen'; addBadge(syncBox.querySelector('summary')); syncBox.classList.add('youtube-sync-area'); syncBox.dataset.movedToYoutube='1'; var youtubeButtons=youtubeBox.querySelector('.knopgroep'); if(youtubeButtons) youtubeButtons.insertAdjacentElement('afterend', syncBox); }
-  }
-  function initPlayerScrub(){
-    var video=document.getElementById('leerlingVideo'); if(!video || document.getElementById('playerScrubPanel')) return; var wrapper=video.closest('.video-wrapper'); if(!wrapper) return;
-    var panel=document.createElement('div'); panel.id='playerScrubPanel'; panel.className='player-scrub-panel hidden-during-recording'; panel.innerHTML='<span id="playerScrubCurrent" class="player-scrub-time">0:00</span><input id="playerScrubSlider" class="player-scrub-slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Spoel door de spelersvideo"><span id="playerScrubDuration" class="player-scrub-time">0:00</span>'; wrapper.insertAdjacentElement('afterend', panel);
-  }
-  function alignButtons(){
-    normalizeAiLabels();
-    ['Analyseer met Ai','Analyseer met AI','Start Skeleton Tracking','Automatische houding-analyse'].forEach(function(label){ var b=findButton(label); if(b) b.classList.add('analysis-aligned-button'); });
-    ['Handmatig moment toevoegen','Sessie Opslaan','Sessie Laden','Download Analyse'].forEach(function(label){ var b=findButton(label); if(b) b.classList.add('session-aligned-button'); });
-    var save=findButton('Sessie Opslaan'); if(save && save.parentElement) save.parentElement.classList.add('session-action-stack');
-    ensureAiHelp(); ensureSkeletonHelp();
-  }
+  function applyProLayout(){ setTitle('#manageVideosTitle','📁 Spelers video’s beheren'); setTitle('#videoAnalyseTitle','🎥 Analyse'); var manage=document.getElementById('manageVideosAccordion'); if(manage) addBadge(manage.querySelector('summary')); var analysis=document.querySelector('.video-analysis-accordion'); if(analysis){ addBadge(analysis.querySelector('summary')); if(!analysis.dataset.userOpened) analysis.removeAttribute('open'); analysis.addEventListener('toggle', function(){ analysis.dataset.userOpened='1'; }, {once:true}); } var syncBox=document.querySelector('.sync-box.in-manage-videos'); var youtubeBox=document.querySelector('#youtubePlayer') && document.querySelector('#youtubePlayer').closest('.video-box'); if(syncBox && youtubeBox && !syncBox.dataset.movedToYoutube){ var syncTitle=syncBox.querySelector('.accordion-title'); if(syncTitle) syncTitle.innerHTML='🎬 Vergelijk & Afspelen'; addBadge(syncBox.querySelector('summary')); syncBox.classList.add('youtube-sync-area'); syncBox.dataset.movedToYoutube='1'; var youtubeButtons=youtubeBox.querySelector('.knopgroep'); if(youtubeButtons) youtubeButtons.insertAdjacentElement('afterend', syncBox); } }
+  function initPlayerScrub(){ var video=document.getElementById('leerlingVideo'); if(!video || document.getElementById('playerScrubPanel')) return; var wrapper=video.closest('.video-wrapper'); if(!wrapper) return; var panel=document.createElement('div'); panel.id='playerScrubPanel'; panel.className='player-scrub-panel hidden-during-recording'; panel.innerHTML='<span id="playerScrubCurrent" class="player-scrub-time">0:00</span><input id="playerScrubSlider" class="player-scrub-slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Spoel door de spelersvideo"><span id="playerScrubDuration" class="player-scrub-time">0:00</span>'; wrapper.insertAdjacentElement('afterend', panel); }
+  function alignButtons(){ normalizeAiLabels(); ['Analyseer met Ai','Analyseer met AI','Start Skeleton Tracking','Automatische houding-analyse'].forEach(function(label){ var b=findButton(label); if(b) b.classList.add('analysis-aligned-button'); }); ['Handmatig moment toevoegen','Sessie Opslaan','Sessie Laden','Download Analyse'].forEach(function(label){ var b=findButton(label); if(b) b.classList.add('session-aligned-button'); }); var save=findButton('Sessie Opslaan'); if(save && save.parentElement) save.parentElement.classList.add('session-action-stack'); ensureAiHelp(); ensureSkeletonHelp(); }
   function applyAll(){ applyProLayout(); initPlayerScrub(); alignButtons(); }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', applyAll); else applyAll();
-  [50,150,400,900,1600,2600,4200].forEach(function(ms){ setTimeout(applyAll, ms); });
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', applyAll); else applyAll(); [50,150,400,900,1600,2600,4200].forEach(function(ms){ setTimeout(applyAll, ms); });
 })();
 </script>`;
 
@@ -79,64 +30,53 @@ const STORAGE_SCRIPT = `<script id="video-storage-options-script">
   var storageHelpText='Bewaar als bestand: download de video naar uw apparaat. Daarna kunt u op telefoon/tablet kiezen voor Bestanden, iCloud, Google Drive of Downloads. Bewaar in deze browser: snel terugladen in deze app op dit apparaat. Hierna kunt u deze video weer uploaden.';
   function notify(text){ if(typeof window.toonMelding==='function') window.toonMelding(text); }
   function cleanName(name){ return (name || 'pickleball-video').trim().replace(/[^a-zA-Z0-9._-]+/g,'-').replace(/-+/g,'-') || 'pickleball-video'; }
-  function showStorageHelp(anchor){
-    Array.prototype.slice.call(document.querySelectorAll('.storage-inline-help')).forEach(function(el){ el.remove(); });
-    var row=anchor && anchor.closest ? anchor.closest('.bewaar-regel') : null;
-    if(!row){ notify(storageHelpText); return; }
-    var msg=document.createElement('div');
-    msg.className='storage-inline-help';
-    msg.textContent=storageHelpText;
-    row.insertAdjacentElement('afterend', msg);
-    setTimeout(function(){ if(msg.parentElement) msg.remove(); }, 9000);
+  function showStorageHelp(anchor){ Array.prototype.slice.call(document.querySelectorAll('.storage-inline-help')).forEach(function(el){ el.remove(); }); var row=anchor && anchor.closest ? anchor.closest('.bewaar-regel') : null; if(!row){ notify(storageHelpText); return; } var msg=document.createElement('div'); msg.className='storage-inline-help'; msg.textContent=storageHelpText; row.insertAdjacentElement('afterend', msg); setTimeout(function(){ if(msg.parentElement) msg.remove(); }, 9000); }
+  function downloadBlob(blob, name){ var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download=cleanName(name).replace(/\.(webm|mp4|mov)$/i,'') + '.webm'; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 1200); notify('Bestand klaargezet. Hierna kunt u deze video weer uploaden.'); }
+  window.downloadHuidigeVideoBestand=function(){ try{ var naamInput=document.getElementById('videoNaam'); var naam=(naamInput && naamInput.value) || 'pickleball-video'; if(typeof huidigeVideoBlob!=='undefined' && huidigeVideoBlob){ downloadBlob(huidigeVideoBlob, naam); return; } if(typeof recordedChunks!=='undefined' && recordedChunks && recordedChunks.length){ downloadBlob(new Blob(recordedChunks,{type:typeof huidigeVideoType!=='undefined'?huidigeVideoType:'video/webm'}), naam); return; } var video=document.getElementById('leerlingVideo'); if(video && video.src && video.src.indexOf('blob:')===0){ fetch(video.src).then(function(r){ return r.blob(); }).then(function(blob){ downloadBlob(blob, naam); }); return; } notify('Neem eerst een video op of upload een video.'); }catch(e){ console.error(e); notify('Downloaden lukt niet in deze browser. Probeer bewaren in browser.'); } };
+  function ensureStorageUi(){ var save=Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return /Bewaar video in lijst|Bewaar in deze browser/.test(button.textContent || ''); }); if(save) save.textContent='💾 Bewaar in deze browser'; if(save && !document.getElementById('downloadCurrentVideoBtn')){ var download=document.createElement('button'); download.type='button'; download.id='downloadCurrentVideoBtn'; download.className='download-video-bestand-knop'; download.textContent='📁 Bewaar als bestand'; download.onclick=window.downloadHuidigeVideoBestand; save.insertAdjacentElement('afterend', download); } var row=save && save.parentElement; if(row){ var help=Array.prototype.find.call(row.querySelectorAll('button.help-icon'), function(button){ return button.textContent.trim()==='?'; }); if(help){ help.setAttribute('aria-label','Help bewaren'); help.setAttribute('data-help',storageHelpText); help.onclick=function(event){ event.preventDefault(); showStorageHelp(help); }; row.appendChild(help); } } var uitleg=document.querySelector('.uitleg-video'); if(uitleg){ uitleg.classList.add('storage-choice-note'); uitleg.textContent=''; } }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', ensureStorageUi); else ensureStorageUi(); [200,600,1200,2400,4200].forEach(function(ms){ setTimeout(ensureStorageUi, ms); });
+})();
+</script>`;
+
+const UPLOAD_SCRIPT = `<script id="upload-feedback-script">
+(function(){
+  function notify(text){ if(typeof window.toonMelding==='function') window.toonMelding(text); }
+  function cleanBaseName(fileName){ return (fileName || '').replace(/\.[^/.]+$/,''); }
+  function showUploadNote(file){
+    Array.prototype.slice.call(document.querySelectorAll('.upload-loaded-note')).forEach(function(el){ el.remove(); });
+    var input=document.getElementById('uploadVideo');
+    var target=input && (input.closest('.premium-body') || input.parentElement);
+    if(!target) return;
+    var note=document.createElement('div');
+    note.className='upload-loaded-note';
+    note.textContent='Video geladen in Spelers video. U kunt nu analyseren of bewaren. Naam: ' + (file && file.name ? file.name : 'gekozen video');
+    var nameInput=document.getElementById('videoNaam');
+    if(nameInput) nameInput.insertAdjacentElement('afterend', note); else target.appendChild(note);
+    setTimeout(function(){ if(note.parentElement) note.remove(); }, 9000);
   }
-  function downloadBlob(blob, name){
-    var url=URL.createObjectURL(blob);
-    var a=document.createElement('a');
-    a.href=url;
-    a.download=cleanName(name).replace(/\.(webm|mp4|mov)$/i,'') + '.webm';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 1200);
-    notify('Bestand klaargezet. Hierna kunt u deze video weer uploaden.');
+  function enhanceUpload(){
+    var input=document.getElementById('uploadVideo');
+    if(!input || input.dataset.uploadEnhanced) return;
+    input.dataset.uploadEnhanced='1';
+    input.addEventListener('change', function(event){
+      var file=event.target.files && event.target.files[0];
+      if(!file) return;
+      setTimeout(function(){
+        var nameInput=document.getElementById('videoNaam');
+        if(nameInput && !nameInput.value) nameInput.value=cleanBaseName(file.name);
+        showUploadNote(file);
+        notify('Video geladen. U kunt hem nu boven bekijken, analyseren of bewaren.');
+        var video=document.getElementById('leerlingVideo');
+        if(video){
+          video.controls=true;
+          video.muted=false;
+          video.scrollIntoView({behavior:'smooth',block:'center'});
+        }
+      }, 80);
+    });
   }
-  window.downloadHuidigeVideoBestand=function(){
-    try{
-      var naamInput=document.getElementById('videoNaam');
-      var naam=(naamInput && naamInput.value) || 'pickleball-video';
-      if(typeof huidigeVideoBlob!=='undefined' && huidigeVideoBlob){ downloadBlob(huidigeVideoBlob, naam); return; }
-      if(typeof recordedChunks!=='undefined' && recordedChunks && recordedChunks.length){ downloadBlob(new Blob(recordedChunks,{type:typeof huidigeVideoType!=='undefined'?huidigeVideoType:'video/webm'}), naam); return; }
-      var video=document.getElementById('leerlingVideo');
-      if(video && video.src && video.src.indexOf('blob:')===0){ fetch(video.src).then(function(r){ return r.blob(); }).then(function(blob){ downloadBlob(blob, naam); }); return; }
-      notify('Neem eerst een video op of upload een video.');
-    }catch(e){ console.error(e); notify('Downloaden lukt niet in deze browser. Probeer bewaren in browser.'); }
-  };
-  function ensureStorageUi(){
-    var save=Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return /Bewaar video in lijst|Bewaar in deze browser/.test(button.textContent || ''); });
-    if(save) save.textContent='💾 Bewaar in deze browser';
-    if(save && !document.getElementById('downloadCurrentVideoBtn')){
-      var download=document.createElement('button');
-      download.type='button';
-      download.id='downloadCurrentVideoBtn';
-      download.className='download-video-bestand-knop';
-      download.textContent='📁 Bewaar als bestand';
-      download.onclick=window.downloadHuidigeVideoBestand;
-      save.insertAdjacentElement('afterend', download);
-    }
-    var row=save && save.parentElement;
-    if(row){
-      var help=Array.prototype.find.call(row.querySelectorAll('button.help-icon'), function(button){ return button.textContent.trim()==='?'; });
-      if(help){
-        help.setAttribute('aria-label','Help bewaren');
-        help.setAttribute('data-help',storageHelpText);
-        help.onclick=function(event){ event.preventDefault(); showStorageHelp(help); };
-        row.appendChild(help);
-      }
-    }
-    var uitleg=document.querySelector('.uitleg-video');
-    if(uitleg){ uitleg.classList.add('storage-choice-note'); uitleg.textContent=''; }
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', ensureStorageUi); else ensureStorageUi();
-  [200,600,1200,2400,4200].forEach(function(ms){ setTimeout(ensureStorageUi, ms); });
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', enhanceUpload); else enhanceUpload();
+  [300,900,1800,3600].forEach(function(ms){ setTimeout(enhanceUpload, ms); });
 })();
 </script>`;
 
@@ -145,50 +85,14 @@ const BEGINNER_ACTION_SCRIPT = `<script id="beginner-action-messages-script">
   function norm(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim(); }
   function heeftVideo(){ var video=document.getElementById('leerlingVideo'); return !!(video && (video.src || video.srcObject)); }
   function clearLocalMessages(){ Array.prototype.slice.call(document.querySelectorAll('.button-local-message')).forEach(function(el){ el.remove(); }); }
-  function localMessage(button, tekst){
-    clearLocalMessages(); if(!button) return;
-    var row=button.closest('.analysis-help-row,.session-help-row') || button;
-    var msg=document.createElement('div'); msg.className='button-local-message'; msg.textContent=tekst;
-    row.insertAdjacentElement('afterend', msg); setTimeout(function(){ if(msg && msg.parentElement) msg.remove(); }, 7000);
-  }
+  function localMessage(button, tekst){ clearLocalMessages(); if(!button) return; var row=button.closest('.analysis-help-row,.session-help-row') || button; var msg=document.createElement('div'); msg.className='button-local-message'; msg.textContent=tekst; row.insertAdjacentElement('afterend', msg); setTimeout(function(){ if(msg && msg.parentElement) msg.remove(); }, 7000); }
   function findButton(label){ return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return norm(button).indexOf(label)!==-1; }); }
-  function noVideoText(type){
-    if(type==='ai') return 'Neem eerst een spelersvideo op of upload een video. Daarna kan Analyseer met Ai automatisch momenten en tips maken.';
-    if(type==='skeleton') return 'Neem eerst een spelersvideo op of upload een video. Daarna tekent Skeleton Tracking een groen skelet over de speler.';
-    return 'Neem eerst een spelersvideo op of upload een video. Daarna scant de app houding, balans en beweging.';
-  }
+  function noVideoText(type){ if(type==='ai') return 'Neem eerst een spelersvideo op of upload een video. Daarna kan Analyseer met Ai automatisch momenten en tips maken.'; if(type==='skeleton') return 'Neem eerst een spelersvideo op of upload een video. Daarna tekent Skeleton Tracking een groen skelet over de speler.'; return 'Neem eerst een spelersvideo op of upload een video. Daarna scant de app houding, balans en beweging.'; }
   window.coachGuardVideoAction=function(button,type){ if(heeftVideo()) return true; localMessage(button, noVideoText(type)); return false; };
-  function interceptNoVideoClick(event){
-    var button=event.target && event.target.closest ? event.target.closest('button') : null; if(!button || heeftVideo()) return;
-    var label=norm(button); var type='';
-    if(label.indexOf('Analyseer met Ai')!==-1 || label.indexOf('Analyseer met AI')!==-1) type='ai';
-    if(label.indexOf('Start Skeleton Tracking')!==-1) type='skeleton';
-    if(label.indexOf('Automatische houding-analyse')!==-1) type='houding';
-    if(!type) return;
-    event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation(); localMessage(button, noVideoText(type));
-  }
+  function interceptNoVideoClick(event){ var button=event.target && event.target.closest ? event.target.closest('button') : null; if(!button || heeftVideo()) return; var label=norm(button); var type=''; if(label.indexOf('Analyseer met Ai')!==-1 || label.indexOf('Analyseer met AI')!==-1) type='ai'; if(label.indexOf('Start Skeleton Tracking')!==-1) type='skeleton'; if(label.indexOf('Automatische houding-analyse')!==-1) type='houding'; if(!type) return; event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation(); localMessage(button, noVideoText(type)); }
   document.addEventListener('click', interceptNoVideoClick, true);
-  function wrapWhenReady(){
-    if(window.__beginnerActionMessagesReady) return;
-    if(typeof window.toggleSkeletonTracking!=='function' || typeof window.analyseerMetMediaPipe!=='function'){ setTimeout(wrapWhenReady,250); return; }
-    window.__beginnerActionMessagesReady=true;
-    var origineleSkeleton=window.toggleSkeletonTracking; var origineleHouding=window.analyseerMetMediaPipe;
-    window.toggleSkeletonTracking=async function(){
-      var knop=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking');
-      var stopt=knop && /Stop/i.test(knop.textContent||''); if(stopt) return origineleSkeleton.apply(this, arguments);
-      if(!heeftVideo()){ localMessage(knop, noVideoText('skeleton')); return; }
-      localMessage(knop, 'Skeleton Tracking gestart: de app probeert een groen skelet over de speler te tekenen.');
-      return origineleSkeleton.apply(this, arguments);
-    };
-    window.analyseerMetMediaPipe=async function(){
-      var knop=findButton('Automatische houding-analyse');
-      if(!heeftVideo()){ localMessage(knop, noVideoText('houding')); return; }
-      localMessage(knop, 'Automatische houding-analyse gestart: de app scant de video en zoekt houding-momenten en tips.');
-      return origineleHouding.apply(this, arguments);
-    };
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', wrapWhenReady); else wrapWhenReady();
-  [500,1000,2000,4000].forEach(function(ms){ setTimeout(wrapWhenReady, ms); });
+  function wrapWhenReady(){ if(window.__beginnerActionMessagesReady) return; if(typeof window.toggleSkeletonTracking!=='function' || typeof window.analyseerMetMediaPipe!=='function'){ setTimeout(wrapWhenReady,250); return; } window.__beginnerActionMessagesReady=true; var origineleSkeleton=window.toggleSkeletonTracking; var origineleHouding=window.analyseerMetMediaPipe; window.toggleSkeletonTracking=async function(){ var knop=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking'); var stopt=knop && /Stop/i.test(knop.textContent||''); if(stopt) return origineleSkeleton.apply(this, arguments); if(!heeftVideo()){ localMessage(knop, noVideoText('skeleton')); return; } localMessage(knop, 'Skeleton Tracking gestart: de app probeert een groen skelet over de speler te tekenen.'); return origineleSkeleton.apply(this, arguments); }; window.analyseerMetMediaPipe=async function(){ var knop=findButton('Automatische houding-analyse'); if(!heeftVideo()){ localMessage(knop, noVideoText('houding')); return; } localMessage(knop, 'Automatische houding-analyse gestart: de app scant de video en zoekt houding-momenten en tips.'); return origineleHouding.apply(this, arguments); }; }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', wrapWhenReady); else wrapWhenReady(); [500,1000,2000,4000].forEach(function(ms){ setTimeout(wrapWhenReady, ms); });
 })();
 </script>`;
 
@@ -213,6 +117,7 @@ export default async function middleware(request) {
   if (!html.includes('coach-layout-polish-style')) html = html.replace('</head>', `${LAYOUT_STYLE}\n</head>`);
   if (!html.includes('coach-layout-polish-script')) html = html.replace('</body>', `${LAYOUT_SCRIPT}\n</body>`);
   if (!html.includes('video-storage-options-script')) html = html.replace('</body>', `${STORAGE_SCRIPT}\n</body>`);
+  if (!html.includes('upload-feedback-script')) html = html.replace('</body>', `${UPLOAD_SCRIPT}\n</body>`);
   if (!html.includes('beginner-action-messages-script')) html = html.replace('</body>', `${BEGINNER_ACTION_SCRIPT}\n</body>`);
   if (!html.includes('<h1 class="brand-title">')) html = html.replace(/<h1[^>]*>\s*Pickleball Coach\s*<\/h1>/, TITLE_WITH_LOGO);
   return new Response(html, { status: response.ok ? 200 : response.status, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-cache, no-store, must-revalidate' } });

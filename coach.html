@@ -5,37 +5,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pickleball Coach</title>
 <style>
-body{font-family:Arial,Helvetica,sans-serif;background:#1f5f3b;color:white;min-height:100vh;margin:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;box-sizing:border-box}.status{background:white;color:#1f5f3b;border-radius:14px;padding:14px 18px;font-weight:bold}
+html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,Helvetica,sans-serif}#status{position:fixed;inset:auto 16px 16px 16px;z-index:2;background:white;color:#1f5f3b;border-radius:12px;padding:12px 14px;text-align:center;font-weight:bold;box-shadow:0 4px 14px rgba(0,0,0,.18)}#appFrame{position:fixed;inset:0;width:100%;height:100%;border:0;background:#1f5f3b}
 </style>
 </head>
 <body>
-<div class="status">Pickleball Coach laden...</div>
+<div id="status">Pickleball Coach laden...</div>
+<iframe id="appFrame" src="/index.html?coach=v3"></iframe>
 <script>
 (function(){
-  const FIX = `<style id="direct-youtube-compare-fix">
-.youtube-panel-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0 0}.youtube-panel-actions button{margin:0;min-height:46px;padding:13px 18px;display:inline-flex;align-items:center;justify-content:center}.youtube-compare-panel{display:block!important;width:100%;box-sizing:border-box;clear:both;margin-top:10px;background:#eef7f1;padding:14px;border-radius:15px;border:1px solid #d2e7db}.youtube-compare-panel .sync-accordion{background:#f7fcf9}.youtube-compare-panel details{display:block!important}.youtube-compare-panel details>.sync-paneel{display:block!important;max-height:none!important;overflow:visible!important;padding:4px 14px 14px!important}.youtube-compare-panel .sync-groep{display:grid!important;grid-template-columns:1fr!important;gap:10px!important;margin-top:10px!important}.youtube-compare-panel .sync-groep button{display:flex!important;width:100%!important;margin:0!important;justify-content:flex-start!important;text-align:left!important}.youtube-compare-panel+.video-analyse-sectie{width:100%;box-sizing:border-box;margin-top:14px}.pwa-debug{display:none!important}
-</style>
-<script id="direct-youtube-compare-script">
-(function(){
-  function fixYoutubeComparePanel(){
-    var title=document.getElementById('youtubeVideoTitle');
-    var youtubeBox=title&&title.closest('.video-box');
+  const frame=document.getElementById('appFrame');
+  const status=document.getElementById('status');
+
+  function injectStyle(doc){
+    if(doc.getElementById('coach-youtube-compare-fix'))return;
+    const style=doc.createElement('style');
+    style.id='coach-youtube-compare-fix';
+    style.textContent='.pwa-debug{display:none!important}.youtube-panel-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0 0}.youtube-panel-actions button{margin:0;min-height:46px;padding:13px 18px;display:inline-flex;align-items:center;justify-content:center}.youtube-compare-panel{display:block!important;width:100%;box-sizing:border-box;clear:both;margin-top:10px;background:#eef7f1;padding:14px;border-radius:15px;border:1px solid #d2e7db}.youtube-compare-panel .sync-accordion{background:#f7fcf9}.youtube-compare-panel details{display:block!important}.youtube-compare-panel details>.sync-paneel{display:block!important;max-height:none!important;overflow:visible!important;padding:4px 14px 14px!important}.youtube-compare-panel .sync-groep{display:grid!important;grid-template-columns:1fr!important;gap:10px!important;margin-top:10px!important}.youtube-compare-panel .sync-groep button{display:flex!important;width:100%!important;margin:0!important;justify-content:flex-start!important;text-align:left!important}.youtube-compare-panel+.video-analyse-sectie{width:100%;box-sizing:border-box;margin-top:14px}';
+    doc.head.appendChild(style);
+  }
+
+  function fixInFrame(){
+    const doc=frame.contentDocument;
+    if(!doc)return false;
+    injectStyle(doc);
+    const debug=doc.getElementById('pwaDebugPane');
+    if(debug)debug.style.display='none';
+    const title=doc.getElementById('youtubeVideoTitle');
+    const youtubeBox=title&&title.closest('.video-box');
     if(!youtubeBox)return false;
-    var actionRow=youtubeBox.querySelector('.knopgroep,.youtube-panel-actions');
+    const actionRow=youtubeBox.querySelector('.knopgroep,.youtube-panel-actions');
     if(!actionRow)return false;
     actionRow.classList.add('youtube-panel-actions');
-    var compare=document.querySelector('.in-youtube-panel')||document.querySelector('.in-manage-videos')||document.querySelector('.sync-box');
-    var analysis=document.querySelector('.video-analyse-sectie');
+    const compare=doc.querySelector('.in-youtube-panel')||doc.querySelector('.in-manage-videos')||doc.querySelector('.sync-box');
+    const analysis=doc.querySelector('.video-analyse-sectie');
     if(compare){
       compare.classList.add('youtube-compare-panel','in-youtube-panel');
       compare.classList.remove('in-manage-videos','sync-box');
       actionRow.insertAdjacentElement('afterend',compare);
-      var details=compare.querySelector('details');
+      const details=compare.querySelector('details');
       if(details){
         details.open=true;
         details.setAttribute('open','open');
       }
-      var paneel=compare.querySelector('.sync-paneel');
+      const paneel=compare.querySelector('.sync-paneel');
       if(paneel){
         paneel.style.maxHeight='none';
         paneel.style.overflow='visible';
@@ -45,35 +57,19 @@ body{font-family:Arial,Helvetica,sans-serif;background:#1f5f3b;color:white;min-h
     if(analysis&&compare){
       compare.insertAdjacentElement('afterend',analysis);
     }
+    status.style.display='none';
     return !!compare;
   }
-  function runFix(){
-    fixYoutubeComparePanel();
-    var tries=0;
-    var timer=setInterval(function(){
-      tries++;
-      fixYoutubeComparePanel();
-      if(tries>24)clearInterval(timer);
-    },250);
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',runFix);
-  else runFix();
-  window.addEventListener('load',runFix);
-})();
-<\/script>`;
 
-  fetch('/index.html?raw=' + Date.now(), { cache: 'no-store' })
-    .then(function(response){ return response.text(); })
-    .then(function(html){
-      html = html.replace(/<div id="pwaDebugPane"[\s\S]*?<\/div>\s*<div class="container">/, '<div class="container">');
-      html = html.replace('</body>', FIX + '\n</body>');
-      document.open();
-      document.write(html);
-      document.close();
-    })
-    .catch(function(){
-      document.body.innerHTML='<div class="status">Laden mislukt. Vernieuw de pagina.</div>';
-    });
+  frame.addEventListener('load',function(){
+    let tries=0;
+    const timer=setInterval(function(){
+      tries++;
+      const ok=fixInFrame();
+      if(ok||tries>40)clearInterval(timer);
+      if(tries>40)status.textContent='App geladen. Vernieuw als het blok niet zichtbaar is.';
+    },250);
+  });
 })();
 </script>
 </body>

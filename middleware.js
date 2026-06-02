@@ -1,12 +1,12 @@
 const LAYOUT_STYLE = `<style id="coach-layout-polish-style">
 .brand-title{display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:normal}.brand-title-logo{width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;vertical-align:middle}.brand-title-logo svg{width:100%;height:100%;display:block}
 .accordion-chevron{flex:0 0 36px!important;width:36px!important;height:36px!important;margin-left:10px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;color:transparent!important;font-size:0!important;line-height:1!important;position:relative!important;transform:rotate(0deg);transform-origin:center;transition:transform .25s ease}.accordion-chevron::before{content:"";width:15px;height:15px;border-right:3px solid #1f5f3b;border-bottom:3px solid #1f5f3b;border-radius:2px;transform:rotate(45deg) translate(-1px,-1px);box-sizing:border-box}details[open]>.accordion-header .accordion-chevron{transform:rotate(180deg)}
-.container>.card:first-of-type{padding:0!important;border-radius:10px!important;margin:0 0 12px!important;box-shadow:0 2px 8px rgba(0,0,0,.14)!important;overflow:hidden!important}.container>.card:first-of-type .beheer-summary{min-height:50px!important;margin:0!important;padding:0 14px!important;font-size:20px!important;line-height:1.15!important;display:flex!important;align-items:center!important;box-sizing:border-box!important}.container>.card:first-of-type .accordion-title{gap:8px!important}.container>.card:first-of-type .accordion-chevron{flex-basis:30px!important;width:30px!important;height:30px!important;margin-left:8px!important}.container>.card:first-of-type .accordion-chevron::before{width:13px!important;height:13px!important;border-right-width:3px!important;border-bottom-width:3px!important}.container>.card:first-of-type details>div{padding:8px 12px 10px!important;margin-top:0!important}.container>.card:first-of-type input{padding:8px 10px!important;margin-top:4px!important;margin-bottom:7px!important;font-size:15px!important}.container>.card:first-of-type button{min-height:36px!important;padding:7px 11px!important;font-size:14px!important;border-radius:8px!important}
+.container>.card:first-of-type{padding:0!important;border-radius:10px!important;margin:0 0 12px!important;box-shadow:0 2px 8px rgba(0,0,0,.14)!important;overflow:hidden!important}.container>.card:first-of-type .beheer-summary{min-height:50px!important;margin:0!important;padding:0 14px!important;font-size:20px!important;line-height:1.15!important;display:flex!important;align-items:center!important;box-sizing:border-box!important}.container>.card:first-of-type .accordion-title{gap:8px!important}.container>.card:first-of-type .accordion-chevron{flex-basis:30px!important;width:30px!important;height:30px!important;margin-left:8px!important}.container>.card:first-of-type .accordion-chevron::before{width:13px!important;height:13px!important}.container>.card:first-of-type details>div{padding:8px 12px 10px!important;margin-top:0!important}.container>.card:first-of-type input{padding:8px 10px!important;margin-top:4px!important;margin-bottom:7px!important;font-size:15px!important}.container>.card:first-of-type button{min-height:36px!important;padding:7px 11px!important;font-size:14px!important;border-radius:8px!important}
 .premium-feature.trainer-club-feature[open]{overflow:visible!important}.premium-feature.trainer-club-feature[open] .premium-body{max-height:none!important;overflow:visible!important;display:grid;gap:12px}.video-analysis-sectie,.video-analyse-sectie{margin-top:12px!important}.video-analysis-accordion{border-color:#d2e7db!important}.video-analysis-accordion:not([open]) .video-analysis-paneel{display:none!important}.video-analysis-paneel{gap:12px!important;overflow:visible!important}.player-video-separator{margin:24px 0 12px!important;border:0!important;border-top:1px solid #b7c7be!important;height:0!important}
-.pro-later-badge{display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;margin-left:0!important;margin-right:0!important;padding:2px 7px!important;border-radius:999px!important;background:#f3ecff!important;color:#6e2bd8!important;font-size:9px!important;font-weight:800!important;letter-spacing:.04em!important;line-height:1.2!important;text-transform:uppercase!important}.youtube-sync-area{position:relative;margin-top:24px!important;padding-top:12px!important;border:0!important;border-radius:0!important;background:transparent!important}.youtube-sync-area::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:#b7c7be}.youtube-sync-area .sync-accordion{border:1px solid #d2e7db!important;border-radius:12px!important;background:#f7fcf9!important;overflow:hidden!important}
+.pro-later-badge{display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;padding:2px 7px!important;border-radius:999px!important;background:#f3ecff!important;color:#6e2bd8!important;font-size:9px!important;font-weight:800!important;letter-spacing:.04em!important;line-height:1.2!important;text-transform:uppercase!important}.youtube-sync-area{position:relative;margin-top:24px!important;padding-top:12px!important;border:0!important;border-radius:0!important;background:transparent!important}.youtube-sync-area::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:#b7c7be}.youtube-sync-area .sync-accordion{border:1px solid #d2e7db!important;border-radius:12px!important;background:#f7fcf9!important;overflow:hidden!important}
 #manageVideosAccordion>.accordion-header,#manageVideosAccordion>summary,.youtube-sync-area .sync-accordion>.accordion-header,.youtube-sync-area .sync-accordion>summary{display:grid!important;grid-template-columns:minmax(0,1fr) auto 36px!important;column-gap:10px!important;align-items:center!important;min-height:66px!important;padding:15px 16px!important;box-sizing:border-box!important}#manageVideosTitle,.youtube-sync-area .accordion-title{font-family:inherit!important;font-size:18px!important;font-weight:700!important;line-height:1.2!important;color:#1f5f3b!important;letter-spacing:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;margin:0!important;padding:0!important;min-width:0!important}.premium-feature.trainer-club-feature summary .pro-later-badge,.sync-accordion summary .pro-later-badge{justify-self:end!important;align-self:center!important}
 .knopgroep{gap:12px!important;align-items:center!important}.knopgroep button{margin:0!important;min-height:44px!important;border-radius:9px!important;white-space:nowrap!important}.player-box .knopgroep.hidden-during-recording{display:flex!important;gap:12px!important;align-items:center!important;flex-wrap:wrap!important;overflow:visible!important}.player-box .knopgroep.hidden-during-recording .help-icon{position:static!important;transform:none!important;flex:0 0 42px!important;width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;padding:0!important;margin:0!important;border-radius:50%!important;background:#fff!important;color:#1f5f3b!important;border:2px solid #1f5f3b!important;line-height:1!important;box-sizing:border-box!important}
-.analyse-controls,.sessie-sectie{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;width:100%!important;max-width:100%!important;overflow:visible!important}.analysis-aligned-button,.session-aligned-button{width:auto!important;max-width:calc(100vw - 74px)!important;min-height:44px!important;display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;box-sizing:border-box!important;margin:0!important;padding-left:18px!important;padding-right:18px!important;white-space:nowrap!important;text-align:left!important;flex:0 0 auto!important}.analysis-help-row,.session-help-row{display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;width:auto!important;max-width:100%!important;box-sizing:border-box!important;overflow:visible!important;flex-wrap:nowrap!important}.analysis-help-row .help-icon,.session-help-row .help-icon{position:static!important;transform:none!important;flex:0 0 30px!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;margin:0!important;padding:0!important;border-radius:50%!important;box-sizing:border-box!important;background:#fff!important;color:#1f5f3b!important;border:2px solid #1f5f3b!important}.session-action-stack{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;width:100%!important}.button-local-message{max-width:min(360px,calc(100vw - 40px))!important;margin:4px 0 2px!important;padding:10px 12px!important;border-left:5px solid #d6a800!important;border-radius:10px!important;background:#fff8d8!important;color:#1f5f3b!important;font-size:15px!important;font-weight:700!important;line-height:1.35!important;box-shadow:0 2px 8px rgba(0,0,0,.12)!important;box-sizing:border-box!important}.button-local-message.is-hidden{display:none!important}
+.analyse-controls,.sessie-sectie{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;width:100%!important;max-width:100%!important;overflow:visible!important}.analysis-aligned-button,.session-aligned-button{width:auto!important;max-width:calc(100vw - 74px)!important;min-height:44px!important;display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;box-sizing:border-box!important;margin:0!important;padding-left:18px!important;padding-right:18px!important;white-space:nowrap!important;text-align:left!important;flex:0 0 auto!important}.analysis-help-row,.session-help-row{display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;width:auto!important;max-width:100%!important;box-sizing:border-box!important;overflow:visible!important;flex-wrap:nowrap!important}.analysis-help-row .help-icon,.session-help-row .help-icon{position:static!important;transform:none!important;flex:0 0 30px!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;margin:0!important;padding:0!important;border-radius:50%!important;box-sizing:border-box!important;background:#fff!important;color:#1f5f3b!important;border:2px solid #1f5f3b!important}.session-action-stack{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;width:100%!important}.button-local-message{max-width:min(360px,calc(100vw - 40px))!important;margin:4px 0 2px!important;padding:10px 12px!important;border-left:5px solid #d6a800!important;border-radius:10px!important;background:#fff8d8!important;color:#1f5f3b!important;font-size:15px!important;font-weight:700!important;line-height:1.35!important;box-shadow:0 2px 8px rgba(0,0,0,.12)!important;box-sizing:border-box!important}
 .player-scrub-panel{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;margin:10px 0 4px;padding:10px 12px;border-radius:12px;background:#eef7f1;color:#1f5f3b;font-weight:bold}.player-scrub-time{font-variant-numeric:tabular-nums;font-size:15px;min-width:44px;text-align:center}.player-scrub-slider{width:100%;height:28px;margin:0!important;padding:0!important;accent-color:#1f5f3b;cursor:pointer}.melding{top:18px!important;left:auto!important;right:156px!important;transform:none!important;max-width:min(360px,calc(100vw - 32px))!important;text-align:center!important;box-sizing:border-box!important}
 @media(max-width:760px){.melding{top:12px!important;left:16px!important;right:16px!important;max-width:none!important}}@media(max-width:700px){.brand-title{gap:7px}.brand-title-logo{width:34px;height:34px}.container>.card:first-of-type .beheer-summary{min-height:48px!important;padding:0 12px!important;font-size:18px!important}.container>.card:first-of-type{border-radius:9px!important;margin-bottom:10px!important}.player-video-separator{margin:14px 0 12px!important}.youtube-sync-area{margin-top:14px!important}#manageVideosAccordion>.accordion-header,#manageVideosAccordion>summary,.youtube-sync-area .sync-accordion>.accordion-header,.youtube-sync-area .sync-accordion>summary{min-height:62px!important;padding:13px 14px!important}#manageVideosTitle,.youtube-sync-area .accordion-title{font-size:17px!important}.pro-later-badge{font-size:8px!important;padding:2px 6px!important}.player-scrub-panel{grid-template-columns:1fr;gap:6px}.button-local-message{font-size:14px!important;padding:9px 10px!important}}
 </style>`;
@@ -15,6 +15,15 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
 (function(){
   function text(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim(); }
   function findButton(label){ return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return text(button).indexOf(label) !== -1; }); }
+  function normalizeAiLabels(){
+    Array.prototype.slice.call(document.querySelectorAll('button,.help-icon,#aiAnalyseVak h3')).forEach(function(el){
+      if(el.textContent && el.textContent.indexOf('Analyseer met AI')!==-1) el.textContent=el.textContent.replace(/Analyseer met AI/g,'Analyseer met Ai');
+      if(el.getAttribute && el.getAttribute('aria-label')) el.setAttribute('aria-label', el.getAttribute('aria-label').replace(/Analyseer met AI/g,'Analyseer met Ai'));
+      if(el.dataset && el.dataset.help) el.dataset.help=el.dataset.help.replace(/Analyseer met AI/g,'Analyseer met Ai');
+    });
+    var aiText=document.getElementById('aiAnalyseTekst');
+    if(aiText && aiText.textContent) aiText.textContent=aiText.textContent.replace(/Analyseer met AI/g,'Analyseer met Ai');
+  }
   function wrapWithHelp(button, help, rowClass){
     if(!button || !help) return null;
     var row=button.closest('.analysis-help-row,.session-help-row');
@@ -45,10 +54,10 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
     var panel=document.createElement('div'); panel.id='playerScrubPanel'; panel.className='player-scrub-panel hidden-during-recording'; panel.innerHTML='<span id="playerScrubCurrent" class="player-scrub-time">0:00</span><input id="playerScrubSlider" class="player-scrub-slider" type="range" min="0" max="1000" value="0" step="1" aria-label="Spoel door de spelersvideo"><span id="playerScrubDuration" class="player-scrub-time">0:00</span>'; wrapper.insertAdjacentElement('afterend', panel);
   }
   function alignButtons(){
-    ['Analyseer met AI','Start Skeleton Tracking','Automatische houding-analyse'].forEach(function(label){ var b=findButton(label); if(b) b.classList.add('analysis-aligned-button'); });
+    ['Analyseer met Ai','Analyseer met AI','Start Skeleton Tracking','Automatische houding-analyse'].forEach(function(label){ var b=findButton(label); if(b) b.classList.add('analysis-aligned-button'); });
     ['Handmatig moment toevoegen','Sessie Opslaan','Sessie Laden','Download Analyse'].forEach(function(label){ var b=findButton(label); if(b) b.classList.add('session-aligned-button'); });
     var save=findButton('Sessie Opslaan'); if(save && save.parentElement) save.parentElement.classList.add('session-action-stack');
-    ensureSkeletonHelp();
+    ensureSkeletonHelp(); normalizeAiLabels();
   }
   function applyAll(){ applyProLayout(); initPlayerScrub(); alignButtons(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', applyAll); else applyAll();
@@ -59,77 +68,46 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
 const BEGINNER_ACTION_SCRIPT = `<script id="beginner-action-messages-script">
 (function(){
   function norm(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim(); }
-  function heeftVideo(){
-    var video=document.getElementById('leerlingVideo');
-    return !!(video && (video.src || video.srcObject));
-  }
-  function clearLocalMessages(){
-    Array.prototype.slice.call(document.querySelectorAll('.button-local-message')).forEach(function(el){ el.remove(); });
-  }
+  function heeftVideo(){ var video=document.getElementById('leerlingVideo'); return !!(video && (video.src || video.srcObject)); }
+  function clearLocalMessages(){ Array.prototype.slice.call(document.querySelectorAll('.button-local-message')).forEach(function(el){ el.remove(); }); }
   function localMessage(button, tekst){
-    clearLocalMessages();
-    if(!button) return;
+    clearLocalMessages(); if(!button) return;
     var row=button.closest('.analysis-help-row,.session-help-row') || button;
-    var msg=document.createElement('div');
-    msg.className='button-local-message';
-    msg.textContent=tekst;
-    row.insertAdjacentElement('afterend', msg);
-    setTimeout(function(){ if(msg && msg.parentElement) msg.remove(); }, 7000);
+    var msg=document.createElement('div'); msg.className='button-local-message'; msg.textContent=tekst;
+    row.insertAdjacentElement('afterend', msg); setTimeout(function(){ if(msg && msg.parentElement) msg.remove(); }, 7000);
   }
-  function findButton(label){
-    return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return norm(button).indexOf(label)!==-1; });
-  }
+  function findButton(label){ return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return norm(button).indexOf(label)!==-1; }); }
   function noVideoText(type){
-    if(type==='ai') return 'Neem eerst een spelersvideo op of upload een video. Daarna kan Analyseer met AI automatisch momenten en tips maken.';
+    if(type==='ai') return 'Neem eerst een spelersvideo op of upload een video. Daarna kan Analyseer met Ai automatisch momenten en tips maken.';
     if(type==='skeleton') return 'Neem eerst een spelersvideo op of upload een video. Daarna tekent Skeleton Tracking een groen skelet over de speler.';
     return 'Neem eerst een spelersvideo op of upload een video. Daarna scant de app houding, balans en beweging.';
   }
-  window.coachGuardVideoAction=function(button,type){
-    if(heeftVideo()) return true;
-    localMessage(button, noVideoText(type));
-    return false;
-  };
+  window.coachGuardVideoAction=function(button,type){ if(heeftVideo()) return true; localMessage(button, noVideoText(type)); return false; };
   function interceptNoVideoClick(event){
-    var button=event.target && event.target.closest ? event.target.closest('button') : null;
-    if(!button || heeftVideo()) return;
-    var label=norm(button);
-    var type='';
-    if(label.indexOf('Analyseer met AI')!==-1) type='ai';
+    var button=event.target && event.target.closest ? event.target.closest('button') : null; if(!button || heeftVideo()) return;
+    var label=norm(button); var type='';
+    if(label.indexOf('Analyseer met Ai')!==-1 || label.indexOf('Analyseer met AI')!==-1) type='ai';
     if(label.indexOf('Start Skeleton Tracking')!==-1) type='skeleton';
     if(label.indexOf('Automatische houding-analyse')!==-1) type='houding';
     if(!type) return;
-    event.preventDefault();
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-    localMessage(button, noVideoText(type));
+    event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation(); localMessage(button, noVideoText(type));
   }
   document.addEventListener('click', interceptNoVideoClick, true);
   function wrapWhenReady(){
     if(window.__beginnerActionMessagesReady) return;
-    if(typeof window.toggleSkeletonTracking!=='function' || typeof window.analyseerMetMediaPipe!=='function'){
-      setTimeout(wrapWhenReady, 250);
-      return;
-    }
+    if(typeof window.toggleSkeletonTracking!=='function' || typeof window.analyseerMetMediaPipe!=='function'){ setTimeout(wrapWhenReady,250); return; }
     window.__beginnerActionMessagesReady=true;
-    var origineleSkeleton=window.toggleSkeletonTracking;
-    var origineleHouding=window.analyseerMetMediaPipe;
+    var origineleSkeleton=window.toggleSkeletonTracking; var origineleHouding=window.analyseerMetMediaPipe;
     window.toggleSkeletonTracking=async function(){
       var knop=document.getElementById('skeletonTrackingKnop') || findButton('Start Skeleton Tracking');
-      var stopt=knop && /Stop/i.test(knop.textContent||'');
-      if(stopt){ return origineleSkeleton.apply(this, arguments); }
-      if(!heeftVideo()){
-        localMessage(knop, noVideoText('skeleton'));
-        return;
-      }
+      var stopt=knop && /Stop/i.test(knop.textContent||''); if(stopt) return origineleSkeleton.apply(this, arguments);
+      if(!heeftVideo()){ localMessage(knop, noVideoText('skeleton')); return; }
       localMessage(knop, 'Skeleton Tracking gestart: de app probeert een groen skelet over de speler te tekenen.');
       return origineleSkeleton.apply(this, arguments);
     };
     window.analyseerMetMediaPipe=async function(){
       var knop=findButton('Automatische houding-analyse');
-      if(!heeftVideo()){
-        localMessage(knop, noVideoText('houding'));
-        return;
-      }
+      if(!heeftVideo()){ localMessage(knop, noVideoText('houding')); return; }
       localMessage(knop, 'Automatische houding-analyse gestart: de app scant de video en zoekt houding-momenten en tips.');
       return origineleHouding.apply(this, arguments);
     };
@@ -149,12 +127,14 @@ export default async function middleware(request) {
   const response = await fetch(url, { cache: 'no-store' });
   let html = await response.text();
   html = html.replace(/<div class="ai-melding">[\s\S]*?<\/div>\s*/, '');
-  html = html.replace(/(<button class="help-icon" data-help=")[^"]*Analyseer met AI[^"]*(" aria-label="Help Analyseer met AI">\?<\/button>)/, '$1Analyseer met AI maakt automatisch momenten aan op basis van AI-tijdcodes en geeft techniek-tips bij de video.$2');
+  html = html.replace(/(<button class="help-icon" data-help=")[^"]*Analyseer met AI[^"]*(" aria-label="Help Analyseer met AI">\?<\/button>)/, '$1Analyseer met Ai maakt automatisch momenten aan op basis van Ai-tijdcodes en geeft techniek-tips bij de video.$2');
   html = html.replace(/(<button onclick="analyseerMetAI\(\)">[\s\S]*?<\/button>)\s*(<button class="help-icon" data-help="[^"]*Analyseer met AI[^"]*" aria-label="Help Analyseer met AI">\?<\/button>)/, '<div class="analysis-help-row">$1$2</div>');
   html = html.replace(/(<button onclick="laadSessie\(\)">[\s\S]*?<\/button>)\s*(<button class="help-icon" data-help="[^"]*Open opgeslagen video[^"]*" aria-label="Help Open opgeslagen video">\?<\/button>)/, '<div class="session-help-row">$1$2</div>');
   html = html.replace(/onclick="analyseerMetAI\(\)"/g, 'onclick="if(!window.coachGuardVideoAction||window.coachGuardVideoAction(this,\'ai\')) analyseerMetAI()"');
   html = html.replace(/onclick="toggleSkeletonTracking\(\)"/g, 'onclick="if(!window.coachGuardVideoAction||window.coachGuardVideoAction(this,\'skeleton\')) toggleSkeletonTracking()"');
   html = html.replace(/onclick="analyseerMetMediaPipe\(\)"/g, 'onclick="if(!window.coachGuardVideoAction||window.coachGuardVideoAction(this,\'houding\')) analyseerMetMediaPipe()"');
+  html = html.replace(/Analyseer met AI/g, 'Analyseer met Ai');
+  html = html.replace(/AI-tijdcodes/g, 'Ai-tijdcodes');
   if (!html.includes('coach-layout-polish-style')) html = html.replace('</head>', `${LAYOUT_STYLE}\n</head>`);
   if (!html.includes('coach-layout-polish-script')) html = html.replace('</body>', `${LAYOUT_SCRIPT}\n</body>`);
   if (!html.includes('beginner-action-messages-script')) html = html.replace('</body>', `${BEGINNER_ACTION_SCRIPT}\n</body>`);

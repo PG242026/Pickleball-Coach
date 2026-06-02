@@ -79,26 +79,29 @@ const BEGINNER_ACTION_SCRIPT = `<script id="beginner-action-messages-script">
   function findButton(label){
     return Array.prototype.find.call(document.querySelectorAll('button'), function(button){ return norm(button).indexOf(label)!==-1; });
   }
-  function noVideoText(label){
-    if(label==='skeleton') return 'Neem eerst een spelersvideo op of upload een video. Daarna tekent Skeleton Tracking een groen skelet over de speler.';
+  function noVideoText(type){
+    if(type==='ai') return 'Neem eerst een spelersvideo op of upload een video. Daarna kan Analyseer met AI automatisch momenten en tips maken.';
+    if(type==='skeleton') return 'Neem eerst een spelersvideo op of upload een video. Daarna tekent Skeleton Tracking een groen skelet over de speler.';
     return 'Neem eerst een spelersvideo op of upload een video. Daarna scant de app houding, balans en beweging.';
   }
+  window.coachGuardVideoAction=function(button,type){
+    if(heeftVideo()) return true;
+    localMessage(button, noVideoText(type));
+    return false;
+  };
   function interceptNoVideoClick(event){
     var button=event.target && event.target.closest ? event.target.closest('button') : null;
     if(!button || heeftVideo()) return;
     var label=norm(button);
-    if(label.indexOf('Start Skeleton Tracking')!==-1){
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-      localMessage(button, noVideoText('skeleton'));
-    }
-    if(label.indexOf('Automatische houding-analyse')!==-1){
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-      localMessage(button, noVideoText('houding'));
-    }
+    var type='';
+    if(label.indexOf('Analyseer met AI')!==-1) type='ai';
+    if(label.indexOf('Start Skeleton Tracking')!==-1) type='skeleton';
+    if(label.indexOf('Automatische houding-analyse')!==-1) type='houding';
+    if(!type) return;
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    localMessage(button, noVideoText(type));
   }
   document.addEventListener('click', interceptNoVideoClick, true);
   function wrapWhenReady(){
@@ -149,6 +152,9 @@ export default async function middleware(request) {
   html = html.replace(/(<button class="help-icon" data-help=")[^"]*Analyseer met AI[^"]*(" aria-label="Help Analyseer met AI">\?<\/button>)/, '$1Analyseer met AI maakt automatisch momenten aan op basis van AI-tijdcodes en geeft techniek-tips bij de video.$2');
   html = html.replace(/(<button onclick="analyseerMetAI\(\)">[\s\S]*?<\/button>)\s*(<button class="help-icon" data-help="[^"]*Analyseer met AI[^"]*" aria-label="Help Analyseer met AI">\?<\/button>)/, '<div class="analysis-help-row">$1$2</div>');
   html = html.replace(/(<button onclick="laadSessie\(\)">[\s\S]*?<\/button>)\s*(<button class="help-icon" data-help="[^"]*Open opgeslagen video[^"]*" aria-label="Help Open opgeslagen video">\?<\/button>)/, '<div class="session-help-row">$1$2</div>');
+  html = html.replace(/onclick="analyseerMetAI\(\)"/g, 'onclick="if(!window.coachGuardVideoAction||window.coachGuardVideoAction(this,\'ai\')) analyseerMetAI()"');
+  html = html.replace(/onclick="toggleSkeletonTracking\(\)"/g, 'onclick="if(!window.coachGuardVideoAction||window.coachGuardVideoAction(this,\'skeleton\')) toggleSkeletonTracking()"');
+  html = html.replace(/onclick="analyseerMetMediaPipe\(\)"/g, 'onclick="if(!window.coachGuardVideoAction||window.coachGuardVideoAction(this,\'houding\')) analyseerMetMediaPipe()"');
   if (!html.includes('coach-layout-polish-style')) html = html.replace('</head>', `${LAYOUT_STYLE}\n</head>`);
   if (!html.includes('coach-layout-polish-script')) html = html.replace('</body>', `${LAYOUT_SCRIPT}\n</body>`);
   if (!html.includes('beginner-action-messages-script')) html = html.replace('</body>', `${BEGINNER_ACTION_SCRIPT}\n</body>`);

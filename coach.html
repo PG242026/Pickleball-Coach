@@ -10,7 +10,7 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
 </head>
 <body>
 <div id="status">Pickleball Coach laden...</div>
-<iframe id="appFrame" src="/index.html?coach=v11"></iframe>
+<iframe id="appFrame" src="/index.html?coach=v12"></iframe>
 <script>
 (function(){
   const frame=document.getElementById('appFrame');
@@ -50,14 +50,7 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
       try{frame.contentWindow.renderHandleiding();}catch(e){}
     }
     if(c.children.length>0)return;
-    const items=[
-      ['Speler kiezen','Kies of voeg eerst een speler toe.'],
-      ['Niveau kiezen','Selecteer het niveau zodat de analyse beter past.'],
-      ['Video opnemen of uploaden','Neem een korte clip op of laad een bestaande spelersvideo.'],
-      ['YouTube voorbeeldvideo','Zoek of plak een voorbeeldvideo om naast de speler te vergelijken.'],
-      ['Vergelijk & Afspelen','Start, pauzeer en zet beide video’s gelijk.'],
-      ['Analyse','Gebruik automatische houding-analyse, momenten en download de analyse.']
-    ];
+    const items=[['Speler kiezen','Kies of voeg eerst een speler toe.'],['Niveau kiezen','Selecteer het niveau zodat de analyse beter past.'],['Video opnemen of uploaden','Neem een korte clip op of laad een bestaande spelersvideo.'],['YouTube voorbeeldvideo','Zoek of plak een voorbeeldvideo om naast de speler te vergelijken.'],['Vergelijk & Afspelen','Start, pauzeer en zet beide video’s gelijk.'],['Analyse','Gebruik automatische houding-analyse, momenten en download de analyse.']];
     c.innerHTML=items.map(function(item){return '<details><summary class="accordion-header"><span class="accordion-title">'+item[0]+'</span><span class="accordion-chevron" aria-hidden="true">⌄</span></summary><p>'+item[1]+'</p></details>';}).join('');
   }
 
@@ -73,30 +66,40 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
   function setLanguage(doc,lang){
     localStorage.setItem('pickleballTaal',lang);
     try{frame.contentWindow.localStorage.setItem('pickleballTaal',lang);}catch(e){}
-    if(typeof frame.contentWindow.pasTaalToe==='function'){
-      try{frame.contentWindow.pasTaalToe();}catch(e){}
-    }
-    if(typeof frame.contentWindow.renderHandleiding==='function'){
-      try{frame.contentWindow.renderHandleiding();}catch(e){}
-    }
-    if(typeof frame.contentWindow.toonMelding==='function'){
-      try{frame.contentWindow.toonMelding('🌍 Taal opgeslagen');}catch(e){}
-    }
+    if(typeof frame.contentWindow.pasTaalToe==='function')try{frame.contentWindow.pasTaalToe();}catch(e){}
+    if(typeof frame.contentWindow.renderHandleiding==='function')try{frame.contentWindow.renderHandleiding();}catch(e){}
+    if(typeof frame.contentWindow.toonMelding==='function')try{frame.contentWindow.toonMelding('🌍 Taal opgeslagen');}catch(e){}
     closePopups(doc);
   }
 
+  function showMessage(text){
+    if(typeof frame.contentWindow.toonMelding==='function'){
+      try{frame.contentWindow.toonMelding(text);return;}catch(e){}
+    }
+    status.textContent=text;
+    status.style.display='block';
+    setTimeout(function(){status.style.display='none';},2500);
+  }
+
   function sendFeedback(doc){
-    const naam=(doc.getElementById('feedbackNaam')&&doc.getElementById('feedbackNaam').value)||'Onbekend';
-    const soort=(doc.getElementById('feedbackSoort')&&doc.getElementById('feedbackSoort').value)||'Feedback';
-    const bericht=(doc.getElementById('feedbackBericht')&&doc.getElementById('feedbackBericht').value)||'';
+    const naamEl=doc.getElementById('feedbackNaam');
+    const soortEl=doc.getElementById('feedbackSoort');
+    const berichtEl=doc.getElementById('feedbackBericht');
+    const naam=(naamEl&&naamEl.value)||'Onbekend';
+    const soort=(soortEl&&soortEl.value)||'Feedback';
+    const bericht=(berichtEl&&berichtEl.value)||'';
     if(!bericht.trim()){
-      if(typeof frame.contentWindow.toonMelding==='function')frame.contentWindow.toonMelding('⚠️ Typ eerst je feedback');
+      showMessage('⚠️ Typ eerst je feedback');
       return;
     }
     const subject=encodeURIComponent('Feedback Pickleball Coach AI - '+soort);
     const body=encodeURIComponent('Naam: '+naam+'\nSoort: '+soort+'\nDatum: '+new Date().toLocaleString('nl-NL')+'\n\nFeedback:\n'+bericht);
     window.location.href='mailto:hcvsabben@gmail.com?subject='+subject+'&body='+body;
-    if(typeof frame.contentWindow.toonMelding==='function')frame.contentWindow.toonMelding('📧 Mail wordt geopend');
+    if(naamEl)naamEl.value='';
+    if(berichtEl)berichtEl.value='';
+    if(soortEl)soortEl.selectedIndex=0;
+    closePopups(doc);
+    showMessage('Uw feedback is verzonden.');
   }
 
   function installButtonClick(doc){
@@ -123,68 +126,43 @@ html,body{width:100%;height:100%;margin:0;background:#1f5f3b;font-family:Arial,H
       const oldTip=doc.getElementById('coachHelpTip');
       if(oldTip)oldTip.remove();
       if(!help)return;
-      event.preventDefault();
-      event.stopPropagation();
+      event.preventDefault();event.stopPropagation();
       const text=help.getAttribute('data-help')||help.getAttribute('aria-label')||'Uitleg volgt later.';
       const tip=doc.createElement('div');
-      tip.id='coachHelpTip';
-      tip.className='coach-help-tip';
-      tip.textContent=text;
-      doc.body.appendChild(tip);
+      tip.id='coachHelpTip';tip.className='coach-help-tip';tip.textContent=text;doc.body.appendChild(tip);
       const rect=help.getBoundingClientRect();
-      const left=Math.min(rect.left+doc.defaultView.scrollX, doc.documentElement.clientWidth-300+doc.defaultView.scrollX);
-      tip.style.left=Math.max(8,left)+'px';
-      tip.style.top=(rect.bottom+8+doc.defaultView.scrollY)+'px';
+      const left=Math.min(rect.left+doc.defaultView.scrollX,doc.documentElement.clientWidth-300+doc.defaultView.scrollX);
+      tip.style.left=Math.max(8,left)+'px';tip.style.top=(rect.bottom+8+doc.defaultView.scrollY)+'px';
     },true);
   }
 
   function fixInFrame(){
     const doc=frame.contentDocument;
     if(!doc)return false;
-    injectStyle(doc);
-    installHelpClick(doc);
-    installButtonClick(doc);
-    const debug=doc.getElementById('pwaDebugPane');
-    if(debug)debug.style.display='none';
-
+    injectStyle(doc);installHelpClick(doc);installButtonClick(doc);
+    const debug=doc.getElementById('pwaDebugPane');if(debug)debug.style.display='none';
     const title=doc.getElementById('youtubeVideoTitle');
     const youtubeBox=title&&title.closest('.video-box');
     if(!youtubeBox)return false;
     const actionRow=youtubeBox.querySelector('.knopgroep,.youtube-panel-actions');
     if(!actionRow)return false;
     actionRow.classList.add('youtube-panel-actions');
-
     const compare=doc.querySelector('.in-youtube-panel')||doc.querySelector('.in-manage-videos')||doc.querySelector('.sync-box');
     if(compare){
-      compare.classList.add('youtube-compare-panel','in-youtube-panel');
-      compare.classList.remove('in-manage-videos','sync-box');
-      actionRow.insertAdjacentElement('afterend',compare);
-      const details=compare.querySelector('details');
-      if(details){details.open=true;details.setAttribute('open','open');}
-      const paneel=compare.querySelector('.sync-paneel');
-      if(paneel){paneel.style.maxHeight='none';paneel.style.overflow='visible';paneel.style.padding='4px 14px 14px';}
+      compare.classList.add('youtube-compare-panel','in-youtube-panel');compare.classList.remove('in-manage-videos','sync-box');actionRow.insertAdjacentElement('afterend',compare);
+      const details=compare.querySelector('details');if(details){details.open=true;details.setAttribute('open','open');}
+      const paneel=compare.querySelector('.sync-paneel');if(paneel){paneel.style.maxHeight='none';paneel.style.overflow='visible';paneel.style.padding='4px 14px 14px';}
     }
-
     const analysis=doc.querySelector('.video-analyse-sectie');
     const manageAccordion=doc.getElementById('manageVideosAccordion');
-    if(analysis&&manageAccordion){
-      analysis.classList.add('player-analysis-outside');
-      manageAccordion.insertAdjacentElement('afterend',analysis);
-      pairHelpButtons(doc);
-    }
-
+    if(analysis&&manageAccordion){analysis.classList.add('player-analysis-outside');manageAccordion.insertAdjacentElement('afterend',analysis);pairHelpButtons(doc);}
     status.style.display='none';
     return !!compare;
   }
 
   frame.addEventListener('load',function(){
     let tries=0;
-    const timer=setInterval(function(){
-      tries++;
-      const ok=fixInFrame();
-      if(ok||tries>40)clearInterval(timer);
-      if(tries>40)status.textContent='App geladen. Vernieuw als het blok niet zichtbaar is.';
-    },250);
+    const timer=setInterval(function(){tries++;const ok=fixInFrame();if(ok||tries>40)clearInterval(timer);if(tries>40)status.textContent='App geladen. Vernieuw als het blok niet zichtbaar is.';},250);
   });
 })();
 </script>

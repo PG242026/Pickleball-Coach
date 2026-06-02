@@ -76,7 +76,7 @@ const LAYOUT_SCRIPT = `<script id="coach-layout-polish-script">
 
 const STORAGE_SCRIPT = `<script id="video-storage-options-script">
 (function(){
-  var storageHelpText='Bewaar in deze browser: snel terugladen in deze app op dit apparaat. Bewaar als bestand: download de video, daarna kun je op telefoon/tablet kiezen voor Bestanden, iCloud, Google Drive of Downloads.';
+  var storageHelpText='Bewaar als bestand: download de video naar uw apparaat. Daarna kunt u op telefoon/tablet kiezen voor Bestanden, iCloud, Google Drive of Downloads. Bewaar in deze browser: snel terugladen in deze app op dit apparaat. Hierna kunt u deze video weer uploaden.';
   function notify(text){ if(typeof window.toonMelding==='function') window.toonMelding(text); }
   function cleanName(name){ return (name || 'pickleball-video').trim().replace(/[^a-zA-Z0-9._-]+/g,'-').replace(/-+/g,'-') || 'pickleball-video'; }
   function showStorageHelp(anchor){
@@ -97,7 +97,7 @@ const STORAGE_SCRIPT = `<script id="video-storage-options-script">
     document.body.appendChild(a);
     a.click();
     setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 1200);
-    notify('Bestand klaargezet. Kies daarna eventueel iCloud, Google Drive, Bestanden of Downloads.');
+    notify('Bestand klaargezet. Hierna kunt u deze video weer uploaden.');
   }
   window.downloadHuidigeVideoBestand=function(){
     try{

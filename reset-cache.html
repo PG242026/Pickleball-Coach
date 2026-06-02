@@ -18,6 +18,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#1f5f3b;color:white;min-h
 (async function(){
   const status=document.getElementById('status');
   try{
+    status.textContent='Oude app-versie verwijderen...';
     if('serviceWorker' in navigator){
       const regs=await navigator.serviceWorker.getRegistrations();
       await Promise.all(regs.map(reg=>reg.unregister()));
@@ -26,13 +27,26 @@ body{font-family:Arial,Helvetica,sans-serif;background:#1f5f3b;color:white;min-h
       const keys=await caches.keys();
       await Promise.all(keys.map(key=>caches.delete(key)));
     }
-    status.textContent='Cache leeg. App opnieuw openen...';
+    if('serviceWorker' in navigator){
+      status.textContent='Nieuwe app-versie laden...';
+      const reg=await navigator.serviceWorker.register('/service-worker.js?v=force-v44',{scope:'/'});
+      if(reg.installing){
+        await new Promise(resolve=>{
+          reg.installing.addEventListener('statechange',()=>{
+            if(reg.installing.state==='activated')resolve();
+          });
+          setTimeout(resolve,3500);
+        });
+      }
+      await navigator.serviceWorker.ready;
+    }
+    status.textContent='Klaar. App opnieuw openen...';
   }catch(e){
-    status.textContent='App opnieuw openen...';
+    status.textContent='Klaar. App opnieuw openen...';
   }
   setTimeout(()=>{
-    location.replace('/?v=na-cache-reset-v43');
-  },900);
+    location.replace('/?v=herstel-v44');
+  },500);
 })();
 </script>
 </body>

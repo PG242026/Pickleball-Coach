@@ -1,5 +1,5 @@
-const CACHE_NAME = 'pickleball-coach-ai-v42';
-const AI_CLIENT_SCRIPT = '<script src="/ai-backend-client.js?v=cache42"></script>';
+const CACHE_NAME = 'pickleball-coach-ai-v46';
+const AI_CLIENT_SCRIPT = '<script src="/ai-backend-client.js?v=cache46"></script>';
 const CHEVRON_STYLE = `<style id="large-accordion-chevrons">
 .accordion-chevron{flex:0 0 48px!important;width:48px!important;height:48px!important;margin-left:16px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;color:transparent!important;font-size:0!important;line-height:1!important;position:relative!important;transform:rotate(0deg);transform-origin:center;transition:transform .25s ease}.accordion-chevron::before{content:"";width:19px;height:19px;border-right:4px solid #1f5f3b;border-bottom:4px solid #1f5f3b;border-radius:2px;transform:rotate(45deg) translate(-2px,-2px);box-sizing:border-box}details[open]>.accordion-header .accordion-chevron{transform:rotate(180deg)}
 </style>`;
@@ -67,10 +67,24 @@ async function htmlResponseWithAiClient(response) {
   });
 }
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
+async function cacheAppShellSafely() {
+  const cache = await caches.open(CACHE_NAME);
+  await Promise.all(
+    APP_SHELL.map(async (url) => {
+      try {
+        const response = await fetch(url, { cache: 'no-store' });
+        if (response && response.ok) {
+          await cache.put(url, response);
+        }
+      } catch (error) {
+        // Een ontbrekend bestand mag de hele app-update niet blokkeren.
+      }
+    })
   );
+}
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(cacheAppShellSafely());
   self.skipWaiting();
 });
 

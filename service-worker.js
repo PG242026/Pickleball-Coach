@@ -1,8 +1,8 @@
-const CACHE_NAME = 'pickleball-coach-ai-v57-taal-herladen';
+const CACHE_NAME = 'pickleball-coach-ai-v58-taal-direct';
 const DEBUG_HIDE_STYLE = `<style id="hide-pwa-debug-box">
 .pwa-debug,#pwaDebugPane{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
 </style>`;
-const HELP_BUTTON_FIX = `<script id="help-buttons-fix-v57">
+const HELP_BUTTON_FIX = `<script id="help-buttons-fix-v58">
 (function(){
   function hideDebug(){
     var box=document.getElementById('pwaDebugPane');
@@ -22,49 +22,48 @@ const HELP_BUTTON_FIX = `<script id="help-buttons-fix-v57">
     if(bg)bg.style.display='block';
     if(popup){popup.style.display='block';document.body.style.overflow='hidden';}
   }
-  function kiesTaalUitKnop(btn){
+  function taalVanKnop(btn){
+    var txt=(btn.textContent||'').toLowerCase();
     var onclick=btn.getAttribute('onclick')||'';
-    var match=onclick.match(/setTaal\(['\"]([^'\"]+)['\"]\)/);
-    if(match)return match[1];
-    var tekst=(btn.textContent||'').toLowerCase();
-    if(tekst.includes('english'))return 'en';
-    if(tekst.includes('deutsch'))return 'de';
-    if(tekst.includes('español')||tekst.includes('espanol'))return 'es';
-    if(tekst.includes('français')||tekst.includes('francais'))return 'fr';
-    if(tekst.includes('nederlands'))return 'nl';
+    if(onclick.indexOf("'en'")>-1||txt.indexOf('english')>-1)return 'en';
+    if(onclick.indexOf("'de'")>-1||txt.indexOf('deutsch')>-1)return 'de';
+    if(onclick.indexOf("'es'")>-1||txt.indexOf('español')>-1||txt.indexOf('espanol')>-1)return 'es';
+    if(onclick.indexOf("'fr'")>-1||txt.indexOf('français')>-1||txt.indexOf('francais')>-1)return 'fr';
+    if(onclick.indexOf("'nl'")>-1||txt.indexOf('nederlands')>-1)return 'nl';
     return '';
   }
-  function taalKlik(e){
-    var btn=e.target.closest('#taalPopup button');
-    if(!btn)return;
-    var taal=kiesTaalUitKnop(btn);
-    if(!taal)return;
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
-    localStorage.setItem('pickleballTaal',taal);
-    sluitPopups();
-    var url=new URL(window.location.href);
-    url.searchParams.set('taal',taal);
-    url.searchParams.set('v','taal-'+taal+'-'+Date.now());
-    window.location.href=url.toString();
-  }
-  function pasTaalNaLadenToe(){
+  function forceerTaalOpPagina(){
     var taal=localStorage.getItem('pickleballTaal');
     if(!taal)return;
-    var pogingen=0;
+    var i=0;
     var timer=setInterval(function(){
-      pogingen++;
-      if(typeof window.pasTaalToe==='function'){
-        try{window.pasTaalToe();}catch(err){}
-      }
-      if(typeof window.renderHandleiding==='function'){
-        try{window.renderHandleiding();}catch(err){}
-      }
-      if(pogingen>=10)clearInterval(timer);
+      i++;
+      try{
+        if(typeof window.setTaal==='function'&&window.__taalReloadBezig!==true){
+          if(typeof window.pasTaalToe==='function')window.pasTaalToe();
+        }
+        if(typeof window.renderHandleiding==='function')window.renderHandleiding();
+      }catch(e){}
+      if(i>=12)clearInterval(timer);
     },250);
   }
-  function openKlik(e){
+  document.addEventListener('click',function(e){
+    var taalKnop=e.target.closest('#taalPopup button');
+    if(taalKnop){
+      var taal=taalVanKnop(taalKnop);
+      if(taal){
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        localStorage.setItem('pickleballTaal',taal);
+        window.__taalReloadBezig=true;
+        var url=new URL(window.location.href);
+        url.searchParams.set('taal',taal);
+        url.searchParams.set('v','taal-direct-'+taal+'-'+Date.now());
+        window.location.replace(url.toString());
+        return;
+      }
+    }
     var btn=e.target.closest('button');
     if(!btn)return;
     var action=btn.getAttribute('onclick')||'';
@@ -85,14 +84,12 @@ const HELP_BUTTON_FIX = `<script id="help-buttons-fix-v57">
       e.preventDefault();
       sluitPopups();
     }
-  }
+  },true);
   hideDebug();
-  pasTaalNaLadenToe();
-  document.addEventListener('DOMContentLoaded',function(){hideDebug();pasTaalNaLadenToe();});
-  window.addEventListener('load',function(){hideDebug();pasTaalNaLadenToe();});
+  forceerTaalOpPagina();
+  document.addEventListener('DOMContentLoaded',function(){hideDebug();forceerTaalOpPagina();});
+  window.addEventListener('load',function(){hideDebug();forceerTaalOpPagina();});
   setInterval(hideDebug,1000);
-  document.addEventListener('click',taalKlik,true);
-  document.addEventListener('click',openKlik,true);
 })();
 </script>`;
 
@@ -101,7 +98,7 @@ function injectStableHead(html) {
   if (!next.includes('hide-pwa-debug-box')) {
     next = next.replace('</head>', DEBUG_HIDE_STYLE + '\n</head>');
   }
-  if (!next.includes('help-buttons-fix-v57')) {
+  if (!next.includes('help-buttons-fix-v58')) {
     next = next.replace('</body>', HELP_BUTTON_FIX + '\n</body>');
   }
   return next;

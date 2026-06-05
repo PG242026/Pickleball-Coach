@@ -1,11 +1,57 @@
-const CACHE_NAME = 'pickleball-coach-ai-v52-stabiel';
+const CACHE_NAME = 'pickleball-coach-ai-v53-hulpknoppen';
 const DEBUG_HIDE_STYLE = `<style id="hide-pwa-debug-box">
 .pwa-debug,#pwaDebugPane{display:none!important}
 </style>`;
+const HELP_BUTTON_FIX = `<script id="help-buttons-fix">
+(function(){
+  function sluitPopups(){
+    document.querySelectorAll('.popup').forEach(function(p){p.style.display='none';});
+    var bg=document.getElementById('popupAchtergrond');
+    if(bg)bg.style.display='none';
+    document.body.style.overflow='';
+  }
+  function openPopup(id){
+    sluitPopups();
+    var popup=document.getElementById(id);
+    var bg=document.getElementById('popupAchtergrond');
+    if(bg)bg.style.display='block';
+    if(popup){popup.style.display='block';document.body.style.overflow='hidden';}
+  }
+  function bind(selector,id){
+    var btn=document.querySelector(selector);
+    if(!btn)return;
+    btn.addEventListener('click',function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      if(id==='handleidingPopup'&&typeof window.renderHandleiding==='function')window.renderHandleiding();
+      openPopup(id);
+    },true);
+  }
+  function fix(){
+    bind('button[onclick="openHandleiding()"]','handleidingPopup');
+    bind('button[onclick="openTaal()"]','taalPopup');
+    bind('button[onclick="openFeedback()"]','feedbackPopup');
+    var bg=document.getElementById('popupAchtergrond');
+    if(bg)bg.addEventListener('click',sluitPopups,true);
+    document.querySelectorAll('button[onclick="sluitAllePopups()"]').forEach(function(btn){
+      btn.addEventListener('click',function(e){e.preventDefault();sluitPopups();},true);
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix);
+  else fix();
+  window.addEventListener('load',fix);
+})();
+</script>`;
 
 function injectStableHead(html) {
-  if (html.includes('hide-pwa-debug-box')) return html;
-  return html.replace('</head>', DEBUG_HIDE_STYLE + '\n</head>');
+  let next = html;
+  if (!next.includes('hide-pwa-debug-box')) {
+    next = next.replace('</head>', DEBUG_HIDE_STYLE + '\n</head>');
+  }
+  if (!next.includes('help-buttons-fix')) {
+    next = next.replace('</body>', HELP_BUTTON_FIX + '\n</body>');
+  }
+  return next;
 }
 
 async function htmlResponse(response) {

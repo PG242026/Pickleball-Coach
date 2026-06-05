@@ -1,8 +1,8 @@
-const CACHE_NAME = 'pickleball-coach-ai-v54-taalfix';
+const CACHE_NAME = 'pickleball-coach-ai-v55-taalkeuze';
 const DEBUG_HIDE_STYLE = `<style id="hide-pwa-debug-box">
 .pwa-debug,#pwaDebugPane{display:none!important}
 </style>`;
-const HELP_BUTTON_FIX = `<script id="help-buttons-fix">
+const HELP_BUTTON_FIX = `<script id="help-buttons-fix-v55">
 (function(){
   function sluitPopups(){
     document.querySelectorAll('.popup').forEach(function(p){p.style.display='none';});
@@ -17,54 +17,69 @@ const HELP_BUTTON_FIX = `<script id="help-buttons-fix">
     if(bg)bg.style.display='block';
     if(popup){popup.style.display='block';document.body.style.overflow='hidden';}
   }
-  function bindOpen(selector,id){
-    var btn=document.querySelector(selector);
-    if(!btn||btn.dataset.popupFixed==='ja')return;
-    btn.dataset.popupFixed='ja';
-    btn.addEventListener('click',function(e){
+  function kiesTaalUitKnop(btn){
+    var onclick=btn.getAttribute('onclick')||'';
+    var match=onclick.match(/setTaal\(['\"]([^'\"]+)['\"]\)/);
+    if(match)return match[1];
+    var tekst=(btn.textContent||'').toLowerCase();
+    if(tekst.includes('english'))return 'en';
+    if(tekst.includes('deutsch'))return 'de';
+    if(tekst.includes('español')||tekst.includes('espanol'))return 'es';
+    if(tekst.includes('français')||tekst.includes('francais'))return 'fr';
+    if(tekst.includes('nederlands'))return 'nl';
+    return '';
+  }
+  function taalKlik(e){
+    var btn=e.target.closest('#taalPopup button');
+    if(!btn)return;
+    var taal=kiesTaalUitKnop(btn);
+    if(!taal)return;
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    localStorage.setItem('pickleballTaal',taal);
+    if(typeof window.setTaal==='function'){
+      try{window.setTaal(taal);}catch(err){}
+    }
+    if(typeof window.pasTaalToe==='function'){
+      try{window.pasTaalToe();}catch(err){}
+    }
+    if(typeof window.renderHandleiding==='function'){
+      try{window.renderHandleiding();}catch(err){}
+    }
+    sluitPopups();
+    setTimeout(function(){
+      if(typeof window.pasTaalToe==='function'){
+        try{window.pasTaalToe();}catch(err){}
+      }else{
+        location.reload();
+      }
+    },100);
+  }
+  function openKlik(e){
+    var btn=e.target.closest('button');
+    if(!btn)return;
+    var action=btn.getAttribute('onclick')||'';
+    if(action==='openHandleiding()'){
       e.preventDefault();
-      if(id==='handleidingPopup'&&typeof window.renderHandleiding==='function')window.renderHandleiding();
-      openPopup(id);
-    });
+      if(typeof window.renderHandleiding==='function')window.renderHandleiding();
+      openPopup('handleidingPopup');
+    }
+    if(action==='openTaal()'){
+      e.preventDefault();
+      openPopup('taalPopup');
+    }
+    if(action==='openFeedback()'){
+      e.preventDefault();
+      openPopup('feedbackPopup');
+    }
+    if(action==='sluitAllePopups()'){
+      e.preventDefault();
+      sluitPopups();
+    }
   }
-  function bindTaalKnoppen(){
-    document.querySelectorAll('#taalPopup button[onclick^="setTaal"]').forEach(function(btn){
-      if(btn.dataset.langFixed==='ja')return;
-      btn.dataset.langFixed='ja';
-      var match=(btn.getAttribute('onclick')||'').match(/setTaal\('([^']+)'\)/);
-      if(!match)return;
-      var taal=match[1];
-      btn.addEventListener('click',function(e){
-        e.preventDefault();
-        if(typeof window.setTaal==='function'){
-          window.setTaal(taal);
-        }else{
-          localStorage.setItem('pickleballTaal',taal);
-          location.reload();
-        }
-        setTimeout(function(){
-          if(typeof window.pasTaalToe==='function')window.pasTaalToe();
-          if(typeof window.renderHandleiding==='function')window.renderHandleiding();
-        },50);
-      });
-    });
-  }
-  function fix(){
-    bindOpen('button[onclick="openHandleiding()"]','handleidingPopup');
-    bindOpen('button[onclick="openTaal()"]','taalPopup');
-    bindOpen('button[onclick="openFeedback()"]','feedbackPopup');
-    bindTaalKnoppen();
-    var bg=document.getElementById('popupAchtergrond');
-    if(bg&&!bg.dataset.closeFixed){bg.dataset.closeFixed='ja';bg.addEventListener('click',sluitPopups);}
-    document.querySelectorAll('button[onclick="sluitAllePopups()"]').forEach(function(btn){
-      if(btn.dataset.closeFixed==='ja')return;
-      btn.dataset.closeFixed='ja';
-      btn.addEventListener('click',function(e){e.preventDefault();sluitPopups();});
-    });
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix);
-  else fix();
-  window.addEventListener('load',fix);
+  document.addEventListener('click',taalKlik,true);
+  document.addEventListener('click',openKlik,true);
 })();
 </script>`;
 
@@ -73,7 +88,7 @@ function injectStableHead(html) {
   if (!next.includes('hide-pwa-debug-box')) {
     next = next.replace('</head>', DEBUG_HIDE_STYLE + '\n</head>');
   }
-  if (!next.includes('help-buttons-fix')) {
+  if (!next.includes('help-buttons-fix-v55')) {
     next = next.replace('</body>', HELP_BUTTON_FIX + '\n</body>');
   }
   return next;

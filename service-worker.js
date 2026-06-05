@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pickleball-coach-ai-v53-hulpknoppen';
+const CACHE_NAME = 'pickleball-coach-ai-v54-taalfix';
 const DEBUG_HIDE_STYLE = `<style id="hide-pwa-debug-box">
 .pwa-debug,#pwaDebugPane{display:none!important}
 </style>`;
@@ -17,24 +17,49 @@ const HELP_BUTTON_FIX = `<script id="help-buttons-fix">
     if(bg)bg.style.display='block';
     if(popup){popup.style.display='block';document.body.style.overflow='hidden';}
   }
-  function bind(selector,id){
+  function bindOpen(selector,id){
     var btn=document.querySelector(selector);
-    if(!btn)return;
+    if(!btn||btn.dataset.popupFixed==='ja')return;
+    btn.dataset.popupFixed='ja';
     btn.addEventListener('click',function(e){
       e.preventDefault();
-      e.stopPropagation();
       if(id==='handleidingPopup'&&typeof window.renderHandleiding==='function')window.renderHandleiding();
       openPopup(id);
-    },true);
+    });
+  }
+  function bindTaalKnoppen(){
+    document.querySelectorAll('#taalPopup button[onclick^="setTaal"]').forEach(function(btn){
+      if(btn.dataset.langFixed==='ja')return;
+      btn.dataset.langFixed='ja';
+      var match=(btn.getAttribute('onclick')||'').match(/setTaal\('([^']+)'\)/);
+      if(!match)return;
+      var taal=match[1];
+      btn.addEventListener('click',function(e){
+        e.preventDefault();
+        if(typeof window.setTaal==='function'){
+          window.setTaal(taal);
+        }else{
+          localStorage.setItem('pickleballTaal',taal);
+          location.reload();
+        }
+        setTimeout(function(){
+          if(typeof window.pasTaalToe==='function')window.pasTaalToe();
+          if(typeof window.renderHandleiding==='function')window.renderHandleiding();
+        },50);
+      });
+    });
   }
   function fix(){
-    bind('button[onclick="openHandleiding()"]','handleidingPopup');
-    bind('button[onclick="openTaal()"]','taalPopup');
-    bind('button[onclick="openFeedback()"]','feedbackPopup');
+    bindOpen('button[onclick="openHandleiding()"]','handleidingPopup');
+    bindOpen('button[onclick="openTaal()"]','taalPopup');
+    bindOpen('button[onclick="openFeedback()"]','feedbackPopup');
+    bindTaalKnoppen();
     var bg=document.getElementById('popupAchtergrond');
-    if(bg)bg.addEventListener('click',sluitPopups,true);
+    if(bg&&!bg.dataset.closeFixed){bg.dataset.closeFixed='ja';bg.addEventListener('click',sluitPopups);}
     document.querySelectorAll('button[onclick="sluitAllePopups()"]').forEach(function(btn){
-      btn.addEventListener('click',function(e){e.preventDefault();sluitPopups();},true);
+      if(btn.dataset.closeFixed==='ja')return;
+      btn.dataset.closeFixed='ja';
+      btn.addEventListener('click',function(e){e.preventDefault();sluitPopups();});
     });
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix);

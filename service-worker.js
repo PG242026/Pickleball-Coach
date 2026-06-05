@@ -1,6 +1,6 @@
-const CACHE_NAME = 'pickleball-coach-ai-v67-stabiel-volledig-taal';
+const CACHE_NAME = 'pickleball-coach-ai-v68-startopname-voorbeeld';
 
-const STABLE_STYLE = `<style id="pickleball-stable-style-v67">
+const STABLE_STYLE = `<style id="pickleball-stable-style-v68">
 .pwa-debug,#pwaDebugPane{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
 .video-box{min-width:0!important}.video-box .knopgroep{max-width:100%!important}
 .youtube-panel-actions{display:flex!important;flex-wrap:wrap!important;gap:10px!important;align-items:flex-start!important;margin:10px 0 0!important;width:100%!important;box-sizing:border-box!important}
@@ -12,7 +12,7 @@ const STABLE_STYLE = `<style id="pickleball-stable-style-v67">
 @media(max-width:520px){.onderaan button{min-width:145px!important;flex:0 1 calc(50% - 14px)!important;padding:12px 10px!important}.onderaan button:last-child{flex-basis:145px!important}}
 </style>`;
 
-const STABLE_SCRIPT = `<script id="pickleball-stable-script-v67">
+const STABLE_SCRIPT = `<script id="pickleball-stable-script-v68">
 (function(){
   var T={
     nl:{help:'Hulp en contact',guide:'📘 Handleiding',language:'🌍 Language',feedback:'💬 Feedback',clearAll:'🗑 Wis Alles',players:'👥 Spelers beheren',newPlayer:'Nieuwe speler toevoegen',addPlayer:'➕ Voeg speler toe',name:'Naam speler',choosePlayer:'Kies speler',level:'Niveau',chooseLevel:'Kies niveau',tech:'Techniek / Oefening',techPh:'Typ hier zelf de oefening of techniek',done:'✅ Klaar',side:'📺 Side-by-side Analyse',player:'🎥 Spelers video',yt:'📺 YouTube filmpje',record:'🎥 Nieuwe opname maken',manage:'📁 Spelers video’s beheren',upload:'Upload video vanaf telefoon, tablet of pc',saveName:'Naam voor de video die je wilt opslaan',example:'Bijvoorbeeld: Elly backhand 17 mei',saveVideo:'💾 Bewaar video in lijst',none:'Nog geen video’s bewaard.',compare:'🎛 Vergelijk & Afspelen',analysis:'🎥 Analyse',search:'🔍 Zoek YouTube voorbeeldvideo',paste:'📎 Plak YouTube link',clear:'🗑 Wis de video',other:'🔄 Zoek een ander',playBoth:'▶ Start beide video’s',pauseBoth:'⏸ Pauzeer beide video’s',ytToPlayer:'🔁 Zet YouTube gelijk met speler',playerToYt:'🔁 Zet speler gelijk met YouTube',bothStart:'↩ Beide naar begin'},
@@ -23,39 +23,23 @@ const STABLE_SCRIPT = `<script id="pickleball-stable-script-v67">
   };
   var keyList=Object.keys(T.nl);
   function clean(s){return (s||'').replace(/[🎥📁📺🔍📎🗑🔄🎛👥✅➕❌■💾▶⏸↩]/g,'').replace(/[’']/g,' ').replace(/\s+/g,' ').trim().toLowerCase();}
-  function hideDebug(){var box=document.getElementById('pwaDebugPane');if(box) box.remove();document.querySelectorAll('.pwa-debug').forEach(function(el){el.remove();});}
-  function closestVideoBox(sel){var el=document.querySelector(sel);return el ? el.closest('.video-box') : null;}
+  function hideDebug(){var box=document.getElementById('pwaDebugPane');if(box)box.remove();document.querySelectorAll('.pwa-debug').forEach(function(el){el.remove();});}
+  function closestVideoBox(sel){var el=document.querySelector(sel);return el?el.closest('.video-box'):null;}
   function fixLayout(){var ytBox=closestVideoBox('#youtubeVideoTitle');if(!ytBox)return;var actionRow=ytBox.querySelector('.knopgroep');if(actionRow)actionRow.classList.add('youtube-panel-actions');var compare=document.querySelector('.youtube-compare-panel')||document.querySelector('.in-youtube-panel')||document.querySelector('.sync-box.in-manage-videos')||document.querySelector('.sync-box');if(compare&&actionRow&&compare!==actionRow){compare.classList.add('youtube-compare-panel','in-youtube-panel');compare.classList.remove('in-manage-videos','sync-box');actionRow.insertAdjacentElement('afterend',compare);}var analysis=document.querySelector('.video-analyse-sectie');if(analysis&&compare){analysis.classList.add('youtube-analysis-panel');analysis.classList.remove('player-analysis-outside','in-manage-videos');compare.insertAdjacentElement('afterend',analysis);var d=analysis.querySelector('details');if(d)d.removeAttribute('open');}}
+  function keyFor(s){if(s==='start opname'||s==='start opnemen')return'record';if(s==='spelers video s beheren'||s==='spelers videos beheren')return'manage';if(s==='bewaar video in lijst'||s==='bewaar de video in lijst')return'saveVideo';if(s==='bijvoorbeeld elly backhand 17 mei')return'example';if(s==='analyse')return'analysis';return'';}
+  function replaceKnown(lang){var tr=T[lang]||T.nl;document.querySelectorAll('button,h1,h2,h3,label,p,strong,summary,option,span,small').forEach(function(el){var s=clean(el.textContent);var k=keyFor(s);if(k){el.textContent=tr[k];return;}for(var l in T){for(var i=0;i<keyList.length;i++){var kk=keyList[i];if(clean(T[l][kk])===s){el.textContent=tr[kk];return;}}}});var selects=document.querySelectorAll('select');if(selects[0]&&selects[0].options[0])selects[0].options[0].textContent=tr.choosePlayer;if(selects[1]&&selects[1].options[0])selects[1].options[0].textContent=tr.chooseLevel;document.querySelectorAll('input[placeholder],textarea[placeholder]').forEach(function(el){var s=clean(el.placeholder);var k=keyFor(s);if(k){el.placeholder=tr[k];return;}for(var l in T){['newPlayer','techPh','example'].forEach(function(kk){if(clean(T[l][kk])===s)el.placeholder=tr[kk];});}});}
   function closePopups(){document.querySelectorAll('.popup').forEach(function(p){p.style.display='none';});var bg=document.getElementById('popupAchtergrond');if(bg)bg.style.display='none';document.body.style.overflow='';}
   function openPopup(id){closePopups();var popup=document.getElementById(id);var bg=document.getElementById('popupAchtergrond');if(bg)bg.style.display='block';if(popup){popup.style.display='block';document.body.style.overflow='hidden';}}
-  function replaceKnown(lang){var tr=T[lang]||T.nl;var alias={'start opname':'record','spelers video s beheren':'manage','bewaar video in lijst':'saveVideo','bewaar de video in lijst':'saveVideo','analyse':'analysis'};document.querySelectorAll('button,h1,h2,h3,label,p,strong,summary,option,span,small').forEach(function(el){var s=clean(el.textContent);if(!s)return;if(alias[s]){el.textContent=tr[alias[s]];return;}for(var l in T){for(var i=0;i<keyList.length;i++){var k=keyList[i];if(clean(T[l][k])===s){el.textContent=tr[k];return;}}}});var selects=document.querySelectorAll('select');if(selects[0]&&selects[0].options[0])selects[0].options[0].textContent=tr.choosePlayer;if(selects[1]&&selects[1].options[0])selects[1].options[0].textContent=tr.chooseLevel;var inputs=document.querySelectorAll('input[type="text"],input:not([type])');if(inputs[0])inputs[0].placeholder=tr.newPlayer;if(inputs[1])inputs[1].placeholder=tr.techPh;}
   function setLang(lang){localStorage.setItem('pickleballTaal',lang);document.documentElement.lang=lang;closePopups();fixLayout();replaceKnown(lang);}
   window.openHandleiding=function(){openPopup('handleidingPopup');};window.openTaal=function(){openPopup('taalPopup');};window.openFeedback=function(){openPopup('feedbackPopup');};window.sluitAllePopups=closePopups;
   function buttonLang(btn){var txt=(btn.textContent||'').toLowerCase();var onclick=btn.getAttribute('onclick')||'';if(onclick.indexOf("'en'")>-1||txt.indexOf('english')>-1)return'en';if(onclick.indexOf("'de'")>-1||txt.indexOf('deutsch')>-1)return'de';if(onclick.indexOf("'es'")>-1||txt.indexOf('español')>-1||txt.indexOf('espanol')>-1)return'es';if(onclick.indexOf("'fr'")>-1||txt.indexOf('français')>-1||txt.indexOf('francais')>-1)return'fr';if(onclick.indexOf("'nl'")>-1||txt.indexOf('nederlands')>-1)return'nl';return'';}
-  document.addEventListener('click',function(e){var langBtn=e.target.closest('#taalPopup button');if(langBtn){var lang=buttonLang(langBtn);if(lang){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();setLang(lang);return;}}var btn=e.target.closest('button');if(!btn)return;var action=btn.getAttribute('onclick')||'';if(action==='openHandleiding()'){e.preventDefault();e.stopPropagation();openPopup('handleidingPopup');}if(action==='openTaal()'){e.preventDefault();e.stopPropagation();openPopup('taalPopup');}if(action==='openFeedback()'){e.preventDefault();e.stopPropagation();openPopup('feedbackPopup');}if(action==='sluitAllePopups()'){e.preventDefault();e.stopPropagation();closePopups();}},true);
-  hideDebug();fixLayout();setLang(localStorage.getItem('pickleballTaal')||'nl');document.addEventListener('DOMContentLoaded',function(){hideDebug();fixLayout();setLang(localStorage.getItem('pickleballTaal')||'nl');});window.addEventListener('load',function(){hideDebug();fixLayout();setTimeout(function(){setLang(localStorage.getItem('pickleballTaal')||'nl');},500);});setInterval(function(){hideDebug();fixLayout();},3000);
+  document.addEventListener('click',function(e){var langBtn=e.target.closest('#taalPopup button');if(langBtn){var lang=buttonLang(langBtn);if(lang){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();setLang(lang);setTimeout(function(){setLang(lang);},400);return;}}var btn=e.target.closest('button');if(!btn)return;var action=btn.getAttribute('onclick')||'';if(action==='openHandleiding()'){e.preventDefault();e.stopPropagation();openPopup('handleidingPopup');}if(action==='openTaal()'){e.preventDefault();e.stopPropagation();openPopup('taalPopup');}if(action==='openFeedback()'){e.preventDefault();e.stopPropagation();openPopup('feedbackPopup');}if(action==='sluitAllePopups()'){e.preventDefault();e.stopPropagation();closePopups();}},true);
+  hideDebug();fixLayout();setLang(localStorage.getItem('pickleballTaal')||'nl');document.addEventListener('DOMContentLoaded',function(){hideDebug();fixLayout();setLang(localStorage.getItem('pickleballTaal')||'nl');});window.addEventListener('load',function(){hideDebug();fixLayout();var l=localStorage.getItem('pickleballTaal')||'nl';setTimeout(function(){setLang(l);},500);setTimeout(function(){setLang(l);},1600);});setInterval(function(){hideDebug();fixLayout();},3000);
 })();
 </script>`;
 
-function injectStableHead(html) {
-  let next = html;
-  if (!next.includes('pickleball-stable-style-v67')) next = next.replace('</head>', STABLE_STYLE + '\n</head>');
-  if (!next.includes('pickleball-stable-script-v67')) next = next.replace('</body>', STABLE_SCRIPT + '\n</body>');
-  return next;
-}
-async function htmlResponse(response) {
-  const headers = new Headers(response.headers);
-  headers.delete('content-length');
-  headers.set('content-type', 'text/html; charset=utf-8');
-  headers.set('cache-control', 'no-store, no-cache, must-revalidate');
-  return new Response(injectStableHead(await response.text()), {status: response.status,statusText: response.statusText,headers});
-}
-self.addEventListener('install', (event) => {event.waitUntil(caches.open(CACHE_NAME));self.skipWaiting();});
-self.addEventListener('activate', (event) => {event.waitUntil(caches.keys().then((keys)=>Promise.all(keys.map((key)=>key===CACHE_NAME?null:caches.delete(key)))).then(()=>self.clients.claim()));});
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
-  const url = new URL(event.request.url);
-  const isPage = event.request.mode === 'navigate' || url.pathname === '/' || url.pathname === '/index.html';
-  if (isPage) {event.respondWith(fetch(event.request,{cache:'no-store'}).then((response)=>htmlResponse(response)).catch(()=>caches.match('/index.html')));return;}
-  event.respondWith(fetch(event.request).catch(()=>caches.match(event.request)));
-});
+function injectStableHead(html){let next=html;if(!next.includes('pickleball-stable-style-v68'))next=next.replace('</head>',STABLE_STYLE+'\n</head>');if(!next.includes('pickleball-stable-script-v68'))next=next.replace('</body>',STABLE_SCRIPT+'\n</body>');return next;}
+async function htmlResponse(response){const headers=new Headers(response.headers);headers.delete('content-length');headers.set('content-type','text/html; charset=utf-8');headers.set('cache-control','no-store, no-cache, must-revalidate');return new Response(injectStableHead(await response.text()),{status:response.status,statusText:response.statusText,headers});}
+self.addEventListener('install',(event)=>{event.waitUntil(caches.open(CACHE_NAME));self.skipWaiting();});
+self.addEventListener('activate',(event)=>{event.waitUntil(caches.keys().then((keys)=>Promise.all(keys.map((key)=>key===CACHE_NAME?null:caches.delete(key)))).then(()=>self.clients.claim()));});
+self.addEventListener('fetch',(event)=>{if(event.request.method!=='GET')return;const url=new URL(event.request.url);const isPage=event.request.mode==='navigate'||url.pathname==='/'||url.pathname==='/index.html';if(isPage){event.respondWith(fetch(event.request,{cache:'no-store'}).then((response)=>htmlResponse(response)).catch(()=>caches.match('/index.html')));return;}event.respondWith(fetch(event.request).catch(()=>caches.match(event.request)));});

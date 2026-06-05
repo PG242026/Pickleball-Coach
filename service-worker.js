@@ -1,9 +1,14 @@
-const CACHE_NAME = 'pickleball-coach-ai-v55-taalkeuze';
+const CACHE_NAME = 'pickleball-coach-ai-v56-debug-weg';
 const DEBUG_HIDE_STYLE = `<style id="hide-pwa-debug-box">
-.pwa-debug,#pwaDebugPane{display:none!important}
+.pwa-debug,#pwaDebugPane{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
 </style>`;
-const HELP_BUTTON_FIX = `<script id="help-buttons-fix-v55">
+const HELP_BUTTON_FIX = `<script id="help-buttons-fix-v56">
 (function(){
+  function hideDebug(){
+    var box=document.getElementById('pwaDebugPane');
+    if(box){box.style.display='none';box.style.visibility='hidden';box.remove();}
+    document.querySelectorAll('.pwa-debug').forEach(function(el){el.style.display='none';el.remove();});
+  }
   function sluitPopups(){
     document.querySelectorAll('.popup').forEach(function(p){p.style.display='none';});
     var bg=document.getElementById('popupAchtergrond');
@@ -51,8 +56,6 @@ const HELP_BUTTON_FIX = `<script id="help-buttons-fix-v55">
     setTimeout(function(){
       if(typeof window.pasTaalToe==='function'){
         try{window.pasTaalToe();}catch(err){}
-      }else{
-        location.reload();
       }
     },100);
   }
@@ -78,6 +81,10 @@ const HELP_BUTTON_FIX = `<script id="help-buttons-fix-v55">
       sluitPopups();
     }
   }
+  hideDebug();
+  document.addEventListener('DOMContentLoaded',hideDebug);
+  window.addEventListener('load',hideDebug);
+  setInterval(hideDebug,1000);
   document.addEventListener('click',taalKlik,true);
   document.addEventListener('click',openKlik,true);
 })();
@@ -88,7 +95,7 @@ function injectStableHead(html) {
   if (!next.includes('hide-pwa-debug-box')) {
     next = next.replace('</head>', DEBUG_HIDE_STYLE + '\n</head>');
   }
-  if (!next.includes('help-buttons-fix-v55')) {
+  if (!next.includes('help-buttons-fix-v56')) {
     next = next.replace('</body>', HELP_BUTTON_FIX + '\n</body>');
   }
   return next;
@@ -115,6 +122,8 @@ self.addEventListener('activate', (event) => {
     caches.keys()
       .then((keys) => Promise.all(keys.map((key) => key === CACHE_NAME ? null : caches.delete(key))))
       .then(() => self.clients.claim())
+      .then(() => self.clients.matchAll({ type: 'window', includeUncontrolled: true }))
+      .then((clients) => Promise.all(clients.map((client) => client.navigate(client.url))))
   );
 });
 

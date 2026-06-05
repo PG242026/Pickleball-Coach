@@ -1,6 +1,6 @@
-const CACHE_NAME = 'pickleball-coach-ai-v71-hulpknoppen-klikbaar';
+const CACHE_NAME = 'pickleball-coach-ai-v72-taalknoppen-activeren';
 
-const STABLE_STYLE = `<style id="pickleball-stable-style-v71">
+const STABLE_STYLE = `<style id="pickleball-stable-style-v72">
 .pwa-debug,#pwaDebugPane{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
 .video-box{min-width:0!important}.video-box .knopgroep{max-width:100%!important}
 .youtube-panel-actions{display:flex!important;flex-wrap:wrap!important;gap:10px!important;align-items:flex-start!important;margin:10px 0 0!important;width:100%!important;box-sizing:border-box!important}
@@ -14,7 +14,7 @@ const STABLE_STYLE = `<style id="pickleball-stable-style-v71">
 @media(max-width:520px){.onderaan button{min-width:145px!important;flex:0 1 calc(50% - 14px)!important;padding:12px 10px!important}.onderaan button:last-child{flex-basis:145px!important}}
 </style>`;
 
-const STABLE_SCRIPT = `<script id="pickleball-stable-script-v71">
+const STABLE_SCRIPT = `<script id="pickleball-stable-script-v72">
 (function(){
   function hideDebug(){
     var box=document.getElementById('pwaDebugPane');
@@ -66,11 +66,34 @@ const STABLE_SCRIPT = `<script id="pickleball-stable-script-v71">
       try{window.pasTaalToe();}catch(e){}
     }
   }
+  function taalUitKnop(btn){
+    var txt=(btn.textContent||'').toLowerCase();
+    var action=btn.getAttribute('onclick')||'';
+    if(action.indexOf("'nl'")>-1 || txt.indexOf('nederlands')>-1) return 'nl';
+    if(action.indexOf("'en'")>-1 || txt.indexOf('english')>-1) return 'en';
+    if(action.indexOf("'de'")>-1 || txt.indexOf('deutsch')>-1) return 'de';
+    if(action.indexOf("'es'")>-1 || txt.indexOf('español')>-1 || txt.indexOf('espanol')>-1) return 'es';
+    if(action.indexOf("'fr'")>-1 || txt.indexOf('français')>-1 || txt.indexOf('francais')>-1) return 'fr';
+    return '';
+  }
+  function activeerTaal(lang){
+    localStorage.setItem('pickleballTaal',lang);
+    if(typeof window.setTaal==='function'){
+      try{window.setTaal(lang);}catch(e){}
+    }
+    setTimeout(function(){fixLayout();applyOriginalLanguage();},50);
+    setTimeout(function(){fixLayout();applyOriginalLanguage();},400);
+  }
   window.openHandleiding=function(){openPopup('handleidingPopup');};
   window.openTaal=function(){openPopup('taalPopup');};
   window.openFeedback=function(){openPopup('feedbackPopup');};
   window.sluitAllePopups=closePopups;
   document.addEventListener('click',function(e){
+    var taalBtn=e.target.closest('#taalPopup button');
+    if(taalBtn){
+      var lang=taalUitKnop(taalBtn);
+      if(lang){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();activeerTaal(lang);return;}
+    }
     var btn=e.target.closest('button');
     if(!btn) return;
     var action=btn.getAttribute('onclick')||'';
@@ -96,8 +119,8 @@ const STABLE_SCRIPT = `<script id="pickleball-stable-script-v71">
 
 function injectStableHead(html){
   let next=html;
-  if(!next.includes('pickleball-stable-style-v71')) next=next.replace('</head>',STABLE_STYLE+'\n</head>');
-  if(!next.includes('pickleball-stable-script-v71')) next=next.replace('</body>',STABLE_SCRIPT+'\n</body>');
+  if(!next.includes('pickleball-stable-style-v72')) next=next.replace('</head>',STABLE_STYLE+'\n</head>');
+  if(!next.includes('pickleball-stable-script-v72')) next=next.replace('</body>',STABLE_SCRIPT+'\n</body>');
   return next;
 }
 async function htmlResponse(response){

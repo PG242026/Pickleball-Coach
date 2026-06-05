@@ -1,8 +1,8 @@
-const CACHE_NAME = 'pickleball-coach-ai-v56-debug-weg';
+const CACHE_NAME = 'pickleball-coach-ai-v57-taal-herladen';
 const DEBUG_HIDE_STYLE = `<style id="hide-pwa-debug-box">
 .pwa-debug,#pwaDebugPane{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
 </style>`;
-const HELP_BUTTON_FIX = `<script id="help-buttons-fix-v56">
+const HELP_BUTTON_FIX = `<script id="help-buttons-fix-v57">
 (function(){
   function hideDebug(){
     var box=document.getElementById('pwaDebugPane');
@@ -43,21 +43,26 @@ const HELP_BUTTON_FIX = `<script id="help-buttons-fix-v56">
     e.stopPropagation();
     e.stopImmediatePropagation();
     localStorage.setItem('pickleballTaal',taal);
-    if(typeof window.setTaal==='function'){
-      try{window.setTaal(taal);}catch(err){}
-    }
-    if(typeof window.pasTaalToe==='function'){
-      try{window.pasTaalToe();}catch(err){}
-    }
-    if(typeof window.renderHandleiding==='function'){
-      try{window.renderHandleiding();}catch(err){}
-    }
     sluitPopups();
-    setTimeout(function(){
+    var url=new URL(window.location.href);
+    url.searchParams.set('taal',taal);
+    url.searchParams.set('v','taal-'+taal+'-'+Date.now());
+    window.location.href=url.toString();
+  }
+  function pasTaalNaLadenToe(){
+    var taal=localStorage.getItem('pickleballTaal');
+    if(!taal)return;
+    var pogingen=0;
+    var timer=setInterval(function(){
+      pogingen++;
       if(typeof window.pasTaalToe==='function'){
         try{window.pasTaalToe();}catch(err){}
       }
-    },100);
+      if(typeof window.renderHandleiding==='function'){
+        try{window.renderHandleiding();}catch(err){}
+      }
+      if(pogingen>=10)clearInterval(timer);
+    },250);
   }
   function openKlik(e){
     var btn=e.target.closest('button');
@@ -82,8 +87,9 @@ const HELP_BUTTON_FIX = `<script id="help-buttons-fix-v56">
     }
   }
   hideDebug();
-  document.addEventListener('DOMContentLoaded',hideDebug);
-  window.addEventListener('load',hideDebug);
+  pasTaalNaLadenToe();
+  document.addEventListener('DOMContentLoaded',function(){hideDebug();pasTaalNaLadenToe();});
+  window.addEventListener('load',function(){hideDebug();pasTaalNaLadenToe();});
   setInterval(hideDebug,1000);
   document.addEventListener('click',taalKlik,true);
   document.addEventListener('click',openKlik,true);
@@ -95,7 +101,7 @@ function injectStableHead(html) {
   if (!next.includes('hide-pwa-debug-box')) {
     next = next.replace('</head>', DEBUG_HIDE_STYLE + '\n</head>');
   }
-  if (!next.includes('help-buttons-fix-v56')) {
+  if (!next.includes('help-buttons-fix-v57')) {
     next = next.replace('</body>', HELP_BUTTON_FIX + '\n</body>');
   }
   return next;

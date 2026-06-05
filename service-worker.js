@@ -1,6 +1,6 @@
-const CACHE_NAME = 'pickleball-coach-ai-v65-restteksten-zonder-knipperen';
+const CACHE_NAME = 'pickleball-coach-ai-v66-hulpknoppen-stabiel';
 
-const DEBUG_HIDE_STYLE = `<style id="hide-pwa-debug-box">
+const STABLE_STYLE = `<style id="pickleball-stable-style-v66">
 .pwa-debug,#pwaDebugPane{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
 .video-box{min-width:0!important}.video-box .knopgroep{max-width:100%!important}
 .youtube-panel-actions{display:flex!important;flex-wrap:wrap!important;gap:10px!important;align-items:flex-start!important;margin:10px 0 0!important;width:100%!important;box-sizing:border-box!important}
@@ -8,43 +8,109 @@ const DEBUG_HIDE_STYLE = `<style id="hide-pwa-debug-box">
 .youtube-compare-panel{display:block!important;width:100%!important;box-sizing:border-box!important;clear:both!important;margin:14px 0 0!important;padding:14px 0 0!important;background:transparent!important;border:0!important;border-top:1px solid #b9d2c3!important;border-radius:0!important}
 .youtube-compare-panel .sync-accordion,.youtube-analysis-panel .sync-accordion{background:#f7fcf9!important;border:1px solid #d2e7db!important;border-radius:12px!important;box-sizing:border-box!important;width:100%!important}
 .youtube-analysis-panel{display:block!important;width:100%!important;box-sizing:border-box!important;clear:both!important;margin:10px 0 0!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important}
-.onderaan{text-align:center!important}.onderaan h2{margin-bottom:18px!important;display:block!important;width:100%!important}.onderaan div{display:flex!important;flex-wrap:wrap!important;gap:14px!important;justify-content:center!important;align-items:center!important}.onderaan button{margin:6px!important;min-width:150px!important;min-height:46px!important;padding:12px 18px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;box-sizing:border-box!important}
+.onderaan{text-align:center!important}.onderaan h2{display:block!important;width:100%!important;margin-bottom:18px!important}.onderaan div{display:flex!important;flex-wrap:wrap!important;gap:14px!important;justify-content:center!important;align-items:center!important}.onderaan button{margin:6px!important;min-width:150px!important;min-height:46px!important;padding:12px 18px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;box-sizing:border-box!important}
 @media(max-width:520px){.onderaan button{min-width:145px!important;flex:0 1 calc(50% - 14px)!important;padding:12px 10px!important}.onderaan button:last-child{flex-basis:145px!important}}
 </style>`;
 
-const APP_FIX = `<script id="pickleball-stable-fix-v65">
+const STABLE_SCRIPT = `<script id="pickleball-stable-script-v66">
 (function(){
-  var D={
-    nl:{app:'Pickleball Coach',clearAll:'🗑 Wis Alles',players:'👥 Spelers beheren',newPlayer:'Nieuwe speler toevoegen',addPlayer:'➕ Voeg speler toe',name:'Naam speler',choosePlayer:'Kies speler',level:'Niveau',chooseLevel:'Kies niveau',tech:'Techniek / Oefening',techPh:'Typ hier zelf de oefening of techniek',done:'✅ Klaar',help:'Hulp en contact',guide:'📘 Handleiding',language:'🌍 Language',feedback:'💬 Feedback',side:'📺 Side-by-side Analyse',player:'🎥 Spelers video',yt:'📺 YouTube filmpje',record:'🎥 Nieuwe opname maken',stop:'■ Stop Opname',clearPlayer:'🗑 Wis spelersvideo',manage:'📁 Spelers video’s beheren',upload:'Upload video vanaf telefoon, tablet of pc',noFile:'Geen bestand gekozen',saveName:'Naam voor de video die je wilt opslaan',example:'Bijvoorbeeld: Elly backhand 17 mei',saveVideo:'💾 Bewaar de video in de lijst',none:'Nog geen video’s bewaard.',compare:'🎛 Vergelijk & Afspelen',analysis:'🎥 Analyse',search:'🔍 Zoek YouTube voorbeeldvideo',paste:'📎 Plak YouTube link',clear:'🗑 Wis de video',other:'🔄 Zoek een ander',playBoth:'▶ Start beide video’s',pauseBoth:'⏸ Pauzeer beide video’s',ytToPlayer:'🔁 Zet YouTube gelijk met speler',playerToYt:'🔁 Zet speler gelijk met YouTube',bothStart:'↩ Beide naar begin',remove:'❌ Verwijderen'},
-    en:{app:'Pickleball Coach',clearAll:'🗑 Clear All',players:'👥 Manage players',newPlayer:'Add new player',addPlayer:'➕ Add player',name:'Player name',choosePlayer:'Choose player',level:'Level',chooseLevel:'Choose level',tech:'Technique / Exercise',techPh:'Type the exercise or technique here',done:'✅ Done',help:'Help and contact',guide:'📘 Guide',language:'🌍 Language',feedback:'💬 Feedback',side:'📺 Side-by-side Analysis',player:'🎥 Player video',yt:'📺 YouTube video',record:'🎥 New recording',stop:'■ Stop recording',clearPlayer:'🗑 Clear player video',manage:'📁 Manage player videos',upload:'Upload video from phone, tablet or PC',noFile:'No file selected',saveName:'Name for the video you want to save',example:'Example: Elly backhand May 17',saveVideo:'💾 Save video to list',none:'No saved videos yet.',compare:'🎛 Compare & Play',analysis:'🎥 Analysis',search:'🔍 Search YouTube example video',paste:'📎 Paste YouTube link',clear:'🗑 Clear video',other:'🔄 Search another',playBoth:'▶ Start both videos',pauseBoth:'⏸ Pause both videos',ytToPlayer:'🔁 Match YouTube to player',playerToYt:'🔁 Match player to YouTube',bothStart:'↩ Both to start',remove:'❌ Remove'},
-    de:{app:'Pickleball Coach',clearAll:'🗑 Alles löschen',players:'👥 Spieler verwalten',newPlayer:'Neuen Spieler hinzufügen',addPlayer:'➕ Spieler hinzufügen',name:'Spielername',choosePlayer:'Spieler wählen',level:'Niveau',chooseLevel:'Niveau wählen',tech:'Technik / Übung',techPh:'Übung oder Technik hier eingeben',done:'✅ Fertig',help:'Hilfe und Kontakt',guide:'📘 Anleitung',language:'🌍 Sprache',feedback:'💬 Feedback',side:'📺 Side-by-side Analyse',player:'🎥 Spielervideo',yt:'📺 YouTube-Video',record:'🎥 Neue Aufnahme',stop:'■ Aufnahme stoppen',clearPlayer:'🗑 Spielervideo löschen',manage:'📁 Spielervideos verwalten',upload:'Video vom Telefon, Tablet oder PC hochladen',noFile:'Keine Datei ausgewählt',saveName:'Name für das Video, das du speichern möchtest',example:'Beispiel: Elly Rückhand 17. Mai',saveVideo:'💾 Video in Liste speichern',none:'Noch keine Videos gespeichert.',compare:'🎛 Vergleichen & Abspielen',analysis:'🎥 Analyse',search:'🔍 YouTube-Beispielvideo suchen',paste:'📎 YouTube-Link einfügen',clear:'🗑 Video löschen',other:'🔄 Anderes suchen',playBoth:'▶ Beide Videos starten',pauseBoth:'⏸ Beide Videos pausieren',ytToPlayer:'🔁 YouTube an Spieler anpassen',playerToYt:'🔁 Spieler an YouTube anpassen',bothStart:'↩ Beide zum Anfang',remove:'❌ Entfernen'},
-    es:{app:'Pickleball Coach',clearAll:'🗑 Borrar todo',players:'👥 Gestionar jugadores',newPlayer:'Añadir nuevo jugador',addPlayer:'➕ Añadir jugador',name:'Nombre del jugador',choosePlayer:'Elegir jugador',level:'Nivel',chooseLevel:'Elegir nivel',tech:'Técnica / Ejercicio',techPh:'Escribe aquí el ejercicio o la técnica',done:'✅ Listo',help:'Ayuda y contacto',guide:'📘 Guía',language:'🌍 Idioma',feedback:'💬 Comentarios',side:'📺 Análisis lado a lado',player:'🎥 Video del jugador',yt:'📺 Video de YouTube',record:'🎥 Nueva grabación',stop:'■ Detener grabación',clearPlayer:'🗑 Borrar video del jugador',manage:'📁 Gestionar vídeos del jugador',upload:'Subir video desde teléfono, tableta o PC',noFile:'Ningún archivo seleccionado',saveName:'Nombre del video que quieres guardar',example:'Ejemplo: Elly revés 17 de mayo',saveVideo:'💾 Guardar video en la lista',none:'Aún no hay videos guardados.',compare:'🎛 Comparar y reproducir',analysis:'🎥 Análisis',search:'🔍 Buscar video de ejemplo en YouTube',paste:'📎 Pegar enlace de YouTube',clear:'🗑 Borrar video',other:'🔄 Buscar otro',playBoth:'▶ Iniciar ambos videos',pauseBoth:'⏸ Pausar ambos videos',ytToPlayer:'🔁 Sincronizar YouTube con jugador',playerToYt:'🔁 Sincronizar jugador con YouTube',bothStart:'↩ Ambos al inicio',remove:'❌ Eliminar'},
-    fr:{app:'Pickleball Coach',clearAll:'🗑 Tout effacer',players:'👥 Gérer les joueurs',newPlayer:'Ajouter un nouveau joueur',addPlayer:'➕ Ajouter un joueur',name:'Nom du joueur',choosePlayer:'Choisir un joueur',level:'Niveau',chooseLevel:'Choisir un niveau',tech:'Technique / Exercice',techPh:'Tapez ici l’exercice ou la technique',done:'✅ Terminé',help:'Aide et contact',guide:'📘 Guide',language:'🌍 Langue',feedback:'💬 Feedback',side:'📺 Analyse côte à côte',player:'🎥 Vidéo du joueur',yt:'📺 Vidéo YouTube',record:'🎥 Nouvel enregistrement',stop:'■ Arrêter l’enregistrement',clearPlayer:'🗑 Effacer la vidéo du joueur',manage:'📁 Gérer les vidéos du joueur',upload:'Importer une vidéo depuis un téléphone, une tablette ou un PC',noFile:'Aucun fichier sélectionné',saveName:'Nom de la vidéo à enregistrer',example:'Exemple : Elly revers 17 mai',saveVideo:'💾 Enregistrer la vidéo dans la liste',none:'Aucune vidéo enregistrée.',compare:'🎛 Comparer et lire',analysis:'🎥 Analyse',search:'🔍 Rechercher une vidéo YouTube',paste:'📎 Coller le lien YouTube',clear:'🗑 Effacer la vidéo',other:'🔄 Chercher une autre',playBoth:'▶ Démarrer les deux vidéos',pauseBoth:'⏸ Mettre les deux vidéos en pause',ytToPlayer:'🔁 Aligner YouTube sur le joueur',playerToYt:'🔁 Aligner le joueur sur YouTube',bothStart:'↩ Les deux au début',remove:'❌ Supprimer'}
-  };
-  var keys=Object.keys(D.nl);
-  var aliases={'start opname':'record','spelers videos beheren':'manage','spelers video beheren':'manage','spelers video s beheren':'manage','spelers video’s beheren':'manage','spelers video\'s beheren':'manage','bewaar video in lijst':'saveVideo','bewaar video in de lijst':'saveVideo','bewaar de video in lijst':'saveVideo','analyse':'analysis'};
-  function getLang(){return localStorage.getItem('pickleballTaal')||new URL(location.href).searchParams.get('taal')||'nl';}
-  function strip(s){return (s||'').replace(/[🎥📁📺🔍📎🗑🔄🎛👥✅➕❌■💾▶⏸↩]/g,'').replace(/[’']/g,' ').replace(/\s+/g,' ').trim().toLowerCase();}
-  function hideDebug(){var box=document.getElementById('pwaDebugPane');if(box){box.remove();}document.querySelectorAll('.pwa-debug').forEach(function(el){el.remove();});}
-  function setText(sel,txt){var el=document.querySelector(sel);if(el)el.textContent=txt;}
-  function setAccordionText(el,txt){if(!el)return;var t=el.querySelector('.accordion-title')||el;t.textContent=txt;}
-  function closestVideoBox(sel){var el=document.querySelector(sel);return el?el.closest('.video-box'):null;}
-  function fixLayout(){var ytBox=closestVideoBox('#youtubeVideoTitle');if(!ytBox)return;var actionRow=ytBox.querySelector('.knopgroep');if(actionRow)actionRow.classList.add('youtube-panel-actions');var compare=document.querySelector('.youtube-compare-panel')||document.querySelector('.in-youtube-panel')||document.querySelector('.sync-box.in-manage-videos')||document.querySelector('.sync-box');if(compare&&actionRow&&compare!==actionRow){compare.classList.add('youtube-compare-panel','in-youtube-panel');compare.classList.remove('in-manage-videos','sync-box');actionRow.insertAdjacentElement('afterend',compare);}var analysis=document.querySelector('.video-analyse-sectie');if(analysis&&compare){analysis.classList.add('youtube-analysis-panel');analysis.classList.remove('player-analysis-outside','in-manage-videos');compare.insertAdjacentElement('afterend',analysis);var d=analysis.querySelector('details');if(d)d.removeAttribute('open');}}
-  function translateKnownText(t){Array.from(document.querySelectorAll('button,h1,h2,h3,label,p,strong,summary,option,span,small')).forEach(function(el){var s=strip(el.textContent);if(!s)return;if(aliases[s]){el.textContent=t[aliases[s]];return;}for(var li in D){for(var i=0;i<keys.length;i++){var k=keys[i];if(strip(D[li][k])===s){el.textContent=t[k];return;}}}});}
-  function translateInputs(t){var selects=document.querySelectorAll('select');if(selects[0]&&selects[0].options[0])selects[0].options[0].textContent=t.choosePlayer;if(selects[1]&&selects[1].options[0])selects[1].options[0].textContent=t.chooseLevel;var inputs=document.querySelectorAll('input[type="text"],input:not([type])');if(inputs[0])inputs[0].placeholder=t.newPlayer;if(inputs[1])inputs[1].placeholder=t.techPh;document.querySelectorAll('input[placeholder],textarea[placeholder]').forEach(function(el){var s=strip(el.placeholder);if(aliases[s]){el.placeholder=t[aliases[s]];return;}for(var li in D){['newPlayer','techPh','example','name'].forEach(function(k){if(strip(D[li][k])===s)el.placeholder=t[k];});}});}
-  function applyLang(){fixLayout();var l=getLang();var t=D[l]||D.nl;document.documentElement.lang=l;setText('.onderaan h2',t.help);setText('button[onclick="openHandleiding()"]',t.guide);setText('button[onclick="openTaal()"]',t.language);setText('button[onclick="openFeedback()"]',t.feedback);setText('#playerVideoTitle',t.player);setText('#youtubeVideoTitle',t.yt);setText('button[onclick="startOpname()"]',t.record);setAccordionText(document.querySelector('#manageVideosAccordion summary'),t.manage);setAccordionText(document.querySelector('.youtube-compare-panel .sync-accordion summary')||document.querySelector('.youtube-compare-panel summary'),t.compare);setText('#videoAnalyseTitle',t.analysis);setText('button[onclick="zoekYoutubeVoorbeeld()"]',t.search);setText('button[onclick="plakYoutubeLink()"]',t.paste);setText('button[onclick="wisYoutubeVideo()"]',t.clear);setText('button[onclick="andereYoutubeVideo()"]',t.other);translateKnownText(t);translateInputs(t);}
-  function closePopups(){document.querySelectorAll('.popup').forEach(function(p){p.style.display='none';});var bg=document.getElementById('popupAchtergrond');if(bg)bg.style.display='none';document.body.style.overflow='';}
-  function openPopup(id){closePopups();var popup=document.getElementById(id);var bg=document.getElementById('popupAchtergrond');if(bg)bg.style.display='block';if(popup){popup.style.display='block';document.body.style.overflow='hidden';}}
-  function buttonLang(btn){var txt=(btn.textContent||'').toLowerCase();var onclick=btn.getAttribute('onclick')||'';if(onclick.indexOf("'en'")>-1||txt.indexOf('english')>-1)return'en';if(onclick.indexOf("'de'")>-1||txt.indexOf('deutsch')>-1)return'de';if(onclick.indexOf("'es'")>-1||txt.indexOf('español')>-1||txt.indexOf('espanol')>-1)return'es';if(onclick.indexOf("'fr'")>-1||txt.indexOf('français')>-1||txt.indexOf('francais')>-1)return'fr';if(onclick.indexOf("'nl'")>-1||txt.indexOf('nederlands')>-1)return'nl';return'';}
-  document.addEventListener('click',function(e){var tb=e.target.closest('#taalPopup button');if(tb){var l=buttonLang(tb);if(l){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();localStorage.setItem('pickleballTaal',l);closePopups();setTimeout(applyLang,50);setTimeout(applyLang,300);return;}}var btn=e.target.closest('button');if(!btn)return;var action=btn.getAttribute('onclick')||'';if(action==='openHandleiding()'){e.preventDefault();openPopup('handleidingPopup');}if(action==='openTaal()'){e.preventDefault();openPopup('taalPopup');}if(action==='openFeedback()'){e.preventDefault();openPopup('feedbackPopup');}if(action==='sluitAllePopups()'){e.preventDefault();closePopups();}},true);
-  hideDebug();fixLayout();applyLang();document.addEventListener('DOMContentLoaded',function(){hideDebug();fixLayout();applyLang();});window.addEventListener('load',function(){hideDebug();fixLayout();applyLang();setTimeout(applyLang,500);});setInterval(function(){hideDebug();fixLayout();},3000);
+  function hideDebug(){
+    var box=document.getElementById('pwaDebugPane');
+    if(box) box.remove();
+    document.querySelectorAll('.pwa-debug').forEach(function(el){el.remove();});
+  }
+  function closestVideoBox(sel){
+    var el=document.querySelector(sel);
+    return el ? el.closest('.video-box') : null;
+  }
+  function fixLayout(){
+    var ytBox=closestVideoBox('#youtubeVideoTitle');
+    if(!ytBox) return;
+    var actionRow=ytBox.querySelector('.knopgroep');
+    if(actionRow) actionRow.classList.add('youtube-panel-actions');
+    var compare=document.querySelector('.youtube-compare-panel') || document.querySelector('.in-youtube-panel') || document.querySelector('.sync-box.in-manage-videos') || document.querySelector('.sync-box');
+    if(compare && actionRow && compare!==actionRow){
+      compare.classList.add('youtube-compare-panel','in-youtube-panel');
+      compare.classList.remove('in-manage-videos','sync-box');
+      actionRow.insertAdjacentElement('afterend',compare);
+    }
+    var analysis=document.querySelector('.video-analyse-sectie');
+    if(analysis && compare){
+      analysis.classList.add('youtube-analysis-panel');
+      analysis.classList.remove('player-analysis-outside','in-manage-videos');
+      compare.insertAdjacentElement('afterend',analysis);
+      var d=analysis.querySelector('details');
+      if(d) d.removeAttribute('open');
+    }
+  }
+  function closePopups(){
+    document.querySelectorAll('.popup').forEach(function(p){p.style.display='none';});
+    var bg=document.getElementById('popupAchtergrond');
+    if(bg) bg.style.display='none';
+    document.body.style.overflow='';
+  }
+  function openPopup(id){
+    closePopups();
+    var popup=document.getElementById(id);
+    var bg=document.getElementById('popupAchtergrond');
+    if(bg) bg.style.display='block';
+    if(popup){
+      popup.style.display='block';
+      document.body.style.overflow='hidden';
+    }
+  }
+  window.openHandleiding=function(){openPopup('handleidingPopup');};
+  window.openTaal=function(){openPopup('taalPopup');};
+  window.openFeedback=function(){openPopup('feedbackPopup');};
+  window.sluitAllePopups=closePopups;
+  function setLang(lang){
+    localStorage.setItem('pickleballTaal',lang);
+    document.documentElement.lang=lang;
+    closePopups();
+    var map={nl:['Hulp en contact','📘 Handleiding','🌍 Language','💬 Feedback'],en:['Help and contact','📘 Guide','🌍 Language','💬 Feedback'],de:['Hilfe und Kontakt','📘 Anleitung','🌍 Sprache','💬 Feedback'],es:['Ayuda y contacto','📘 Guía','🌍 Idioma','💬 Comentarios'],fr:['Aide et contact','📘 Guide','🌍 Langue','💬 Feedback']};
+    var t=map[lang]||map.nl;
+    var h=document.querySelector('.onderaan h2'); if(h) h.textContent=t[0];
+    var b1=document.querySelector('button[onclick="openHandleiding()"]'); if(b1) b1.textContent=t[1];
+    var b2=document.querySelector('button[onclick="openTaal()"]'); if(b2) b2.textContent=t[2];
+    var b3=document.querySelector('button[onclick="openFeedback()"]'); if(b3) b3.textContent=t[3];
+  }
+  function buttonLang(btn){
+    var txt=(btn.textContent||'').toLowerCase();
+    var onclick=btn.getAttribute('onclick')||'';
+    if(onclick.indexOf("'en'")>-1 || txt.indexOf('english')>-1) return 'en';
+    if(onclick.indexOf("'de'")>-1 || txt.indexOf('deutsch')>-1) return 'de';
+    if(onclick.indexOf("'es'")>-1 || txt.indexOf('español')>-1 || txt.indexOf('espanol')>-1) return 'es';
+    if(onclick.indexOf("'fr'")>-1 || txt.indexOf('français')>-1 || txt.indexOf('francais')>-1) return 'fr';
+    if(onclick.indexOf("'nl'")>-1 || txt.indexOf('nederlands')>-1) return 'nl';
+    return '';
+  }
+  document.addEventListener('click',function(e){
+    var langBtn=e.target.closest('#taalPopup button');
+    if(langBtn){
+      var lang=buttonLang(langBtn);
+      if(lang){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();setLang(lang);return;}
+    }
+    var btn=e.target.closest('button');
+    if(!btn) return;
+    var action=btn.getAttribute('onclick')||'';
+    if(action==='openHandleiding()'){e.preventDefault();e.stopPropagation();openPopup('handleidingPopup');}
+    if(action==='openTaal()'){e.preventDefault();e.stopPropagation();openPopup('taalPopup');}
+    if(action==='openFeedback()'){e.preventDefault();e.stopPropagation();openPopup('feedbackPopup');}
+    if(action==='sluitAllePopups()'){e.preventDefault();e.stopPropagation();closePopups();}
+  },true);
+  hideDebug();
+  fixLayout();
+  setLang(localStorage.getItem('pickleballTaal')||'nl');
+  document.addEventListener('DOMContentLoaded',function(){hideDebug();fixLayout();setLang(localStorage.getItem('pickleballTaal')||'nl');});
+  window.addEventListener('load',function(){hideDebug();fixLayout();setTimeout(fixLayout,500);});
+  setInterval(function(){hideDebug();fixLayout();},3000);
 })();
 </script>`;
 
 function injectStableHead(html) {
   let next = html;
-  if (!next.includes('hide-pwa-debug-box')) next = next.replace('</head>', DEBUG_HIDE_STYLE + '\n</head>');
-  if (!next.includes('pickleball-stable-fix-v65')) next = next.replace('</body>', APP_FIX + '\n</body>');
+  if (!next.includes('pickleball-stable-style-v66')) next = next.replace('</head>', STABLE_STYLE + '\n</head>');
+  if (!next.includes('pickleball-stable-script-v66')) next = next.replace('</body>', STABLE_SCRIPT + '\n</body>');
   return next;
 }
 async function htmlResponse(response) {

@@ -686,6 +686,124 @@ window.toggleSkeletonTracking = async function () {
     }
 };
 </script>
+<script id="pickleball-v76-recording-in-index">
+(function(){
 
+function opnameMelding(tekst){
+  if(typeof window.toonMelding==="function"){
+    try{window.toonMelding(tekst);return;}catch(e){}
+  }
+  console.log(tekst);
+}
+
+function recorderOpties(){
+  var types=[
+    "video/webm;codecs=vp9,opus",
+    "video/webm;codecs=vp8,opus",
+    "video/webm"
+  ];
+  if(!window.MediaRecorder)return {};
+  for(var i=0;i<types.length;i++){
+    if(MediaRecorder.isTypeSupported(types[i])){
+      return {mimeType:types[i]};
+    }
+  }
+  return {};
+}
+
+async function vraagCameraStream(){
+  var opties=[
+    {video:{facingMode:{ideal:"environment"}},audio:true},
+    {video:{facingMode:{ideal:"environment"}},audio:false},
+    {video:true,audio:true},
+    {video:true,audio:false}
+  ];
+
+  for(var i=0;i<opties.length;i++){
+    try{
+      return await navigator.mediaDevices.getUserMedia(opties[i]);
+    }catch(e){}
+  }
+  throw new Error("Geen camera");
+}
+
+window.startOpname=async function(){
+
+  var video=document.getElementById("leerlingVideo");
+
+  try{
+
+    var stream=await vraagCameraStream();
+
+    window.cameraStream=stream;
+    window.recordedChunks=[];
+
+    video.srcObject=stream;
+    video.muted=true;
+    video.controls=false;
+
+    document.body.classList.add("camera-open");
+
+    await video.play();
+
+    window.mediaRecorder =
+      new MediaRecorder(stream, recorderOpties());
+
+    mediaRecorder.ondataavailable=function(e){
+      if(e.data.size>0){
+        recordedChunks.push(e.data);
+      }
+    };
+
+    mediaRecorder.onstop=function(){
+
+      var blob=new Blob(
+        recordedChunks,
+        {type:"video/webm"}
+      );
+
+      var url=URL.createObjectURL(blob);
+
+      stream.getTracks().forEach(t=>t.stop());
+
+      video.srcObject=null;
+      video.src=url;
+      video.controls=true;
+      video.muted=false;
+
+      document.body.classList.remove("camera-open");
+
+      opnameMelding("Opname klaar");
+    };
+
+    mediaRecorder.start();
+
+    opnameMelding("Opname gestart");
+
+  }catch(e){
+    console.error(e);
+    opnameMelding("Camera niet beschikbaar");
+  }
+};
+
+window.stopOpname=function(){
+
+  if(window.mediaRecorder &&
+     mediaRecorder.state!=="inactive"){
+
+    mediaRecorder.stop();
+
+  }else{
+
+    if(window.cameraStream){
+      cameraStream.getTracks().forEach(t=>t.stop());
+    }
+
+    document.body.classList.remove("camera-open");
+  }
+};
+
+})();
+</script>
 </body>
 </html>

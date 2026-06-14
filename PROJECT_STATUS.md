@@ -1,14 +1,37 @@
-# Pickleball Coach AI v1.0 SAFE
+# Pickleball Coach AI v1.1 SAFE
 
+Datum: 14 juni 2026
+Status: STABIEL
 Branch: main
-Commit: d892fa6
-Titel: Repareer opnameknop voor tablet en pc
 
-Dit is Pickleball Coach AI v1.0 SAFE.
+Dit is Pickleball Coach AI v1.1 SAFE.
 
-Deze versie is de basis voor alle toekomstige ontwikkeling.
+Deze versie is vastgelegd als veilig herstelpunt voor toekomstige ontwikkeling.
 
 Nooit functies verwijderen of terugdraaien zonder toestemming.
+
+## Werkende opnameketen
+
+- 🎥 Nieuwe opname knop werkt
+- camera start correct
+- tijdens opname één ⏹ Stop opname knop
+- stop opname sluit camera
+- opgenomen video komt terug in Spelers video
+- video afspelen werkt
+
+## Bevat fixes
+
+- PR #113 middleware opnameknop tekst
+- PR #114 middleware startOpname koppeling
+- PR #115 middleware stopOpname en recordingBar fix
+
+## Beschermde bestanden
+
+- index.html
+- middleware.js
+- service-worker.js
+- manifest.json
+- server.js
 
 ## Beschermde onderdelen
 
@@ -22,3 +45,9 @@ Nooit functies verwijderen of terugdraaien zonder toestemming.
 - OpenAI koppeling
 - Android wrapper
 - PWA manifest/service-worker
+
+## Regels voor toekomst
+
+- opnamecode niet herschrijven
+- geen volledige bestandsvervangingen
+- alleen kleine patches via branch + PR

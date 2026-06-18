@@ -99,8 +99,10 @@ const popupAchtergrondEl=document.getElementById('popupAchtergrond');
 const handleidingPopupEl=document.getElementById('handleidingPopup');
 const taalPopupEl=document.getElementById('taalPopup');
 const feedbackPopupEl=document.getElementById('feedbackPopup');
-
-function tr(){return T[localStorage.getItem('pickleballTaal')||'nl']||T.nl}
+function tr(){
+ const taal = localStorage.getItem('pickleballTaal') || 'nl';
+ return T[taal] || T.nl;
+}
 function isProGebruiker(){return localStorage.getItem('pickleballPlan')==='pro'}
 function openManageVideos(event){return}
 function toonProModal(){proModalOverlay.style.display='block';proModal.style.display='block';document.body.style.overflow='hidden'}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pickleball Coach</title>
+<title>Pickleball Coach</title> 
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1f5f3b">
 <style>
@@ -151,11 +151,10 @@ window.openHandleiding=openHandleiding;
 window.openTaal=openTaal;
 window.openFeedback=openFeedback;
 function setTaal(t){
-alert('TEST TAAL: '+t);
-localStorage.setItem('pickleballTaal',t);
-pasTaalToe();
-toonMelding('🌍 '+(T[t]?.language||'Language')+' opgeslagen');
-sluitAllePopups();
+ localStorage.setItem('pickleballTaal',t);
+ document.querySelector('.beheer-summary').innerHTML = T[t].players;
+ toonMelding('🌍 '+(T[t]?.language||'Language')+' opgeslagen');
+ sluitAllePopups();
 }
 window.setTaal=setTaal;  
 function verstuurFeedback(){const naam=feedbackNaam.value||'Onbekend',soort=feedbackSoort.value,bericht=feedbackBericht.value;if(!bericht.trim()){toonMelding('⚠️ Typ eerst je feedback');return}const onderwerp=encodeURIComponent('Feedback Pickleball Coach AI - '+soort);const body=encodeURIComponent('Naam: '+naam+'\nSoort: '+soort+'\nDatum: '+new Date().toLocaleString('nl-NL')+'\n\nFeedback:\n'+bericht);window.location.href='mailto:hcvsabben@gmail.com?subject='+onderwerp+'&body='+body;toonMelding('📧 Mail wordt geopend')}

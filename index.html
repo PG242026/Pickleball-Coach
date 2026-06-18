@@ -148,6 +148,7 @@ window.sluitAllePopups=sluitAllePopups;
 window.openHandleiding=openHandleiding;
 window.openTaal=openTaal;
 window.openFeedback=openFeedback;
+ window.pasTaalToe=pasTaalToe; 
 function setTaal(t){localStorage.setItem('pickleballTaal',t);pasTaalToe();toonMelding('🌍 '+(T[t]?.language||'Language')+' opgeslagen');sluitAllePopups()}
 function verstuurFeedback(){const naam=feedbackNaam.value||'Onbekend',soort=feedbackSoort.value,bericht=feedbackBericht.value;if(!bericht.trim()){toonMelding('⚠️ Typ eerst je feedback');return}const onderwerp=encodeURIComponent('Feedback Pickleball Coach AI - '+soort);const body=encodeURIComponent('Naam: '+naam+'\nSoort: '+soort+'\nDatum: '+new Date().toLocaleString('nl-NL')+'\n\nFeedback:\n'+bericht);window.location.href='mailto:hcvsabben@gmail.com?subject='+onderwerp+'&body='+body;toonMelding('📧 Mail wordt geopend')}
 function laadSpelers(){const o=localStorage.getItem('pickleballSpelers');if(o){try{spelers=JSON.parse(o)}catch(e){spelers=[]}}updateSpelerDropdown();updateSpelerOverzicht()}

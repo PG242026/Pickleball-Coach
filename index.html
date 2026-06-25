@@ -238,7 +238,12 @@ function stopOpname(){
     cameraStream.getTracks().forEach(t=>t.stop());
     cameraStream=null;
   }
-  zetOpnameModusUit();
+
+zetOpnameModusUit();
+
+document.querySelectorAll('.hidden-during-recording').forEach(e=>e.style.display='');
+document.querySelectorAll('.recording-only').forEach(e=>e.style.display='none');
+  
 }
 function sluitApp(){
   if(cameraStream){

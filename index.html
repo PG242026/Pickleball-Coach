@@ -241,8 +241,12 @@ function stopOpname(){
 
 zetOpnameModusUit();
 
-document.querySelectorAll('.hidden-during-recording').forEach(e=>e.style.display='');
+  document.querySelectorAll('.hidden-during-recording').forEach(e=>e.style.display='');
+document.querySelector('button[onclick="wisLeerlingVideo()"]').style.display='';
 document.querySelectorAll('.recording-only').forEach(e=>e.style.display='none');
+
+  
+
   
 }
 function sluitApp(){

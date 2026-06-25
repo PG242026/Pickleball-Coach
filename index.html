@@ -25,6 +25,8 @@ body.camera-open #recordingBar{display:block!important}
 
 .pwa-debug{position:fixed;right:14px;bottom:14px;z-index:100002;background:#0f172a;color:#e2e8f0;border:1px solid #334155;border-radius:12px;padding:10px 12px;min-width:250px;box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:14px;line-height:1.4}.pwa-debug h3{margin:0 0 8px;font-size:14px;color:#93c5fd}.pwa-debug ul{margin:0;padding-left:18px}.pwa-debug li{margin:4px 0}.pwa-ok{color:#86efac}.pwa-warn{color:#fca5a5}
 
+.player-box>.knopgroep.hidden-during-recording{display:grid;grid-template-columns:max-content max-content;justify-content:start;align-items:center}.player-box>.knopgroep.hidden-during-recording button[onclick="startOpname()"]{grid-column:1;grid-row:1}.player-box>.knopgroep.hidden-during-recording .help-icon{grid-column:2;grid-row:1}.player-box>.knopgroep.hidden-during-recording button[onclick="wisLeerlingVideo()"]{grid-column:1;grid-row:2;width:max-content}.player-box>.knopgroep.hidden-during-recording button[onclick="stopOpname()"]{grid-column:2;grid-row:2;width:max-content}#manageVideosAccordion{width:100%;min-width:min(100%,360px)}#manageVideosAccordion>.accordion-header,#manageVideosAccordion>summary{grid-template-columns:minmax(0,1fr) auto}#manageVideosTitle{white-space:normal;overflow:visible;text-overflow:clip;min-width:0;max-width:none}
+
 </style>
 </head>
 <body>

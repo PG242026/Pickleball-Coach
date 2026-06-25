@@ -743,6 +743,28 @@ window.toggleSkeletonTracking = async function () {
       zetCameraSchermUit();
       opnameMelding('ℹ️ Er loopt geen opname.');
     };
+    window.wisLeerlingVideo=function(){
+      var video=document.getElementById('leerlingVideo');
+      if(!video)return;
+      if(window.stopSkeletonTrackingIntern)window.stopSkeletonTrackingIntern();
+      var recorder=null;try{recorder=mediaRecorder;}catch(e){recorder=window.mediaRecorder;}
+      if(recorder&&recorder.state!=='inactive'){
+        try{recorder.ondataavailable=null;recorder.onstop=null;recorder.stop();}catch(e){}
+      }
+      try{mediaRecorder=null;}catch(e){window.mediaRecorder=null;}
+      var oudeBron=video.currentSrc||video.src;
+      try{video.pause();}catch(e){}
+      try{if(typeof cameraStream!=='undefined'&&cameraStream){cameraStream.getTracks().forEach(function(t){t.stop();});cameraStream=null;}}catch(e){window.cameraStream=null;}
+      if(video.srcObject&&video.srcObject.getTracks){video.srcObject.getTracks().forEach(function(t){t.stop();});}
+      video.srcObject=null;
+      if(oudeBron&&oudeBron.indexOf('blob:')===0){try{URL.revokeObjectURL(oudeBron);}catch(e){}}
+      video.removeAttribute('src');
+      try{recordedChunks=[];huidigeVideoBlob=null;}catch(e){window.recordedChunks=[];window.huidigeVideoBlob=null;}
+      video.controls=true;
+      video.load();
+      zetCameraSchermUit();
+      opnameMelding('🗑 Spelersvideo gewist');
+    };
   }
   installeerOpnameFix();
   document.addEventListener('DOMContentLoaded',installeerOpnameFix);
